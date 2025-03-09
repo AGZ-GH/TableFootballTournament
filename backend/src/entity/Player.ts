@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 
 @Entity()
-export class User {
+export class Player {
     @PrimaryGeneratedColumn()
     id: number
 
@@ -12,5 +12,5 @@ export class User {
     lastName: string
 
     @Column()
-    age: number
-}
+    isAdmin: boolean            
+}       
