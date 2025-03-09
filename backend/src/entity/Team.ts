@@ -6,6 +6,9 @@ export class Team {
     @PrimaryGeneratedColumn()
     id: number
 
+    @Column
+    name: String
+    
     @OneToOne(() => Player)
     player1: Player
     

@@ -5,12 +5,15 @@ export class Player {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column()   
     firstName: string
 
     @Column()
     lastName: string
 
     @Column()
-    isAdmin: boolean            
+    password: string
+
+    @Column()
+    isAdmin: boolean                   
 }       
