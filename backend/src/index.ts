@@ -1,8 +1,6 @@
 import "reflect-metadata"
-import { AppDataSource } from "./data-source"
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import { Player } from "./entity/Player.entity";
 
 dotenv.config();
 
