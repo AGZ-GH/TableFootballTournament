@@ -1,17 +1,17 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne } from "typeorm"
-import { Player } from "./Player"
+import { Player } from "./Player.entity"
 
 @Entity()
 export class Team {
     @PrimaryGeneratedColumn()
-    id: number
+    id!: number
 
-    @Column
-    name: String
+    @Column()
+    name!: String
     
     @OneToOne(() => Player)
-    player1: Player
+    player1!: Player
     
     @OneToOne(() => Player)
-    player2: Player           
+    player2?: Player           
 }       

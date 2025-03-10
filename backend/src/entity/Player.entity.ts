@@ -3,17 +3,17 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 @Entity()
 export class Player {
     @PrimaryGeneratedColumn()
-    id: number
+    id!: number
 
     @Column()   
-    firstName: string
+    firstName!: string
 
     @Column()
-    lastName: string
+    lastName!: string
 
     @Column()
-    password: string
+    password!: string
 
-    @Column()
-    isAdmin: boolean                   
+    @Column('boolean', { default: false })
+    isAdmin: boolean = false                 
 }       
