@@ -9,8 +9,11 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT ?? 3000;
 
+const playerRoute = require("./routes/Player.route");
+app.use("/player",playerRoute);
+
 app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
+  res.send("");
 });
 
 app.listen(port, () => {    
