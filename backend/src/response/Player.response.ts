@@ -1,4 +1,4 @@
-export class PlayerResponse extends Response {
+export class PlayerResponse {
     id!: number
     firstName!: string
     lastName!: string

@@ -17,8 +17,13 @@ export const AppDataSource = new DataSource({
     type: "mysql",
     host: databaseHost,
     database: databaseName,
-    entities: [Player,Team,Match,Tournament],
-    username: databaseUsername,   
+    entities: [Player, Team, Match, Tournament],
+    username: databaseUsername,
     password: databasePwd,
     synchronize: true,
+})
+AppDataSource.initialize()
+    .then(async () => {
+        console.log("Connection initialized with database...");
     })
+    .catch((error) => console.error(error));

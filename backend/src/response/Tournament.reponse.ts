@@ -1,6 +1,6 @@
 import { MatchResponse } from "./Match.response"
 
-export class TournamentResponse extends Response{
+export class TournamentResponse {
     id!: number
     name!: string
     description: string = ""
