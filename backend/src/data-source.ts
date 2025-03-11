@@ -9,13 +9,15 @@ import { Tournament } from "./entity/Tournament.entity";
 dotenv.config();
 
 const databaseName = process.env.DATABASE_NAME ?? "";
-const databasePort = process.env.DATABASE_PORT ?? 3306;
+const databasePort = Number(process.env.DATABASE_PORT);
 const databaseHost = process.env.DATABASE_HOST ?? "";
-const databaseUsername = process.env.DATABASE_USERNAME ?? "lala";
+const databaseUsername = process.env.DATABASE_USERNAME ?? "";
 const databasePwd = process.env.DATABASE_PWD ?? ""
+
 export const AppDataSource = new DataSource({
     type: "mysql",
     host: databaseHost,
+    port: databasePort,
     database: databaseName,
     entities: [Player, Team, Match, Tournament],
     username: databaseUsername,
