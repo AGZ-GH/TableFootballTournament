@@ -7,17 +7,34 @@ const router = express.Router();
 const tournamentService = new TournamentService();
 
 router.post("", (req: Request,res: Response): Response =>{
-    return res.send({data: "player"});
+    return res.status(201).send({data: "Tournament created"});
 });
 
-router.get("/:tournamentId",(req: Request,res: Response): Response =>{
+router.get("/:tournamentId",async (req: Request,res: Response): Promise<Response> =>{
     const id = Number(req.params.productID);
-    return res.send({data: tournamentService.getTournamentById(id).json});
+    try{
+        const tournament = await tournamentService.getTournamentById(id)
+        .catch((error) => res.status(500).send("Failed to delete tournament"));
+        if(!tournament){
+            return res.status(404).send("Not found");
+        }
+        return res.status(200).json(tournament.json());
+    }
+    catch(error) {
+        return res.status(500).send("Failed to search for the tournament");
+    } 
+    
 });
 
-router.delete("/:tournamentId", (req: Request,res: Response): Response =>{
+router.delete("/:tournamentId", async (req: Request,res: Response): Promise<Response> =>{
     const id = Number(req.params.productID);
-    return res.send({data: tournamentService.getTournamentById(id).json});
+    try{
+        await tournamentService.deleteTournamentById(id)
+            return res.status(200).send("Tournament deleted");
+    }
+    catch(error){
+        return res.status(500).send("Failed to delete tournament")
+    }
 });
 
 module.exports = router;
