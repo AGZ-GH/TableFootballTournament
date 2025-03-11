@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { PlayerService } from "../services/Player.service";
 import { CreatePlayerRequest } from "../request/CreatePlayer.request";
 import { UpdatePlayerRequest } from "../request/UpdatePlayer.request";
-import { PlayerResponse } from "../response/Player.response";
 
 const express = require("express");
 const router = express.Router();
@@ -28,7 +27,7 @@ router.get("/:playerId", async (req: Request, res: Response): Promise<Response> 
 router.post("/", async (req: Request, res: Response): Promise<Response> => {
     try {
         await playerService.createPlayer(req.body as CreatePlayerRequest);
-        return res.status(200).send("Player created deleted");
+        return res.status(200).send("Player created");
     }
     catch (error) {
         console.error(error)
@@ -49,7 +48,7 @@ router.post("/:playerId", async (req: Request, res: Response): Promise<Response>
 });
 
 router.delete("/:playerId", async (req: Request, res: Response): Promise<Response> => {
-    const id = Number(req.params.playerId       );
+    const id = Number(req.params.playerId);
     try {
         await playerService.deletePlayerById(id)
         return res.status(200).send("Player deleted");

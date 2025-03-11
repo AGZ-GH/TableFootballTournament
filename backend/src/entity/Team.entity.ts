@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm"
 import { Player } from "./Player.entity"
 
 @Entity()
@@ -9,9 +9,11 @@ export class Team {
     @Column()
     name!: String
     
-    @OneToOne(() => Player)
+    @OneToOne(() => Player, { onDelete: "CASCADE"})
+    @JoinColumn([    { name: "p1_FK", referencedColumnName: "id" },])
     player1!: Player
     
-    @OneToOne(() => Player)
+    @OneToOne(() => Player, { onDelete: "CASCADE"})
+    @JoinColumn([    { name: "p2_FK", referencedColumnName: "id" },])
     player2?: Player           
 }       

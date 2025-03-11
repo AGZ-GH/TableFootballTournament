@@ -10,9 +10,11 @@ const port = process.env.PORT ?? 3000;
 app.use(express.json());
     
 const playerRoute = require("./routes/Player.route");
-app.use("/player",playerRoute);
-
+const teamRoute = require("./routes/Team.route");
 const tournamentRoute = require("./routes/Tournament.route");
+
+app.use("/player",playerRoute);
+app.use("/team",teamRoute);
 app.use("/tournament",tournamentRoute);
 
 app.get("/", (req: Request, res: Response) => {
