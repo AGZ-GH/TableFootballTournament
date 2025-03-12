@@ -46,10 +46,21 @@ export class MatchService {
         await AppDataSource.getRepository(Match).save(updatedMatch);
     }
 
-    async getMatchById(id: number) : Promise<MatchResponse> {
-        await AppDataSource.getRepository(Match).findOneBy({ id: id });
-        const match = new MatchResponse();
-        match.
+    async getMatchById(id: number): Promise<MatchResponse> {
+        const match = await AppDataSource.getRepository(Match).findOneBy({ id: id });
+        const matchResponse = new MatchResponse();
+        if (!match) {
+            matchResponse.id = -1;
+            return matchResponse;
+        }
+        matchResponse.id = match.id;
+        matchResponse.date = match.date;
+        matchResponse.scoreTeam1 = match.scoreTeam1;
+        matchResponse.scoreTeam2 = match.scoreTeam2;
+        matchResponse.team1 = match.team1;
+        matchResponse.team2 = match.team2;
+
+        return matchResponse;
     }
 
     async deleteMatch(id: number) {

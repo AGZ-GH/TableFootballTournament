@@ -9,10 +9,10 @@ export class Match {
 
     @Column()
     date!: Date
-                
+
     @Column({ default: 0 })
     scoreTeam1: number = 0
-    
+
     @Column({ default: 0 })
     scoreTeam2: number = 0
 
@@ -23,5 +23,5 @@ export class Match {
     team2!: Team
 
     @ManyToOne(() => Tournament, (tournament) => tournament.matches)
-    tournament!: Tournament     
+    tournament!: Tournament
 }       

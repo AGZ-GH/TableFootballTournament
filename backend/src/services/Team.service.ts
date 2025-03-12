@@ -42,12 +42,12 @@ export class TeamService {
             .getRepository(Team)
             .createQueryBuilder("team")
             .select("team")
-            .leftJoin("team.player1","player1")
-            .leftJoin("team.player2","player2")
+            .leftJoin("team.player1", "player1")
+            .leftJoin("team.player2", "player2")
             .select(['team'])
             .addSelect(['player1.id', 'player1.firstName', 'player1.lastName'])
             .addSelect(['player2.id', 'player2.firstName', 'player2.lastName'])
-            .where("team.id = :id", {id : id})
+            .where("team.id = :id", { id: id })
             .getOne();
         const team = new TeamResponse();
         if (!teamEntity) {
@@ -55,7 +55,7 @@ export class TeamService {
             return team;
         }
         team.id = teamEntity.id;
-        team.name = teamEntity.name ;
+        team.name = teamEntity.name;
         team.player1 = teamEntity.player1;
         team.player2 = teamEntity.player2;
 
