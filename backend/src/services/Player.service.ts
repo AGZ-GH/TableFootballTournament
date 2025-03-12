@@ -9,16 +9,13 @@ import { PlayerResponse } from "../response/player/Player.response";
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-dotenv.config();
-
-
 export class PlayerService {
     async createPlayer(player: CreatePlayerRequest) {
         const newPlayer = new Player();
         newPlayer.firstName = player.firstName;
         newPlayer.lastName = player.lastName;
         const salt = bcrypt.genSaltSync(10);
-        newPlayer.password = await bcrypt.hashSync(player.password,salt);
+        newPlayer.password = await bcrypt.hashSync(player.password, salt);
         newPlayer.isAdmin = false;
 
         await AppDataSource.getRepository(Player).save(newPlayer);
@@ -60,7 +57,7 @@ export class PlayerService {
         }
 
         return jwt.sign({ player }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    }           
+    }
 
     async deletePlayerById(id: number) {
         return await AppDataSource.getRepository(Player).delete(id);
