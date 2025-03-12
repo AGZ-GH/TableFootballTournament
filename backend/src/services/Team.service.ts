@@ -3,7 +3,7 @@ import { Player } from "../entity/Player.entity";
 import { Team } from "../entity/Team.entity";
 import { CreateTeamRequest } from "../request/team/CreateTeam.request";
 import { UpdateTeamRequest } from "../request/team/UpdateTeam.request";
-import { TeamResponse } from "../response/Team.response";
+import { TeamResponse } from "../response/team/Team.reponse";
 import { PlayerService } from "./Player.service";
 
 const playerService = new PlayerService();
@@ -54,8 +54,8 @@ export class TeamService {
             team.id = -1;
             return team;
         }
-                        team.id = teamEntity.id;
-        team.name = teamEntity.name;
+        team.id = teamEntity.id;
+        team.name = teamEntity.name ;
         team.player1 = teamEntity.player1;
         team.player2 = teamEntity.player2;
 

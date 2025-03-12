@@ -9,7 +9,7 @@ export class Match {
 
     @Column()
     date!: Date
-    
+                
     @Column({ default: 0 })
     scoreTeam1: number = 0
     

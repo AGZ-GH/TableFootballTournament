@@ -1,4 +1,4 @@
-import { MatchResponse } from "./Match.response"
+import { MatchResponse } from "./match/Match.response"
 
 export class TournamentResponse {
     id!: number

@@ -7,7 +7,7 @@ export class Team {
     id!: number
 
     @Column()
-    name!: String
+    name!: string
     
     @OneToOne(() => Player, { onDelete: "CASCADE"})
     @JoinColumn([    { name: "p1_FK", referencedColumnName: "id" },])
