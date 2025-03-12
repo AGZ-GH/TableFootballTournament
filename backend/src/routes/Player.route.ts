@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { PlayerService } from "../services/Player.service";
-import { CreatePlayerRequest } from "../request/CreatePlayer.request";
-import { UpdatePlayerRequest } from "../request/UpdatePlayer.request";
+import { CreatePlayerRequest } from "../request/player/CreatePlayer.request";
+import { UpdatePlayerRequest } from "../request/player/UpdatePlayer.request";
+import { LoginPlayerRequest } from "../request/player/LoginPlayer.request";
 
 const express = require("express");
 const router = express.Router();
@@ -24,7 +25,7 @@ router.get("/:playerId", async (req: Request, res: Response): Promise<Response> 
     }
 });
 
-router.post("/", async (req: Request, res: Response): Promise<Response> => {
+router.post("/create", async (req: Request, res: Response): Promise<Response> => {
     try {
         await playerService.createPlayer(req.body as CreatePlayerRequest);
         return res.status(200).send("Player created");
@@ -35,7 +36,7 @@ router.post("/", async (req: Request, res: Response): Promise<Response> => {
     }
 });
 
-router.post("/:playerId", async (req: Request, res: Response): Promise<Response> => {
+router.post("/update/:playerId", async (req: Request, res: Response): Promise<Response> => {
     try {
         const id = Number(req.params.playerId);
         await playerService.UpdatePlayer(id, req.body as UpdatePlayerRequest);
@@ -56,6 +57,17 @@ router.delete("/:playerId", async (req: Request, res: Response): Promise<Respons
     catch (error) {
         console.error(error);
         return res.status(500).send("Failed to delete Player")
+    }
+});
+
+router.post("/login", async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const token = await playerService.loginPlayer(req.body as LoginPlayerRequest);
+        return res.status(200   ).send(token);
+    }
+    catch (error) {
+        console.error(error)
+        return res.status(500).send("Failed to login the player");
     }
 });
 

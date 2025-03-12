@@ -1,4 +1,4 @@
-import { PlayerResponse } from "../Player.response"
+import { PlayerResponse } from "../player/Player.response"
 
 export class TeamResponse {
     id!: number;
