@@ -1,4 +1,5 @@
 import { AppDataSource } from "../data-source";
+import dotenv from "dotenv";
 import { Player } from "../entity/Player.entity";
 import { CreatePlayerRequest } from "../request/player/CreatePlayer.request";
 import { LoginPlayerRequest } from "../request/player/LoginPlayer.request";
@@ -7,6 +8,9 @@ import { PlayerResponse } from "../response/player/Player.response";
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
+dotenv.config();
+
 
 export class PlayerService {
     async createPlayer(player: CreatePlayerRequest) {
@@ -55,7 +59,7 @@ export class PlayerService {
             throw new Error("Invalid password");
         }
 
-        return jwt.sign({ player }, "JWT_SECRET", { expiresIn: '1h' });
+        return jwt.sign({ player }, process.env.JWT_SECRET, { expiresIn: '1h' });
     }           
 
     async deletePlayerById(id: number) {
