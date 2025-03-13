@@ -5,4 +5,4 @@ export class TeamResponse {
     name!: string;
     player1!: PlayerResponse;
     player2?: PlayerResponse;
-}       
+}

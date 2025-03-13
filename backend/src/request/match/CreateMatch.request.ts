@@ -4,5 +4,5 @@ export class CreateMatchRequest {
     scoreTeam2: number = 0
     team1Id!: number
     team2Id!: number
-    tournamentId!: number     
+    tournamentId!: number
 }       

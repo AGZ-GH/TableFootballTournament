@@ -1,5 +1,4 @@
 import { AppDataSource } from "../data-source";
-import dotenv from "dotenv";
 import { Player } from "../entity/Player.entity";
 import { CreatePlayerRequest } from "../request/player/CreatePlayer.request";
 import { LoginPlayerRequest } from "../request/player/LoginPlayer.request";

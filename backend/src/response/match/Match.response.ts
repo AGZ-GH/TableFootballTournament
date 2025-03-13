@@ -5,6 +5,6 @@ export class MatchResponse {
     date!: Date
     scoreTeam1: number = 0
     scoreTeam2: number = 0
-    team1!: TeamResponse    
+    team1!: TeamResponse
     team2!: TeamResponse
-}       
+}

@@ -14,10 +14,10 @@ export class Tournament {
 
     @Column()
     startingDate!: Date
-    
+
     @Column()
     endDate!: Date
 
     @OneToMany(() => Match, (match) => match.tournament)
-    matches?: Match  
+    matches?: Match
 }       

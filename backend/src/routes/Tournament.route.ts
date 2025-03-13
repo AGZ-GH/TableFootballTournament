@@ -19,12 +19,11 @@ router.get("/:tournamentId", async (req: Request, res: Response): Promise<Respon
             return res.status(404).send("Not found");
         }
         return res.status(200).json(tournament);
-    }   
+    }
     catch (error) {
         console.error(error);
         return res.status(500).send("Failed to search for the tournament");
     }
-
 });
 
 router.delete("/:tournamentId", async (req: Request, res: Response): Promise<Response> => {

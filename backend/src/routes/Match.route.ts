@@ -11,7 +11,7 @@ const matchService = new MatchService();
 router.get("/:matchId", async (req: Request, res: Response): Promise<Response> => {
     try {
         const id = Number(req.params.match);
-        const match = matchService.getMatchById(id);
+        const match = await matchService.getMatchById(id);
         if (!match || match.id < 1) {
             return res.status(404).send("Not found");
         }

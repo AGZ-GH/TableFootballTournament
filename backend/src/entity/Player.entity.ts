@@ -5,7 +5,7 @@ export class Player {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column()   
+    @Column()
     firstName!: string
 
     @Column()
@@ -15,5 +15,5 @@ export class Player {
     password!: string
 
     @Column('boolean', { default: false })
-    isAdmin: boolean = false                 
+    isAdmin: boolean = false
 }       

@@ -1,4 +1,4 @@
-export class LoginPlayerRequest{
+export class LoginPlayerRequest {
     lastname!: string
     password!: string
 }

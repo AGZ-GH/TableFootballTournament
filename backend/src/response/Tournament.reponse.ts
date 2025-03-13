@@ -7,4 +7,4 @@ export class TournamentResponse {
     startingDate!: Date
     endDate!: Date
     matches?: MatchResponse[]
-}       
+}
