@@ -62,4 +62,4 @@ export class PlayerService {
     async deletePlayerById(id: number) {
         return await AppDataSource.getRepository(Player).delete(id);
     }
-}
+}   

@@ -15,6 +15,34 @@ a,
   padding: 3px;
 }
 
+.maroon {
+  color: rgb(99, 10, 16);
+  text-decoration: none;
+  transition: 0.4s;
+  padding: 3px
+}
+
+.red {
+  color: rgb(145, 31, 39);
+  text-decoration: none;
+  transition: 0.4s;
+  padding: 3px
+}
+
+.yellow {
+  color: rgb(247, 208, 152);
+  text-decoration: none;
+  transition: 0.4s;
+  padding: 3px
+}
+
+.beige {
+  color: rgb(252, 240, 200);
+  text-decoration: none;
+  transition: 0.4s;
+  padding: 3px
+}
+
 @media (hover: hover) {
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
