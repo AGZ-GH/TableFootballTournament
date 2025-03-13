@@ -9,7 +9,6 @@ const router = express.Router();
 
 const playerService = new PlayerService();
 
-
 router.get("/:playerId", async (req: Request, res: Response): Promise<Response> => {
     try {
         const id = Number(req.params.playerId);

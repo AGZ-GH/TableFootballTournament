@@ -1,9 +1,10 @@
 import { TournamentResponse } from "../response/Tournament.reponse";
 import { AppDataSource } from "../data-source";
 import { Tournament } from "../entity/Tournament.entity";
+import { CreateTournamentRequest } from "../request/tournament/CreateTournament.request";
 
 export class TournamentService {
-    async createTournament(tournament: TournamentResponse) {
+    async createTournament(tournament: CreateTournamentRequest) {
         const tournamentEntity = new Tournament();
         tournamentEntity.name = tournament.name;
         tournamentEntity.description = tournament.description;
