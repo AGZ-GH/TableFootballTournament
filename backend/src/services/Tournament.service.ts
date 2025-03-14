@@ -6,7 +6,7 @@ import { Team } from "../entity/Team.entity";
 import { Match } from "../entity/Match.entity";
 
 export class TournamentService {
-    
+
     async createTournament(tournament: CreateTournamentRequest) {
         const tournamentEntity = new Tournament();
         tournamentEntity.name = tournament.name;
@@ -39,44 +39,64 @@ export class TournamentService {
 
     async addTeamToTournament(tournamentId: number, teamId: number) {
         const tournament = await AppDataSource
-        .getRepository(Tournament)
-        .find({ where: { id: tournamentId }, relations: ['teams'] });
+            .getRepository(Tournament)
+            .find({ where: { id: tournamentId }, relations: ['teams'] });
 
         if (!tournament || tournament.length == 0) {
             throw Error("Tournament not found");
         }
-        
+
         const team = await AppDataSource.getRepository(Team).findOneBy({ id: teamId })
-        if(!team){
+        if (!team) {
             throw Error("Team not found");
         }
-        
+
         tournament[0].teams.push(team);
         AppDataSource.manager.save(tournament);
     }
 
-    async generateTournament(tournamentId: number){
+    async generateTournament(tournamentId: number) {
         const tournament = await AppDataSource
-        .getRepository(Tournament)
-        .find({ where: { id: tournamentId }, relations: ['teams'] });
-        
-        if(!tournament || tournament.length == 0){
+            .getRepository(Tournament)
+            .find({ where: { id: tournamentId }, relations: ['teams'] });
+
+        if (!tournament || tournament.length == 0) {
             throw new Error("Tournament not found");
         }
 
-        if(tournament[0].teams.length % 2 != 0){
+        if (tournament[0].teams.length % 2 != 0) {
             throw new Error("Uneven number of participant");
         }
 
-        for(let i = 0; i <= tournament[0].teams.length / 2; i = i+2){
+        for (let i = 0; i <= tournament[0].teams.length / 2; i = i + 2) {
             const match = new Match();
             match.date = tournament[0].startingDate;
             match.scoreTeam1 = 0;
             match.scoreTeam2 = 0;
             match.team1 = tournament[0].teams[i];
-            match.team2 = tournament[0].teams[i+1];
+            match.team2 = tournament[0].teams[i + 1];
             match.tournament = tournament[0];
             AppDataSource.manager.save(match);
         }
+    }
+
+    async getAllTournaments(): Promise<TournamentResponse[]> {
+        const tournaments = await AppDataSource.getRepository(Tournament).find({
+            select: {
+                id: true,
+                name: true,
+                description: true,
+                startingDate: true,
+                endDate: true,
+            }
+        });
+        const tournamentResponse: TournamentResponse[] = tournaments.map(t => ({
+            id: t.id,
+            name: t.name,
+            description: t.description,
+            startingDate: t.startingDate,
+            endDate: t.endDate,
+        }))
+        return tournamentResponse;
     }
 }   

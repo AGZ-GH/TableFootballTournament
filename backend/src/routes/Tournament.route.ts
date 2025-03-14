@@ -39,7 +39,7 @@ router.post("/addTeam", async (req: Request, res: Response): Promise<Response> =
     }
 })
 
-router.get("/:tournamentId", async (req: Request, res: Response): Promise<Response> => {
+router.get("/find/:tournamentId", async (req: Request, res: Response): Promise<Response> => {
     const id = Number(req.params.tournamentId);
     try {
         const tournament = await tournamentService.getTournamentById(id)
@@ -52,6 +52,17 @@ router.get("/:tournamentId", async (req: Request, res: Response): Promise<Respon
     catch (error) {
         console.error(error);
         return res.status(500).send("Failed to search for the tournament");
+    }
+});
+
+router.get("/all", async(req: Request, res: Response): Promise<Response> =>{
+    try{
+        const tournaments = await tournamentService.getAllTournaments();
+        return res.status(200).json(tournaments);
+    }
+    catch(error) {
+        console.error(error);
+        return res.status(500).send("Failed to fetch all the tournaments");
     }
 });
 

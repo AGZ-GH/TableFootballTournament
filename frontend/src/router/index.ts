@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
 import SignInView from '@/views/SignInView.vue'
 import ProfileView from '../views/ProfileView.vue'
-import TournamentView from '@/views/TournamentView.vue'
+import TournamentListView from '@/views/TournamentsListView.vue'
 import MatchView from '../views/MatchView.vue'
 import LeaderboardView from '../views/LeaderboardView.vue'
 const router = createRouter({
@@ -26,8 +26,8 @@ const router = createRouter({
 
     {
       path: '/tournaments',
-      name: 'tournament',
-      component: TournamentView,
+      name: 'tournaments',
+      component: TournamentListView,
     },
 
     {
