@@ -2,7 +2,7 @@
     <form @submit.prevent="login">
         <div class="input-mb-3">
             <div class="row">
-                <input id="lastname" type="text" placeholder="Nom" v-model="player.name" />
+                <input id="lastname" type="text" placeholder="Nom" v-model="player.lastname" />
             </div>
             <div class="row">
                 <input id="password" type="password" placeholder="Mot de passe" v-model="player.password" />
@@ -23,13 +23,14 @@ export default {
     data() {
         return {
             player: {
-                name: "",
+                lastname: "",
                 password: ""
             }
         }
     },
     methods: {
         login() {
+            console.log(this.player);
             playerService.login(this.player)
                 .then(res => {
                 localStorage.setItem('token',res.data);

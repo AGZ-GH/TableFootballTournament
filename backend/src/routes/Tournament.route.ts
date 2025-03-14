@@ -45,7 +45,7 @@ router.get("/find/:tournamentId", async (req: Request, res: Response): Promise<R
         const tournament = await tournamentService.getTournamentById(id)
             .catch((error) => res.status(500).send("Failed to get tournament"));
         if (!tournament) {
-            return res.statu    s(404).send("Not found");
+            return res.status(404).send("Not found");
         }
         return res.status(200).json(tournament);
     }

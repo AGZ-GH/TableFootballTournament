@@ -20,6 +20,7 @@ export const AppDataSource = new DataSource({
     port: databasePort,
     database: databaseName,
     entities: [Player, Team, Match, Tournament],
+    logging: ["query", "error"],
     username: databaseUsername,
     password: databasePwd,
     synchronize: true,

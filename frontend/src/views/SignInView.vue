@@ -38,7 +38,7 @@ export default {
                     playerService.login({
                         lastname: this.player.lastname,
                         password: this.player.password
-                    });
+                        });
                 })
                 .catch(err => console.error(err));
         }

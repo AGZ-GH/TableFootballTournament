@@ -1,3 +1,4 @@
+import { Equal } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Player } from "../entity/Player.entity";
 import { CreatePlayerRequest } from "../request/player/CreatePlayer.request";
@@ -39,20 +40,19 @@ export class PlayerService {
 
         player.id = playerEntity.id;
         player.firstname = playerEntity.firstname;
-        player.lastname  = playerEntity.lastname;
+        player.lastname = playerEntity.lastname;
 
         return player;
     }
 
     async loginPlayer(playerLogging: LoginPlayerRequest): Promise<string> {
         const player = await AppDataSource
-        .getRepository(Player)
-        .findOneBy({ lastname: playerLogging.lastname });
+            .getRepository(Player)
+            .findOne({ where: { lastname: Equal(playerLogging.lastname) } })
 
         if (!player || player.id < 1) {
             throw new Error("User not found");
         }
-
         const passwordMatch = await bcrypt.compareSync(playerLogging.password, player.password);
         if (!passwordMatch) {
             throw new Error("Invalid password");
