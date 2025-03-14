@@ -24,7 +24,6 @@ export default {
     mounted() {
         playerService.getPlayerData(8)
             .then(res => {
-                console.log(res.data);
                 this.player = res.data
             })
             .catch(err => console.error(err));

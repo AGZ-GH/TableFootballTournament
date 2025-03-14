@@ -35,7 +35,10 @@ export default {
         signIn() {
             playerService.signIn(this.player)
                 .then(res => {
-                    console.log(res);
+                    playerService.login({
+                        lastname: this.player.lastname,
+                        password: this.player.password
+                    });
                 })
                 .catch(err => console.error(err));
         }

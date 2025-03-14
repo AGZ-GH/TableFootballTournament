@@ -32,7 +32,6 @@ export default {
         login() {
             playerService.login(this.player)
                 .then(res => {
-                console.log(res);
                 localStorage.setItem('token',res.data);
                 })
                 .catch(err => console.error(err));

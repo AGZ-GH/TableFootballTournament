@@ -20,7 +20,6 @@ export default {
     mounted() {
         tournamentService.getTournamentList()
             .then(res => {
-                console.log(res.data);
                 this.tournaments = res.data
             })
             .catch(err => console.error(err));
