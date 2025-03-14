@@ -6,10 +6,10 @@ export class Player {
     id!: number
 
     @Column()
-    firstName!: string
+    firstname!: string
 
     @Column()
-    lastName!: string
+    lastname!: string
 
     @Column()
     password!: string

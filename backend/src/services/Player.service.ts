@@ -11,8 +11,8 @@ const jwt = require('jsonwebtoken');
 export class PlayerService {
     async createPlayer(player: CreatePlayerRequest) {
         const newPlayer = new Player();
-        newPlayer.firstName = player.firstname;
-        newPlayer.lastName = player.lastname;
+        newPlayer.firstname = player.firstname;
+        newPlayer.lastname = player.lastname;
         const salt = bcrypt.genSaltSync(10);
         newPlayer.password = await bcrypt.hashSync(player.password, salt);
         newPlayer.isAdmin = false;
@@ -23,8 +23,8 @@ export class PlayerService {
     async UpdatePlayer(id: number, player: UpdatePlayerRequest) {
         const updatedPlayer = new Player();
         updatedPlayer.id = id
-        updatedPlayer.firstName = player.firstName;
-        updatedPlayer.lastName = player.lastName;
+        updatedPlayer.firstname = player.firstName;
+        updatedPlayer.lastname = player.lastName;
 
         return await AppDataSource.getRepository(Player).update(updatedPlayer.id, updatedPlayer);
     }
@@ -38,8 +38,8 @@ export class PlayerService {
         }
 
         player.id = playerEntity.id;
-        player.firstName = playerEntity.firstName;
-        player.lastName = playerEntity.lastName;
+        player.firstname = playerEntity.firstname;
+        player.lastname  = playerEntity.lastname;
 
         return player;
     }
@@ -47,7 +47,7 @@ export class PlayerService {
     async loginPlayer(playerLogging: LoginPlayerRequest): Promise<string> {
         const player = await AppDataSource
         .getRepository(Player)
-        .findOneBy({ lastName: playerLogging.lastname });
+        .findOneBy({ lastname: playerLogging.lastname });
 
         if (!player || player.id < 1) {
             throw new Error("User not found");

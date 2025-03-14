@@ -18,13 +18,12 @@ const isLogged = () => {
 }
 
 const signIn = (data: any) => {
-    return Axios.post("player/create", data);
+    return Axios.post("/player/create", data);
 }
 
 const getPlayerData = (id: number) => {
-    return Axios.get("player/" + id);
+    return Axios.get("/player/"+ id)
 }
-
 
 export const playerService = {
     login,

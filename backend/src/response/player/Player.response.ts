@@ -1,5 +1,5 @@
 export class PlayerResponse {
     id!: number
-    firstName!: string
-    lastName!: string
+    firstname!: string
+    lastname!: string
 }
