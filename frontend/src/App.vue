@@ -1,31 +1,47 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
 
+    <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
+    <h2 class="red">Table Football Tournament Manager</h2>
     <div class="wrapper">
       <HelloWorld msg="Table Football Tournament" />
 
-      <nav>
-        <RouterLink to="/login">Se connecter</RouterLink>
-        <RouterLink to="/signin">S'inscrire</RouterLink>
-        <RouterLink to="/leaderboard">Classement</RouterLink>
-        <RouterLink to="/tournaments">Tournois</RouterLink>
-        <RouterLink to="/match">Matchs</RouterLink>
-        <RouterLink to="/profile">Profile</RouterLink>
-      </nav>
     </div>
-  </header>
+    <ul>
 
+      <nav>
+        <div>
+          <RouterLink to="/login">Se connecter</RouterLink>
+        </div>
+        <div>
+          <RouterLink to="/signin">S'inscrire</RouterLink>
+        </div>
+        <div>
+          <RouterLink to="/leaderboard">Classement</RouterLink>
+        </div>
+        <div>
+          <RouterLink to="/tournaments">Tournois</RouterLink>
+        </div>
+        <div>
+          <RouterLink to="/match">Matchs</RouterLink>
+        </div>
+        <div>
+          <RouterLink to="/profile">Profile</RouterLink>
+        </div>
+      </nav>
+    </ul>
+
+  </header>
   <RouterView />
 </template>
 
 <style scoped>
 header {
+  width: 10%;
   line-height: 1.5;
   max-height: 100vh;
 }
@@ -37,7 +53,7 @@ header {
 
 nav {
   width: 100%;
-  font-size: 12px;
+  font-size: 8px;
   text-align: center;
   margin-top: 2rem;
 }

@@ -1,46 +1,45 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-
+import LoginView from '@/views/LoginView.vue'
+import SignInView from '@/views/SignInView.vue'
+import ProfileView from '../views/ProfileView.vue'
+import TournamentView from '@/views/TournamentView.vue'
+import MatchView from '../views/MatchView.vue'
+import LeaderboardView from '../views/LeaderboardView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-    },
-    {
       path: '/login',
       name: 'login',
-      component:() => import('../views/LoginView.vue'),
+      component: LoginView,
     },
     {
       path: '/signIn',
       name: 'signIn',
-      component:() => import('../views/SignInView.vue'),
+      component: SignInView,
     },
     {
       path: '/profile',
       name: 'profile',
-      component: () => import('../views/ProfileView.vue'),
+      component: ProfileView,
     },
 
     {
       path: '/tournaments',
       name: 'tournament',
-      component: () => import('../views/TournamentsListView.vue'),
+      component: TournamentView,
     },
 
     {
       path: '/match',
       name: 'match',
-      component: () => import('../views/MatchView.vue'),
+      component: MatchView,
     },
 
     {
       path: '/leaderboard',
       name: 'leaderboard',
-      component: () => import('../views/LeaderboardView.vue'),
+      component: LeaderboardView,
     }
   ],
 })
