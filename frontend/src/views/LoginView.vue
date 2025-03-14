@@ -7,7 +7,7 @@
             <div class="row">
                 <input id="password" type="password" placeholder="Mot de passe" v-model="player.password" />
             </div>
-            <button class="btn btn-outline-dark" type="submit">
+            <button class="btn" type="submit">
                 Connexion
             </button>
         </div>
@@ -40,13 +40,3 @@ export default {
     }
 }
 </script>
-
-<style>
-@media (min-width: 1024px) {
-    .about {
-        min-height: 100vh;  
-        display: flex;
-        align-items: center;
-    }
-}
-</style>

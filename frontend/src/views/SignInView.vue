@@ -1,37 +1,43 @@
 <template>
-    <form @submit="handleRegistration" :validation-schema="schema">
-        <div class="input">
-            <div class="form-row">
-                <input id="firstname" type="text" placeholder="Prénom" v-model="input.firstname" />
+    <form @submit.prevent="signIn">
+        <div class="input-mb-3">
+            <div class="row">
+                <input id="firstname" type="text" placeholder="Prénom" v-model="player.firstname" />
             </div>
             <div class="row">
-                <input id="lastname" type="text" placeholder="Nom" v-model="input.name" />
+                <input id="lastname" type="text" placeholder="Nom" v-model="player.lastname" />
             </div>
             <div class="row">
-                <input id="password" type="password" placeholder="Mot de passe" v-model="input.password" />
+                <input id="password" type="password" placeholder="Mot de passe" v-model="player.password" />
             </div>
             <button class="btn" type="submit">
-                S'inscrire
+                Connexion
             </button>
         </div>
     </form>
 </template>
 
 <script>
+import { playerService } from '@/services'
+
 export default {
-    name: 'LoginView',
+    name: 'SignInView',
     data() {
         return {
-            input: {
+            player: {
                 firstname: "",
                 lastname: "",
                 password: ""
             }
         }
     },
-    method: {
-        signin() {
-            return;
+    methods: {
+        signIn() {
+            playerService.signIn(this.player)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => console.error(err));
         }
     }
 }

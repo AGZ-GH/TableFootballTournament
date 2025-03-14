@@ -8,8 +8,6 @@ import { RouterLink, RouterView } from 'vue-router'
     <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
     <h2 class="red">Table Football Tournament Manager</h2>
     <div class="wrapper">
-      <HelloWorld msg="Table Football Tournament" />
-
     </div>    
     <ul>
         <nav>
