@@ -20,7 +20,7 @@ export class Tournament {
     endDate!: Date
 
     @OneToMany(() => Match, (match) => match.tournament)
-    matches?: Match[]
+    matches!: Match[]
 
     @ManyToMany(() => Team)
     @JoinTable()
