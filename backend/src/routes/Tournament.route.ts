@@ -1,26 +1,37 @@
 import { Request, Response } from "express";
 import { TournamentService } from "../services/Tournament.service";
 import { CreateTournamentRequest } from "../request/tournament/CreateTournament.request";
+import { AddTeamToTournamentRequest } from "../request/tournament/AddTeamToTournament.request";
 
 const express = require("express");
 const router = express.Router();
 
 const tournamentService = new TournamentService();
 
-router.post("/create", (req: Request, res: Response): Response => {
+router.post("/create", async (req: Request, res: Response): Promise<Response> => {
     try {
-        tournamentService.createTournament(req.body as CreateTournamentRequest);
+        await tournamentService.createTournament(req.body as CreateTournamentRequest);
         return res.status(201).send({ data: "Tournament created" });
     }catch(error){
         console.error(error)
         return res.status(500).send("Failed to create the tournament")
     }
-
 });
 
 router.post("/generate", (req: Request, res: Response): Response => {
     return res.status(500).send({ data: "Not implemented yet" });
 });
+
+router.post("/addTeam", async (req: Request, res:Response): Promise<Response> => {
+    try{
+        const data = req.body as AddTeamToTournamentRequest;
+        await tournamentService.addTeamToTournament(data.tournamentId,data.teamId)
+        return res.status(200).send({ data: "Team added" });
+    }catch(error){              
+        console.error(error);
+        return res.status(500).send("Failed to add the team to the tournament")
+    }
+})
 
 router.get("/:tournamentId", async (req: Request, res: Response): Promise<Response> => {
     const id = Number(req.params.tournamentId);

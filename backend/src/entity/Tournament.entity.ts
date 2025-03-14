@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from "typeorm"
 import { Match } from "./Match.entity"
+import { Team } from "./Team.entity"
 
 @Entity()
 export class Tournament {
@@ -19,5 +20,9 @@ export class Tournament {
     endDate!: Date
 
     @OneToMany(() => Match, (match) => match.tournament)
-    matches?: Match
+    matches?: Match[]
+
+    @ManyToMany(() => Team)
+    @JoinTable()
+    teams!: Team[]
 }       
