@@ -10,10 +10,9 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="wrapper">
       <HelloWorld msg="Table Football Tournament" />
 
-    </div>
+    </div>    
     <ul>
-
-      <nav>
+        <nav>
         <div>
           <RouterLink to="/login">Se connecter</RouterLink>
         </div>

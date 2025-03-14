@@ -6,9 +6,13 @@ dotenv.config();
 
 
 const app: Express = express();
+
 const port = process.env.PORT ?? 3000;
 
 app.use(express.json());
+
+const cors = require('cors');
+app.use(cors());
 
 const playerRoute = require("./routes/Player.route");
 const teamRoute = require("./routes/Team.route");

@@ -9,6 +9,7 @@ const router = express.Router();
 
 const playerService = new PlayerService();
 
+
 router.get("/:playerId", async (req: Request, res: Response): Promise<Response> => {
     try {
         const id = Number(req.params.playerId);
@@ -62,7 +63,7 @@ router.delete("/:playerId", async (req: Request, res: Response): Promise<Respons
 router.post("/login", async (req: Request, res: Response): Promise<Response> => {
     try {
         const token = await playerService.loginPlayer(req.body as LoginPlayerRequest);
-        return res.status(200).send(token);
+        return res.status(200   ).send(token);
     }
     catch (error) {
         console.error(error)

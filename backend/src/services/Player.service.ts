@@ -45,7 +45,10 @@ export class PlayerService {
     }
 
     async loginPlayer(playerLogging: LoginPlayerRequest): Promise<string> {
-        const player = await AppDataSource.getRepository(Player).findOneBy({ lastName: playerLogging.lastname });
+        const player = await AppDataSource
+        .getRepository(Player)
+        .findOneBy({ lastName: playerLogging.lastname });
+        
         if (!player || player.id < 1) {
             throw new Error("User not found");
         }
