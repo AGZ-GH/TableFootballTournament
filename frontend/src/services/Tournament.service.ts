@@ -3,7 +3,7 @@ import Axios from "./Caller.service";
 const BASE_PATH = "tournament/";
 
 const getTournamentList = () => {
-    return Axios.get("all");
+    return Axios.get(BASE_PATH + "all");
 }
 
 const getTournamentById = (id: number) => {
