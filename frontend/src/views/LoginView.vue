@@ -32,8 +32,9 @@ export default {
         login() {
                         playerService.login(this.player)
                 .then(res => {
-                localStorage.setItem('token',res.data.token);
-                localStorage.setItem('userId',res.data.id);
+                localStorage.setItem("token",res.data.token);
+                localStorage.setItem("userId",res.data.id);
+                localStorage.setItem("isAdmin",res.data.isAdmin);
                 this.$router.go();
                 })
                 .catch(err => console.error(err));

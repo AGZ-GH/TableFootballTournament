@@ -67,9 +67,21 @@ router.post("/login", async (req: Request, res: Response): Promise<Response> => 
     }
     catch (error) {
         console.error(error)
-        return res.status(500).send("Failed to login the player");
+        return  res.status(500).send("Failed to login the player");
     }
 });
 
+router.post("/checkAdmin", async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const token = req.headers["authorization"]?.toString().substring(7) ?? "";
+        const isAdmin = await playerService.checkIsAdmin(token);
+
+        return isAdmin ? res.status(200).send() : res.status(401);
+    }
+    catch (error) {
+        console.error(error)
+        return res.status(500).send("Couldn't check if the player was an admin");
+    }
+});
 
 module.exports = router;

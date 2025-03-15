@@ -5,13 +5,16 @@ import { playerService } from '@/services'
 export default {
   data() {
     return {
-      isLogged: false
+      isLogged: false,
+      isAdmin: false
     }
   },
   mounted() {
     playerService.isLogged()
-      .then(session => {this.isLogged = session; })
+      .then(session => { this.isLogged = session; })
       .catch(err => console.error(err));
+    playerService.isAdmin()
+      .then(answer => {this.isAdmin = answer; console.log(answer);});
   },
   methods: {
     logout() {
@@ -54,6 +57,10 @@ export default {
           <div>
             <RouterLink to="/profile">Profile</RouterLink>
           </div>
+
+          <div v-if="this.isAdmin">
+            <RouterLink to="/tournament/create">Nouveau tournoi</RouterLink>
+          </div>
           <div>
             <button @click="logout()">Déconnexion</button>
           </div>
@@ -62,7 +69,7 @@ export default {
     </ul>
 
   </header>
-  <RouterView/>
+  <RouterView />
 </template>
 
 <script>
@@ -70,7 +77,6 @@ export default {
 </script>
 
 <style scoped>
-
 .logo {
   display: block;
   margin: 0 auto 2rem;

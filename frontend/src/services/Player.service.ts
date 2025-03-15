@@ -9,15 +9,24 @@ const login = (credentials: any) => {
 const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    localStorage.removeItem("isAdmin");
 }
 
 const saveToken = (token: string) => {
     localStorage.setItem('token', token);
 }
 
+const isAdmin = async () : Promise<boolean> => {
+    const isAdmin = localStorage.getItem("isAdmin");
+    if (!isAdmin || isAdmin !== "true") {
+        return false;
+    }
+    return (await Axios.post(pathName + "checkAdmin")).request.status == 200
+}
+
 const isLogged = async () => {
     const token = localStorage.getItem('token');
-    if(!token || token === ""){
+    if (!token || token === "") {
         return false;
     }
     return true;
@@ -38,5 +47,6 @@ export const playerService = {
     saveToken,
     isLogged,
     signIn,
-    getPlayerData
+    getPlayerData,
+    isAdmin
 }

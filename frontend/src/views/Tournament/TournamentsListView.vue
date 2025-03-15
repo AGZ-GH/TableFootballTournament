@@ -1,9 +1,9 @@
+<script setup>
+import TournamentComponent from './TournamentComponent.vue';
+</script>
 <template>
     <div v-for="tournament in tournaments" :key="tournament.id">
-        <div>{{ tournament.name }}</div>
-        <div>{{ tournament.description }}</div>
-        <div>date de début: {{ tournament.startingDate }}</div>
-        <div>date de fin: {{ tournament.endDate }}</div>
+        <TournamentComponent :tournament="tournament" />
     </div>
 </template>
 
@@ -25,5 +25,4 @@ export default {
             .catch(err => console.error(err));
     }
 }
-
 </script>
