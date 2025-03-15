@@ -33,7 +33,9 @@ export default {
             console.log(this.player);
             playerService.login(this.player)
                 .then(res => {
-                localStorage.setItem('token',res.data);
+                localStorage.setItem('token',res.data.token);
+                localStorage.setItem('userId',res.data.id);
+                this.$router.go();
                 })
                 .catch(err => console.error(err));
         }

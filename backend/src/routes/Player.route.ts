@@ -3,6 +3,7 @@ import { PlayerService } from "../services/Player.service";
 import { CreatePlayerRequest } from "../request/player/CreatePlayer.request";
 import { UpdatePlayerRequest } from "../request/player/UpdatePlayer.request";
 import { LoginPlayerRequest } from "../request/player/LoginPlayer.request";
+import { SessionCheckRequest } from "../request/player/SessionCheck.request";
 
 const express = require("express");
 const router = express.Router();
@@ -62,12 +63,24 @@ router.delete("/:playerId", async (req: Request, res: Response): Promise<Respons
 
 router.post("/login", async (req: Request, res: Response): Promise<Response> => {
     try {
-        const token = await playerService.loginPlayer(req.body as LoginPlayerRequest);
-        return res.status(200   ).send(token);
+        const loggingData = await playerService.loginPlayer(req.body as LoginPlayerRequest);
+        return res.status(200).send(loggingData);
     }
     catch (error) {
         console.error(error)
         return res.status(500).send("Failed to login the player");
+    }
+});
+
+router.post("/checkSession", async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const data = req.body as SessionCheckRequest;
+        const check = await playerService.checkToken(data.token,data.id);
+        return res.status(200).send({isLogged : check });
+    }
+    catch (error) {
+        console.error(error)
+        return res.status(500).send("Couldn't check player session");
     }
 });
 

@@ -39,7 +39,7 @@ export default {
                         lastname: this.player.lastname,
                         password: this.player.password
                     });
-                    this.$router.push("/");
+                    this.$router.push("/").then(() => { this.$router.go(0) });
 
                 })
                 .catch(err => console.error(err));

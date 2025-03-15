@@ -22,7 +22,7 @@ export default {
         }
     },
     mounted() {
-        playerService.getPlayerData(8)
+        playerService.getPlayerData(localStorage.getItem('userId'))
             .then(res => {
                 this.player = res.data
             })

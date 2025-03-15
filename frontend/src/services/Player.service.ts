@@ -1,28 +1,39 @@
 import Axios from "./Caller.service";
 
+const pathName = "/player/"
+
 const login = (credentials: any) => {
-    return Axios.post("/player/login", credentials);
+    return Axios.post(pathName + "login", credentials);
 }
 
 const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
 }
 
 const saveToken = (token: string) => {
     localStorage.setItem('token', token);
 }
 
-const isLogged = () => {
+const isLogged = async () => {
     const token = localStorage.getItem('token');
-    return !!token
+    const id = localStorage.getItem('userId');
+    if(!id || !token || token === ""){
+        return false;
+    }
+    let isLogged : boolean = false;
+    await Axios.post(pathName + "checkSession",{token:token, id:id}).then(res => {
+        isLogged = res.data.isLogged;
+    });
+    return isLogged;
 }
 
 const signIn = (data: any) => {
-    return Axios.post("player/create", data);
+    return Axios.post(pathName + "create", data);
 }
 
 const getPlayerData = (id: number) => {
-    return Axios.get("player/" + id);
+    return Axios.get(pathName + id);
 }
 
 

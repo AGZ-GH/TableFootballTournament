@@ -3,10 +3,23 @@ import { RouterLink, RouterView } from 'vue-router'
 import { playerService } from '@/services'
 
 export default {
-  methods:{
-    logout(){
+  data() {
+    return {
+      isLogged: false
+    }
+  },
+  mounted() {
+    playerService.isLogged()
+      .then(session => {this.isLogged = session; })
+      .catch(err => console.error(err));
+  },
+  methods: {
+    logout() {
       playerService.logout();
-      this.$router.push("/login");
+      this.$router.push("/login").then(() => { this.$router.go(0) });
+    },
+    checkSession() {
+
     }
   }
 }
@@ -18,29 +31,33 @@ export default {
     <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
     <h2 class="red">Table Football Tournament Manager</h2>
     <div class="wrapper">
-    </div>    
+    </div>
     <ul>
-        <nav>
-        <div>
-          <RouterLink to="/login">Se connecter</RouterLink>
+      <nav>
+        <div v-if="!this.isLogged">
+          <div>
+            <RouterLink to="/login">Se connecter</RouterLink>
+          </div>
+          <div>
+            <RouterLink to="/signin">S'inscrire</RouterLink>
+          </div>
         </div>
-        <div>
-          <RouterLink to="/signin">S'inscrire</RouterLink>
-        </div>
-        <div>
-          <RouterLink to="/leaderboard">Classement</RouterLink>
-        </div>
-        <div>
-          <RouterLink to="/tournaments">Tournois</RouterLink>
-        </div>
-        <div>
-          <RouterLink to="/match">Matchs</RouterLink>
-        </div>
-        <div>
-          <RouterLink to="/profile">Profile</RouterLink>
-        </div>
-        <div>
-          <button @click="logout()">Déconnexion</button>
+        <div v-if="this.isLogged">
+          <div>
+            <RouterLink to="/leaderboard">Classement</RouterLink>
+          </div>
+          <div>
+            <RouterLink to="/tournaments">Tournois</RouterLink>
+          </div>
+          <div>
+            <RouterLink to="/match">Matchs</RouterLink>
+          </div>
+          <div>
+            <RouterLink to="/profile">Profile</RouterLink>
+          </div>
+          <div>
+            <button @click="logout()">Déconnexion</button>
+          </div>
         </div>
       </nav>
     </ul>
