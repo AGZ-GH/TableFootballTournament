@@ -17,15 +17,10 @@ const saveToken = (token: string) => {
 
 const isLogged = async () => {
     const token = localStorage.getItem('token');
-    const id = localStorage.getItem('userId');
-    if(!id || !token || token === ""){
+    if(!token || token === ""){
         return false;
     }
-    let isLogged : boolean = false;
-    await Axios.post(pathName + "checkSession",{token:token, id:id}).then(res => {
-        isLogged = res.data.isLogged;
-    });
-    return isLogged;
+    return true;
 }
 
 const signIn = (data: any) => {

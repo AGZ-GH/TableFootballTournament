@@ -3,7 +3,6 @@ import { PlayerService } from "../services/Player.service";
 import { CreatePlayerRequest } from "../request/player/CreatePlayer.request";
 import { UpdatePlayerRequest } from "../request/player/UpdatePlayer.request";
 import { LoginPlayerRequest } from "../request/player/LoginPlayer.request";
-import { SessionCheckRequest } from "../request/player/SessionCheck.request";
 
 const express = require("express");
 const router = express.Router();
@@ -72,16 +71,5 @@ router.post("/login", async (req: Request, res: Response): Promise<Response> => 
     }
 });
 
-router.post("/checkSession", async (req: Request, res: Response): Promise<Response> => {
-    try {
-        const data = req.body as SessionCheckRequest;
-        const check = await playerService.checkToken(data.token,data.id);
-        return res.status(200).send({isLogged : check });
-    }
-    catch (error) {
-        console.error(error)
-        return res.status(500).send("Couldn't check player session");
-    }
-});
 
 module.exports = router;

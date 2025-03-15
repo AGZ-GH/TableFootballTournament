@@ -27,7 +27,6 @@ export default {
 
 <template>
   <header>
-
     <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
     <h2 class="red">Table Football Tournament Manager</h2>
     <div class="wrapper">
@@ -63,7 +62,7 @@ export default {
     </ul>
 
   </header>
-  <RouterView />
+  <RouterView/>
 </template>
 
 <script>
@@ -71,11 +70,6 @@ export default {
 </script>
 
 <style scoped>
-header {
-  width: 10%;
-  line-height: 1.5;
-  max-height: 100vh;
-}
 
 .logo {
   display: block;
@@ -108,20 +102,8 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
   .logo {
     margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
   }
 
   nav {

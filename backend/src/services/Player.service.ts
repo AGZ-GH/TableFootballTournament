@@ -61,7 +61,7 @@ export class PlayerService {
 
         const response = new LoggedPlayerResponse();
         response.id = player.id;
-        response.token = jwt.sign({ userId: player.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        response.token = jwt.sign({ userId  : player.id, isAdmin: player.isAdmin}, process.env.JWT_SECRET, { expiresIn: '1h' });
         return response;
     }   
 
@@ -69,17 +69,7 @@ export class PlayerService {
         return await AppDataSource.getRepository(Player).delete(id);
     }
 
-    async checkToken(token: string, id: number): Promise<boolean>{
-        try{
-            
-            const decoded = jwt.verify(token,process.env.JWT_SECRET);
-            console.log(decoded.userId); 
-            console.log(id);          
-            return decoded.userId == id;
-        }
-        catch(error){
-            console.error(error);
-            return false;
-        }
+    isAdmin(token: string): boolean{
+        return jwt.verify(token,process.env.JWT_SECRET).isAdmin;
     }
 }   
