@@ -14,7 +14,7 @@ export default {
       .then(session => { this.isLogged = session; })
       .catch(err => console.error(err));
     playerService.isAdmin()
-      .then(answer => {this.isAdmin = answer; console.log(answer);});
+      .then(answer => {this.isAdmin = answer;});
   },
   methods: {
     logout() {

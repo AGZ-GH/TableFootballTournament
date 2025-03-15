@@ -5,6 +5,9 @@ import ProfileView from '../views/ProfileView.vue';
 import MatchView from '../views/MatchView.vue';
 import LeaderboardView from '../views/LeaderboardView.vue';
 
+import Home from '@/views/Home.vue';
+import NotFoundView from '@/views/NotFoundView.vue';
+
 import TournamentsListView from '@/views/Tournament/TournamentsListView.vue';
 import CreateTournamentView from '@/views/Tournament/CreateTournamentView.vue';
 import TournamentView from '@/views/Tournament/TournamentView.vue';
@@ -12,6 +15,11 @@ import TournamentView from '@/views/Tournament/TournamentView.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path:"/",
+      name: "home",
+      component: Home,
+    },
     {
       path: '/login',
       name: 'login',
@@ -54,6 +62,11 @@ const router = createRouter({
       path: '/leaderboard',
       name: 'leaderboard',
       component: LeaderboardView,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name:'notFound',
+      component: NotFoundView,
     }
   ],
 })

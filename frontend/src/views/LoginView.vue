@@ -30,12 +30,12 @@ export default {
     },
     methods: {
         login() {
-                        playerService.login(this.player)
+            playerService.login(this.player)
                 .then(res => {
-                localStorage.setItem("token",res.data.token);
-                localStorage.setItem("userId",res.data.id);
-                localStorage.setItem("isAdmin",res.data.isAdmin);
-                this.$router.go();
+                    localStorage.setItem("token", res.data.token);
+                    localStorage.setItem("userId", res.data.id);
+                    localStorage.setItem("isAdmin", res.data.isAdmin);
+                    this.$router.push("/").then(() => { this.$router.go(0) });
                 })
                 .catch(err => console.error(err));
         }
