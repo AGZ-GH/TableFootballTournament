@@ -1,5 +1,15 @@
-<script setup lang="ts">
+<script>
 import { RouterLink, RouterView } from 'vue-router'
+import { playerService } from '@/services'
+
+export default {
+  methods:{
+    logout(){
+      playerService.logout();
+      this.$router.push("/login");
+    }
+  }
+}
 </script>
 
 <template>
@@ -29,12 +39,19 @@ import { RouterLink, RouterView } from 'vue-router'
         <div>
           <RouterLink to="/profile">Profile</RouterLink>
         </div>
+        <div>
+          <button @click="logout()">Déconnexion</button>
+        </div>
       </nav>
     </ul>
 
   </header>
   <RouterView />
 </template>
+
+<script>
+
+</script>
 
 <style scoped>
 header {

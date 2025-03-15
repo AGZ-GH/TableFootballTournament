@@ -38,7 +38,9 @@ export default {
                     playerService.login({
                         lastname: this.player.lastname,
                         password: this.player.password
-                        });
+                    });
+                    this.$router.push("/");
+
                 })
                 .catch(err => console.error(err));
         }
