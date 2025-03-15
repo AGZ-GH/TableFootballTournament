@@ -1,6 +1,6 @@
 export class CreateTournamentRequest {
     name!: string;
     description!: string;
-    startingDate!: Date;
+    startDate!: Date;
     endDate!: Date;
 }

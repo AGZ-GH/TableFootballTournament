@@ -11,7 +11,7 @@ export class TournamentService {
         const tournamentEntity = new Tournament();
         tournamentEntity.name = tournament.name;
         tournamentEntity.description = tournament.description;
-        tournamentEntity.startingDate = tournament.startingDate;
+        tournamentEntity.startingDate = tournament.startDate;
         tournamentEntity.endDate = tournament.endDate;
         tournamentEntity.matches = [];
         tournamentEntity.teams = [];

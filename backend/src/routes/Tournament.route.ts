@@ -2,14 +2,22 @@ import { Request, Response } from "express";
 import { TournamentService } from "../services/Tournament.service";
 import { CreateTournamentRequest } from "../request/tournament/CreateTournament.request";
 import { AddTeamToTournamentRequest } from "../request/tournament/AddTeamToTournament.request";
+import { PlayerService } from "../services/Player.service";
 
 const express = require("express");
 const router = express.Router();
 
 const tournamentService = new TournamentService();
+const playerService = new PlayerService();
 
 router.post("/create", async (req: Request, res: Response): Promise<Response> => {
     try {
+        const token = req.headers["authorization"]?.toString().substring(7) ?? "";
+        const isAdmin = await playerService.checkIsAdmin(token);
+        if(!isAdmin){
+            return res.status(401).send("Unauthorized");
+        }
+
         await tournamentService.createTournament(req.body as CreateTournamentRequest);
         return res.status(201).send({ data: "Tournament created" });
     } catch (error) {
