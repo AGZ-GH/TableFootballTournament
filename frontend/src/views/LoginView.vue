@@ -30,8 +30,7 @@ export default {
     },
     methods: {
         login() {
-            console.log(this.player);
-            playerService.login(this.player)
+                        playerService.login(this.player)
                 .then(res => {
                 localStorage.setItem('token',res.data.token);
                 localStorage.setItem('userId',res.data.id);
