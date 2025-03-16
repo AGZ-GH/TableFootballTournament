@@ -63,17 +63,16 @@ export default {
                                 this.errorMessages = "Mot de passe incorrecte";
 
                             }
-
-                            console.log(res.response.data.error);
                         }
 
                         if (res.status == 500) {
-                            console.log("500" + res);
+                            this.showError = true
+                            this.errorMessages = "Erreure serveur";
                         }
 
                     })
                     .catch(err => {
-                        console.log(err);
+                        console.error(err);
                     });
             }
         }
