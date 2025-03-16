@@ -8,12 +8,17 @@ import { PlayerResponse } from "../response/player/Player.response";
 import { LoggedPlayerResponse } from "../response/player/LoggedPlayerResponse";
 import InvalidPlayerNameError from "../error/Player/InvalidPlayerName.error";
 import InvalidPlayerPasswordError from "../error/Player/InvalidPlayerPassword.error";
+import PlayerNameUnavailable from "../error/Player/PlayerNameUnavailable.error";
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 export class PlayerService {
-    async createPlayer(player: CreatePlayerRequest) {
+    public async createPlayer(player: CreatePlayerRequest) {
+        const playerNameIsUsed = await this.checkPlayerNameavAilability(player.lastname);
+        if(playerNameIsUsed){
+            throw new PlayerNameUnavailable();
+        }
         const newPlayer = new Player();
         newPlayer.firstname = player.firstname;
         newPlayer.lastname = player.lastname;
@@ -24,7 +29,7 @@ export class PlayerService {
         await AppDataSource.getRepository(Player).save(newPlayer);
     }
 
-    async UpdatePlayer(id: number, player: UpdatePlayerRequest) {
+    public async UpdatePlayer(id: number, player: UpdatePlayerRequest) {
         const updatedPlayer = new Player();
         updatedPlayer.id = id
         updatedPlayer.firstname = player.firstName;
@@ -33,7 +38,12 @@ export class PlayerService {
         return await AppDataSource.getRepository(Player).update(updatedPlayer.id, updatedPlayer);
     }
 
-    async getPlayerById(id: number): Promise<PlayerResponse> {
+    private async checkPlayerNameavAilability(lastname: string) {
+        const player = await AppDataSource.getRepository(Player).findOneBy({ lastname: lastname });
+        return !!player;
+    }
+
+    public async getPlayerById(id: number): Promise<PlayerResponse> {
         const playerEntity = await AppDataSource.getRepository(Player).findOneBy({ id: id });
         const player = new PlayerResponse();
         if (!playerEntity) {
@@ -48,7 +58,7 @@ export class PlayerService {
         return player;
     }
 
-    async loginPlayer(playerLogging: LoginPlayerRequest): Promise<LoggedPlayerResponse> {
+    public async loginPlayer(playerLogging: LoginPlayerRequest): Promise<LoggedPlayerResponse> {
         const player = await AppDataSource
             .getRepository(Player)
             .findOne({ where: { lastname: Equal(playerLogging.lastname) } })
@@ -63,7 +73,7 @@ export class PlayerService {
 
         const response = new LoggedPlayerResponse();
         response.id = player.id;
-        response.isAdmin = player.isAdmin;  
+        response.isAdmin = player.isAdmin;
         response.token = jwt.sign({ userId: player.id, isAdmin: player.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return response;
     }

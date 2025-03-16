@@ -34,10 +34,10 @@ export default {
     methods: {
         login: function (event) {
             this.errorMessages = "";
-            if (!this.player.lastname || this.player.lastname.trim().lenght === 0) {
+            if (!this.player.lastname || this.player.lastname.trim().length === 0) {
                 this.errorMessages += "Veuilliez renseigner un nom!\n";
             }
-            if (!this.player.password || this.player.password.trim().lenght === 0) {
+            if (!this.player.password || this.player.password.trim().length === 0) {
                 this.errorMessages += "Veuilliez renseigner un mot de passe!\n";
             }
             if (this.errorMessages !== "") {

@@ -25,14 +25,13 @@ router.get("/:playerId", async (req: Request, res: Response, next: NextFunction)
     }
 });
 
-router.post("/create", async (req: Request, res: Response): Promise<Response> => {
+router.post("/create", async (req: Request, res: Response, next: NextFunction) => {
     try {
         await playerService.createPlayer(req.body as CreatePlayerRequest);
         return res.status(200).send("Player created");
     }
     catch (error) {
-        console.error(error)
-        return res.status(500).send("Failed to create the player");
+        next(error);
     }
 });
 

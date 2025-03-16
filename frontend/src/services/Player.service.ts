@@ -2,7 +2,7 @@ import Axios from "./Caller.service";
 
 const pathName = "/player/"
 
-const login = (credentials: any) => {
+const login = async (credentials: any) => {
     return Axios.post(pathName + "login", credentials);
 }
 
