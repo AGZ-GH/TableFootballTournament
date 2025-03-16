@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { PlayerService } from "../services/Player.service";
 import { CreatePlayerRequest } from "../request/player/CreatePlayer.request";
 import { UpdatePlayerRequest } from "../request/player/UpdatePlayer.request";
@@ -10,7 +10,7 @@ const router = express.Router();
 const playerService = new PlayerService();
 
 
-router.get("/:playerId", async (req: Request, res: Response): Promise<Response> => {
+router.get("/:playerId", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = Number(req.params.playerId);
         const player = await playerService.getPlayerById(id);
@@ -43,7 +43,6 @@ router.post("/update/:playerId", async (req: Request, res: Response): Promise<Re
         return res.status(200).send("Player updated");
     }
     catch (error) {
-        console.error(error);
         return res.status(500).send("Failed to update the player");
     }
 });
@@ -60,14 +59,13 @@ router.delete("/:playerId", async (req: Request, res: Response): Promise<Respons
     }
 });
 
-router.post("/login", async (req: Request, res: Response): Promise<Response> => {
+router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const loggingData = await playerService.loginPlayer(req.body as LoginPlayerRequest);
         return res.status(200).send(loggingData);
     }
     catch (error) {
-        console.error(error)
-        return  res.status(500).send("Failed to login the player");
+        next(error);
     }
 });
 
