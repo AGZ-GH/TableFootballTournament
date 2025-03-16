@@ -9,8 +9,9 @@ Axios.interceptors.request.use(async (request) => {
     request.headers.Authorization = "Bearer " + token;
     return request;
 }); 
+
 Axios.interceptors.response.use(response => {
     return response;
-}, error => { });
+}, error => { return error });
 
 export default Axios;

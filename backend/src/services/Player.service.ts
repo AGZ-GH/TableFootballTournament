@@ -6,6 +6,8 @@ import { LoginPlayerRequest } from "../request/player/LoginPlayer.request";
 import { UpdatePlayerRequest } from "../request/player/UpdatePlayer.request";
 import { PlayerResponse } from "../response/player/Player.response";
 import { LoggedPlayerResponse } from "../response/player/LoggedPlayerResponse";
+import InvalidPlayerNameError from "../error/Player/InvalidPlayerName.error";
+import InvalidPlayerPasswordError from "../error/Player/InvalidPlayerPassword.error";
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -52,25 +54,25 @@ export class PlayerService {
             .findOne({ where: { lastname: Equal(playerLogging.lastname) } })
 
         if (!player || player.id < 1) {
-            throw new Error("User not found");
+            throw new InvalidPlayerNameError();
         }
         const passwordMatch = await bcrypt.compareSync(playerLogging.password, player.password);
         if (!passwordMatch) {
-            throw new Error("Invalid password");
-        }   
+            throw new InvalidPlayerPasswordError();
+        }
 
         const response = new LoggedPlayerResponse();
         response.id = player.id;
-        response.isAdmin = player.isAdmin;
-        response.token = jwt.sign({ userId  : player.id, isAdmin: player.isAdmin}, process.env.JWT_SECRET, { expiresIn: '1h' });
+        response.isAdmin = player.isAdmin;  
+        response.token = jwt.sign({ userId: player.id, isAdmin: player.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return response;
-    }   
+    }
 
     async deletePlayerById(id: number) {
         return await AppDataSource.getRepository(Player).delete(id);
     }
 
-    async checkIsAdmin(token: string): Promise<boolean>{
-        return jwt.verify(token,process.env.JWT_SECRET).isAdmin;
+    async checkIsAdmin(token: string): Promise<boolean> {
+        return jwt.verify(token, process.env.JWT_SECRET).isAdmin;
     }
 }   
