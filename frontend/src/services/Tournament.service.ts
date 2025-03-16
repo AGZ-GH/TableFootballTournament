@@ -22,7 +22,7 @@ const addTeamToTournament = (teamId :number, tournamentId: number) => {
         tournamentId: tournamentId,
         teamId: teamId,
     }
-    Axios.post(BASE_PATH + "addTeam",data);
+    return Axios.post(BASE_PATH + "addTeam",data);
 }
 
 const generateTournament = (tournamentId : number) => {

@@ -2,7 +2,7 @@
 import TournamentComponent from './TournamentComponent.vue';
 </script>
 <template>
-    <div v-for="tournament in tournaments" :key="tournament.id">
+    <div v-for="tournament in tournaments" :key="tournament.id" v-on:click="goToTournament(tournament.id)">
         <TournamentComponent :tournament="tournament" />
     </div>
 </template>
@@ -23,6 +23,11 @@ export default {
                 this.tournaments = res.data
             })
             .catch(err => console.error(err));
+    },
+    methods:{
+        goToTournament(id){
+            this.$router.push("/tournament/"+id);
+            }
     }
 }
 </script>

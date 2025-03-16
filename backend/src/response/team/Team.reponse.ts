@@ -6,16 +6,8 @@ export class TeamResponse {
         return {
             id: t.id,
             name: t.name,
-            player1: {
-                id: t.player1.id,
-                firstname: t.player1.firstname,
-                lastname: t.player1.lastname
-            },
-            player2: {
-                id: t.player2?.id ?? 0,
-                firstname: t.player2?.firstname ?? "",
-                lastname: t.player2?.lastname ?? ""
-            },
+            player1: PlayerResponse.MapFromEntity(t.player1),
+            player2: t.player2 ? PlayerResponse.MapFromEntity(t.player2) : undefined,
         } as TeamResponse;
     }
     id!: number;

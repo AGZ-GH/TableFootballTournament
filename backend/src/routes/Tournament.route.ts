@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { TournamentService } from "../services/Tournament.service";
 import { CreateTournamentRequest } from "../request/tournament/CreateTournament.request";
 import { AddTeamToTournamentRequest } from "../request/tournament/AddTeamToTournament.request";
@@ -36,14 +36,13 @@ router.post("/generate/:tournamentId", async (req: Request, res: Response): Prom
     return res.status(200).send({ data: "Tournament created" });
 });
 
-router.post("/addTeam", async (req: Request, res: Response): Promise<Response> => {
+router.post("/addTeam", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = req.body as AddTeamToTournamentRequest;
         await tournamentService.addTeamToTournament(data.tournamentId, data.teamId)
         return res.status(200).send({ data: "Team added" });
     } catch (error) {
-        console.error(error);
-        return res.status(500).send("Failed to add the team to the tournament")
+        next(error);
     }
 })
 

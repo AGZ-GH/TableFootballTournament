@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>{{ tournament.name }}</div>
+        <h1 class="red">{{ tournament.name }}</h1>
         <div>{{ tournament.description }}</div>
         <div>date de début: {{ tournament.startingDate }}</div>
         <div>date de fin: {{ tournament.endDate }}</div>

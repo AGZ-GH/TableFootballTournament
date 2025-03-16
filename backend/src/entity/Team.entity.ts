@@ -9,11 +9,11 @@ export class Team {
     @Column()
     name!: string
 
-    @OneToOne(() => Player, { onDelete: "CASCADE" })
+    @OneToOne(() => Player, { onDelete: "CASCADE", eager: true })
     @JoinColumn([{ name: "p1_FK", referencedColumnName: "id" },])
     player1!: Player
 
-    @OneToOne(() => Player, { onDelete: "CASCADE" })
+    @OneToOne(() => Player, { onDelete: "CASCADE", eager: true })
     @JoinColumn([{ name: "p2_FK", referencedColumnName: "id" },])
     player2?: Player
 }       

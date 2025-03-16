@@ -12,7 +12,7 @@ router.get("/find/:teamId", async (req: Request, res: Response): Promise<Respons
     try {
         const id = Number(req.params.teamId);
         const team = await teamService.getTeamById(id);
-        if (!team || team.id < 1) {     
+        if (!team || team.id < 1) { 
             return res.status(404).send("Not found");
         }
         return res.status(200).json(team);

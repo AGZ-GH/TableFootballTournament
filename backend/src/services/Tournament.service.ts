@@ -5,6 +5,9 @@ import { CreateTournamentRequest } from "../request/tournament/CreateTournament.
 import { Team } from "../entity/Team.entity";
 import { Match } from "../entity/Match.entity";
 import { TournamentNoMatchesResponse } from "../response/tournament/TournamentNoMatches.response";
+import TournamentNotFoundError from "../error/Tournament/TournamentNotFound.error";
+import TeamNotFoundError from "../error/Team/TeamNotFound.error";
+import TeamAlreadyInTournament from "../error/Tournament/TeamAlreadyInTournament.error";
 
 export class TournamentService {
 
@@ -36,14 +39,16 @@ export class TournamentService {
             .getRepository(Tournament)
             .findOne({
                 where: { id: id },
-                relations: {matches:true},
+                relations: {
+                    matches: true,
+                    teams: true
+                },
             });
         const tournamentResponse = new TournamentResponse();
         if (tournament == null) {
             tournamentResponse.id = -1;
             return tournamentResponse;
         }
-
         return TournamentResponse.MapFromEntity(tournament);
     }
 
@@ -54,18 +59,24 @@ export class TournamentService {
     public async addTeamToTournament(tournamentId: number, teamId: number) {
         const tournament = await AppDataSource
             .getRepository(Tournament)
-            .find({ where: { id: tournamentId }, relations: ['teams'] });
+            .findOne({ where: { id: tournamentId }, relations: ['teams'] });
 
-        if (!tournament || tournament.length == 0) {
-            throw Error("Tournament not found");
+        if (!tournament) {
+            throw new TournamentNotFoundError(tournamentId);
         }
 
         const team = await AppDataSource.getRepository(Team).findOneBy({ id: teamId })
         if (!team) {
-            throw Error("Team not found");
+            throw new TeamNotFoundError(teamId);
         }
 
-        tournament[0].teams.push(team);
+        tournament.teams.forEach((team) => {
+            if (teamId == team.id) {
+                throw new TeamAlreadyInTournament(teamId, tournamentId);
+            }
+        })
+
+        tournament.teams.push(team);
         AppDataSource.manager.save(tournament);
     }
 
