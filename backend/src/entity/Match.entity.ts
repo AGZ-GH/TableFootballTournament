@@ -16,10 +16,10 @@ export class Match {
     @Column({ default: 0 })
     scoreTeam2: number = 0
 
-    @ManyToOne(() => Team)
+    @ManyToOne(() => Team, { eager: true })
     team1!: Team
 
-    @ManyToOne(() => Team)
+    @ManyToOne(() => Team, { eager: true })
     team2!: Team
 
     @ManyToOne(() => Tournament, (tournament) => tournament.matches)

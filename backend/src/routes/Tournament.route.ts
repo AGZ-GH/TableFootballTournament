@@ -14,7 +14,7 @@ router.post("/create", async (req: Request, res: Response): Promise<Response> =>
     try {
         const token = req.headers["authorization"]?.toString().substring(7) ?? "";
         const isAdmin = await playerService.checkIsAdmin(token);
-        if(!isAdmin){
+        if (!isAdmin) {
             return res.status(401).send("Unauthorized");
         }
 
@@ -63,17 +63,27 @@ router.get("/find/:tournamentId", async (req: Request, res: Response): Promise<R
     }
 });
 
-router.get("/all", async(req: Request, res: Response): Promise<Response> =>{
-    try{
+router.get("/all", async (req: Request, res: Response): Promise<Response> => {
+    try {
         const tournaments = await tournamentService.getAllTournaments();
         return res.status(200).json(tournaments);
     }
-    catch(error) {
+    catch (error) {
         console.error(error);
         return res.status(500).send("Failed to fetch all the tournaments");
     }
 });
-
+router.get("/find/withMatches/:tournamentId", async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const id = Number(req.params.tournamentId);
+        const tournaments = await tournamentService.getTournamentWithMatchesById(id );
+        return res.status(200).json(tournaments);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).send("Failed to the tournaments with its matches");
+    }
+});
 router.delete("/:tournamentId", async (req: Request, res: Response): Promise<Response> => {
     const id = Number(req.params.productID);
     try {

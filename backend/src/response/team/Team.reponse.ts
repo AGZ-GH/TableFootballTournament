@@ -2,7 +2,7 @@ import { Team } from "../../entity/Team.entity";
 import { PlayerResponse } from "../player/Player.response"
 
 export class TeamResponse {
-    static MapFromEntity(t: Team): TeamResponse {
+    public static MapFromEntity(t: Team): TeamResponse {
         return {
             id: t.id,
             name: t.name,
@@ -16,7 +16,7 @@ export class TeamResponse {
                 firstname: t.player2?.firstname ?? "",
                 lastname: t.player2?.lastname ?? ""
             },
-        }
+        } as TeamResponse;
     }
     id!: number;
     name!: string;

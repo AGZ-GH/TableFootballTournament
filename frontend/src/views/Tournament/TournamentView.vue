@@ -1,6 +1,3 @@
-<script setup>
-</script>
-
 <template>
     <TournamentComponent :tournament="tournament" />
     <div v-if="this.isAdmin">
@@ -13,6 +10,9 @@
     <div>
         <button v-on:click="SignInTournament">S'inscrire au tournois</button>
     </div>
+    <div v-for="match in tournament.matches" :key="match.id">
+        <MatchComponent :match="match"/>
+    </div>
 </template>
 
 <script>
@@ -20,11 +20,15 @@ import { tournamentService } from '@/services'
 import { playerService } from '@/services'
 import { teamService } from '@/services';
 import TournamentComponent from './TournamentComponent.vue';
+import MatchComponent from '../Match/MatchComponent.vue';
+import moment from 'moment';
+
 export default {
     name: 'TournamentListView',
     components: {
-        TournamentComponent
-    },
+        TournamentComponent,
+        MatchComponent,
+    },  
     data() {
         return {
             tournamentId: 0,
@@ -38,11 +42,13 @@ export default {
         this.tournamentId = this.$route.params.id
         const isAdmin = playerService.isAdmin()
             .then(answer => { this.isAdmin = answer; });
-        tournamentService.getTournamentById(this.tournamentId)
+        tournamentService.getTournamentWithMatchesById(this.tournamentId)
             .then(res => {
                 this.tournament = res.data
+                this.tournament.matches.forEach((m) => m.date =moment(m.date).format("DD/MM/YYYY"));
             })
             .catch(err => console.error(err));
+
         if (isAdmin) {
             teamService.getListAllTeams()
                 .then(res => this.teams = res.data)

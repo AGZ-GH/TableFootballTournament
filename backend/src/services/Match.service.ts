@@ -7,7 +7,7 @@ import { UpdateMatchRequest } from "../request/match/UpdateMatch.request";
 import { MatchResponse } from "../response/match/Match.response";
 
 export class MatchService {
-    async createMatch(match: CreateMatchRequest) {
+    public async createMatch(match: CreateMatchRequest) {
         const newMatch = new Match();
         newMatch.date = match.date;
         newMatch.scoreTeam1 = 0;
@@ -26,7 +26,7 @@ export class MatchService {
         await AppDataSource.getRepository(Match).save(newMatch);
     }
 
-    async updateMatch(id: number, match: UpdateMatchRequest) {
+    public async updateMatch(id: number, match: UpdateMatchRequest) {
         const updatedMatch = new Match();
         updatedMatch.id = id;
         updatedMatch.date = match.date;
@@ -46,7 +46,7 @@ export class MatchService {
         await AppDataSource.getRepository(Match).save(updatedMatch);
     }
 
-    async getMatchById(id: number): Promise<MatchResponse> {
+    public async getMatchById(id: number): Promise<MatchResponse> {
         const match = await AppDataSource.getRepository(Match).findOneBy({ id: id });
         const matchResponse = new MatchResponse();
         if (!match) {
@@ -63,7 +63,33 @@ export class MatchService {
         return matchResponse;
     }
 
-    async deleteMatch(id: number) {
+    public async deleteMatch(id: number) {
         return await AppDataSource.getRepository(Match).delete(id);
+    }
+
+    public async findAll(): Promise<MatchResponse[]> {
+        const matches = await AppDataSource.getRepository(Match).find({
+            select: {
+                id: true,
+                date: true,
+                scoreTeam1: true,
+                scoreTeam2: true
+            },
+            relations: {
+                team1: true,
+                team2: true
+            }
+        });
+        return matches.map(m => MatchResponse.MapFromEntity(m));
+    }
+
+    public async findTournamentMatches(id: number): Promise<MatchResponse[]> {
+        const matches = await AppDataSource.getRepository(Match)
+            .createQueryBuilder("match")
+            .leftJoinAndSelect("match.team1","team1")
+            .leftJoinAndSelect("match.team2","team2")
+            .where("tournamentId = :id", { id })
+            .getMany();
+        return matches.map(m => MatchResponse.MapFromEntity(m));
     }
 }

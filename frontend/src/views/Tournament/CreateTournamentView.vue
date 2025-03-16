@@ -38,8 +38,7 @@ export default {
     },
     methods: {
         createTournament() {
-            console.log(JSON.stringify(this.tournament));
-            tournamentService.createTournament(this.tournament)
+                tournamentService.createTournament(this.tournament)
                 .then(res => {
                     this.$router.push("/").then(() => { this.$router.go(0) });
 

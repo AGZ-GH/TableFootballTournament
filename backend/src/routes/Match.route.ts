@@ -8,9 +8,9 @@ const router = express.Router();
 
 const matchService = new MatchService();
 
-router.get("/:matchId", async (req: Request, res: Response): Promise<Response> => {
+router.get("/find/:matchId", async (req: Request, res: Response): Promise<Response> => {
     try {
-        const id = Number(req.params.match);
+        const id = Number(req.params.matchId);
         const match = await matchService.getMatchById(id);
         if (!match || match.id < 1) {
             return res.status(404).send("Not found");
@@ -21,9 +21,31 @@ router.get("/:matchId", async (req: Request, res: Response): Promise<Response> =
         console.error(error)
         return res.status(500).send("Failed to search for the match");
     }
+}); 
+router.get("/list/all", async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const matches = await matchService.findAll();
+        return res.status(200).json(matches);
+    }
+    catch (error) {
+        console.error(error)
+        return res.status(500).send("Failed to find all the matches");
+    }
 });
 
-router.post("/", async (req: Request, res: Response): Promise<Response> => {
+router.get("/find/byTournament/:tournamentId", async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const tournamentId = Number(req.params.tournamentId);
+        const matches = await matchService.findTournamentMatches(tournamentId);
+        return res.status(200).json(matches);
+    }
+    catch (error) {
+        console.error(error)
+        return res.status(500).send("Failed to find the tournament matches");
+    }
+});
+
+router.post("/create", async (req: Request, res: Response): Promise<Response> => {
     try {
         matchService.createMatch(req.body as CreateMatchRequest);
         return res.status(200).send("Match created");
@@ -46,7 +68,7 @@ router.post("/:matchId", async (req: Request, res: Response): Promise<Response> 
     }
 });
 
-router.delete("/:matchId", async (req: Request, res: Response): Promise<Response> => {
+router.delete("/delete/:matchId", async (req: Request, res: Response): Promise<Response> => {
     const id = Number(req.params.teamId);
     try {
         matchService.deleteMatch(id);

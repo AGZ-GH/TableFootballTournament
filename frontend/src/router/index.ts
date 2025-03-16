@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/views/LoginView.vue';
 import SignInView from '@/views/SignInView.vue';
 import ProfileView from '../views/ProfileView.vue';
-import MatchView from '../views/MatchView.vue';
+import MatchView from '../views/Match/MatchView.vue';
 import LeaderboardView from '../views/LeaderboardView.vue';
 
 import Home from '@/views/Home.vue';
@@ -53,7 +53,7 @@ const router = createRouter({
       component: TournamentView,
     },
     {
-      path: '/match',
+      path: '/match/:id',
       name: 'match',
       component: MatchView,
     },

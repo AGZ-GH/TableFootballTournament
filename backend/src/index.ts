@@ -17,10 +17,12 @@ app.use(cors());
 const playerRoute = require("./routes/Player.route");
 const teamRoute = require("./routes/Team.route");
 const tournamentRoute = require("./routes/Tournament.route");
+const matchRoute = require("./routes/Match.route");
 
 app.use("/player", playerRoute);
 app.use("/team", teamRoute);
 app.use("/tournament", tournamentRoute);
+app.use("/match", matchRoute);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("");

@@ -6,8 +6,11 @@ const getTournamentList = () => {
     return Axios.get(BASE_PATH + "all");
 }
 
-const getTournamentById = (id: number) => {
+const getTournamentWithoutMatchesById = (id: number) => {
     return Axios.get(BASE_PATH + "find/" + id);
+}
+const getTournamentWithMatchesById = (id: number) => {
+    return Axios.get(BASE_PATH + "find/withMatches/" + id);
 }
 
 const createTournament = (tournamentData :any) => {
@@ -28,9 +31,10 @@ const generateTournament = (tournamentId : number) => {
 
 export const tournamentService = {
     getTournamentList,
-    getTournamentById,
+    getTournamentWithoutMatchesById,
     createTournament,
     addTeamToTournament,
     generateTournament,
+    getTournamentWithMatchesById,
 }
 

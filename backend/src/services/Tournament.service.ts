@@ -1,13 +1,14 @@
-import { TournamentResponse } from "../response/Tournament.reponse";
+import { TournamentResponse } from "../response/tournament/Tournament.reponse";
 import { AppDataSource } from "../data-source";
 import { Tournament } from "../entity/Tournament.entity";
 import { CreateTournamentRequest } from "../request/tournament/CreateTournament.request";
 import { Team } from "../entity/Team.entity";
 import { Match } from "../entity/Match.entity";
+import { TournamentNoMatchesResponse } from "../response/tournament/TournamentNoMatches.response";
 
 export class TournamentService {
 
-    async createTournament(tournament: CreateTournamentRequest) {
+    public async createTournament(tournament: CreateTournamentRequest) {
         const tournamentEntity = new Tournament();
         tournamentEntity.name = tournament.name;
         tournamentEntity.description = tournament.description;
@@ -18,26 +19,39 @@ export class TournamentService {
 
         return await AppDataSource.getRepository(Tournament).save(tournamentEntity);
     }
-    async getTournamentById(id: number): Promise<TournamentResponse> {
+    public async getTournamentById(id: number): Promise<TournamentNoMatchesResponse> {
         const tournament = await AppDataSource.getRepository(Tournament).findOneBy({ id: id });
         const tournamentResponse = new TournamentResponse();
         if (tournament == null) {
             tournamentResponse.id = -1;
             return tournamentResponse;
         }
-        tournamentResponse.id = tournament.id ?? -1;
-        tournamentResponse.name = tournament.name;
-        tournamentResponse.description = tournament.description;
-        tournamentResponse.startingDate = tournament.startingDate;
-        tournamentResponse.endDate = tournament.endDate;
 
-        return tournamentResponse;
+        return TournamentNoMatchesResponse.MapFromEntity(tournament);
     }
-    async deleteTournamentById(id: number): Promise<void> {
+
+    public async getTournamentWithMatchesById(id: number): Promise<TournamentResponse> {
+        //player in matches are eager !
+        const tournament = await AppDataSource
+            .getRepository(Tournament)
+            .findOne({
+                where: { id: id },
+                relations: {matches:true},
+            });
+        const tournamentResponse = new TournamentResponse();
+        if (tournament == null) {
+            tournamentResponse.id = -1;
+            return tournamentResponse;
+        }
+
+        return TournamentResponse.MapFromEntity(tournament);
+    }
+
+    public async deleteTournamentById(id: number): Promise<void> {
         await AppDataSource.getRepository(Tournament).delete(id);
     }
 
-    async addTeamToTournament(tournamentId: number, teamId: number) {
+    public async addTeamToTournament(tournamentId: number, teamId: number) {
         const tournament = await AppDataSource
             .getRepository(Tournament)
             .find({ where: { id: tournamentId }, relations: ['teams'] });
@@ -55,19 +69,21 @@ export class TournamentService {
         AppDataSource.manager.save(tournament);
     }
 
-    async generateTournament(tournamentId: number) {
+    public async generateTournament(tournamentId: number) {
         const tournament = await AppDataSource
             .getRepository(Tournament)
-            .findOne({ where: { id: tournamentId }, relations: {
-                teams: true,
-                matches: true,
-            } });
+            .findOne({
+                where: { id: tournamentId }, relations: {
+                    teams: true,
+                    matches: true,
+                }
+            });
 
         if (!tournament) {
             throw new Error("Tournament not found");
         }
 
-        if(tournament?.matches.length > 0){
+        if (tournament?.matches.length > 0) {
             throw new Error("Tournament already generated");
         }
 
@@ -87,7 +103,7 @@ export class TournamentService {
         }
     }
 
-    async getAllTournaments(): Promise<TournamentResponse[]> {
+    public async getAllTournaments(): Promise<TournamentNoMatchesResponse[]> {
         const tournaments = await AppDataSource.getRepository(Tournament).find({
             select: {
                 id: true,
@@ -97,13 +113,7 @@ export class TournamentService {
                 endDate: true,
             }
         });
-        const tournamentResponse: TournamentResponse[] = tournaments.map(t => ({
-            id: t.id,
-            name: t.name,
-            description: t.description,
-            startingDate: t.startingDate,
-            endDate: t.endDate,
-        }))
-        return tournamentResponse;
+
+        return tournaments.map(t => TournamentNoMatchesResponse.MapFromEntity(t));
     }
 }   
