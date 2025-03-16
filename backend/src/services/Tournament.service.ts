@@ -58,24 +58,31 @@ export class TournamentService {
     async generateTournament(tournamentId: number) {
         const tournament = await AppDataSource
             .getRepository(Tournament)
-            .find({ where: { id: tournamentId }, relations: ['teams'] });
+            .findOne({ where: { id: tournamentId }, relations: {
+                teams: true,
+                matches: true,
+            } });
 
-        if (!tournament || tournament.length == 0) {
+        if (!tournament) {
             throw new Error("Tournament not found");
         }
 
-        if (tournament[0].teams.length % 2 != 0) {
+        if(tournament?.matches.length > 0){
+            throw new Error("Tournament already generated");
+        }
+
+        if (tournament.teams.length % 2 != 0) {
             throw new Error("Uneven number of participant");
         }
 
-        for (let i = 0; i <= tournament[0].teams.length / 2; i = i + 2) {
+        for (let i = 0; i <= tournament.teams.length / 2; i = i + 2) {
             const match = new Match();
-            match.date = tournament[0].startingDate;
+            match.date = tournament.startingDate;
             match.scoreTeam1 = 0;
             match.scoreTeam2 = 0;
-            match.team1 = tournament[0].teams[i];
-            match.team2 = tournament[0].teams[i + 1];
-            match.tournament = tournament[0];
+            match.team1 = tournament.teams[i];
+            match.team2 = tournament.teams[i + 1];
+            match.tournament = tournament;
             AppDataSource.manager.save(match);
         }
     }

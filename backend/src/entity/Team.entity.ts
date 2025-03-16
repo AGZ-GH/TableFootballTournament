@@ -16,6 +16,4 @@ export class Team {
     @OneToOne(() => Player, { onDelete: "CASCADE" })
     @JoinColumn([{ name: "p2_FK", referencedColumnName: "id" },])
     player2?: Player
-    
-
 }       

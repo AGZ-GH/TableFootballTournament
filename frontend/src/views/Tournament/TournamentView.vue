@@ -8,6 +8,7 @@
             <option v-for="team in teams" :value="team.id">{{ team.name }}</option>
         </select>
         <button v-on:click="addTeamToTournament">Ajouter l'équipe au tournoi</button>
+        <button v-on:click="generateTournamentMatches">Générer les matchs du tournoi</button>
     </div>
     <div>
         <button v-on:click="SignInTournament">S'inscrire au tournois</button>
@@ -53,6 +54,9 @@ export default {
             if (this.selectedTeam >= 0) {
                 tournamentService.addTeamToTournament(this.selectedTeam, this.tournamentId);
             }
+        },
+        generateTournamentMatches(){
+            tournamentService.generateTournament(this.tournamentId);
         }
     }
 }
