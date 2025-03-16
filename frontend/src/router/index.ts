@@ -48,7 +48,7 @@ const router = createRouter({
       component: CreateTournamentView
     },
     {
-      path: "/tournament",
+      path: "/tournament/:id",
       name: "tournament",
       component: TournamentView,
     },

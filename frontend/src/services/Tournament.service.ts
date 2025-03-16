@@ -11,12 +11,21 @@ const getTournamentById = (id: number) => {
 }
 
 const createTournament = (tournamentData :any) => {
-    console.log(tournamentData);  
     return Axios.post(BASE_PATH + "create",tournamentData);
 }
+
+const addTeamToTournament = (teamId :number, tournamentId: number) => {
+    const data = {
+        tournamentId: tournamentId,
+        teamId: teamId,
+    }
+    Axios.post(BASE_PATH + "addTeam",data);
+}
+
 export const tournamentService = {
     getTournamentList,
     getTournamentById,
     createTournament,
+    addTeamToTournament,
 }
 

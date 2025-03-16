@@ -55,7 +55,7 @@ export default {
             <RouterLink to="/match">Matchs</RouterLink>
           </div>
           <div>
-            <RouterLink to="/profile">Profile</RouterLink>
+            <RouterLink to="/profile">Profil</RouterLink>
           </div>
 
           <div v-if="this.isAdmin">

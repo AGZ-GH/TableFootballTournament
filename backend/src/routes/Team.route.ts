@@ -8,11 +8,11 @@ const router = express.Router();
 
 const teamService = new TeamService();
 
-router.get("/:teamId", async (req: Request, res: Response): Promise<Response> => {
+router.get("/find/:teamId", async (req: Request, res: Response): Promise<Response> => {
     try {
         const id = Number(req.params.teamId);
         const team = await teamService.getTeamById(id);
-        if (!team || team.id < 1) {
+        if (!team || team.id < 1) {     
             return res.status(404).send("Not found");
         }
         return res.status(200).json(team);
@@ -43,6 +43,27 @@ router.post("/:teamId", async (req: Request, res: Response): Promise<Response> =
     catch (error) {
         console.error(error);
         return res.status(500).send("Failed to update the team");
+    }
+});
+
+router.get("/all", async(req: Request, res: Response): Promise<Response> =>{
+    try{
+        const tournaments = await teamService.getAllTeams();
+        return res.status(200).json(tournaments);
+    }       
+    catch(error) {
+        console.error(error);
+        return res.status(500).send("Failed to fetch all the teams");
+    }
+});
+router.get("/list/all", async(req: Request, res: Response): Promise<Response> =>{
+    try{
+        const tournaments = await teamService.getAllTeamsIdAndName();
+        return res.status(200).json(tournaments);
+    }       
+    catch(error) {
+        console.error(error);
+        return res.status(500).send("Failed to fetch all the teams list");
     }
 });
 

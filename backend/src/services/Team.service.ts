@@ -4,12 +4,13 @@ import { Team } from "../entity/Team.entity";
 import { CreateTeamRequest } from "../request/team/CreateTeam.request";
 import { UpdateTeamRequest } from "../request/team/UpdateTeam.request";
 import { TeamResponse } from "../response/team/Team.reponse";
+import { TeamListResponse } from "../response/team/TeamList.response";
 import { PlayerService } from "./Player.service";
 
 const playerService = new PlayerService();
 
 export class TeamService {
-    async createTeam(team: CreateTeamRequest) {
+    public async createTeam(team: CreateTeamRequest) {
         const newTeam = new Team();
 
         const p1 = new Player();
@@ -23,12 +24,12 @@ export class TeamService {
         await AppDataSource.getRepository(Team).save(newTeam);
     }
 
-    async updateTeamById(id: number, team: UpdateTeamRequest) {
+    public async updateTeamById(id: number, team: UpdateTeamRequest) {
         const updatedTeam = new Team();
         updatedTeam.id = id
         const p1 = new Player();
         p1.id = team.player1Id;
-        const p2 = new Player();
+        const p2 = new Player();    
         p2.id = team.player2Id;
 
         updatedTeam.player1 = p1;
@@ -37,32 +38,55 @@ export class TeamService {
         return await AppDataSource.getRepository(Player).update(updatedTeam.id, updatedTeam);
     }
 
-    async getTeamById(id: number): Promise<TeamResponse> {
+    public async getTeamById(teamId: number): Promise<TeamResponse> {
         const teamEntity = await AppDataSource
             .getRepository(Team)
-            .createQueryBuilder("team")
-            .select("team")
-            .leftJoin("team.player1", "player1")
-            .leftJoin("team.player2", "player2")
-            .select(['team'])
-            .addSelect(['player1.id', 'player1.firstName', 'player1.lastName'])
-            .addSelect(['player2.id', 'player2.firstName', 'player2.lastName'])
-            .where("team.id = :id", { id: id })
-            .getOne();
+            .findOne({
+                where: {
+                    id: teamId
+                },
+                relations: {
+                    player1: true,
+                    player2: true,
+                }
+            });
         const team = new TeamResponse();
         if (!teamEntity) {
             team.id = -1;
             return team;
         }
-        team.id = teamEntity.id;
-        team.name = teamEntity.name;
-        team.player1 = teamEntity.player1;
-        team.player2 = teamEntity.player2;
-
-        return team;
+        return TeamResponse.MapFromEntity(teamEntity);
     }
 
-    async deleteTeamById(id: number) {
+    public async getAllTeams(): Promise<TeamResponse[]> {
+        const tournaments = await AppDataSource.getRepository(Team).find({
+            select: {
+                id: true,
+                name: true,
+            },
+            relations: {
+                player1: true,
+                player2: true,
+            }
+        });
+        const teamResponse: TeamResponse[] = tournaments.map(t => (TeamResponse.MapFromEntity(t)));
+        return teamResponse;
+    }
+
+    public async getAllTeamsIdAndName(): Promise<TeamListResponse[]> {
+        const team = await AppDataSource.getRepository(Team).find({
+            select: {
+                id: true,
+                name: true,
+            },
+        });
+        const teamResponse = team.map(t => TeamListResponse.MapFromEntity(t))
+        return teamResponse;
+    }
+
+    public async deleteTeamById(id: number) {
         return await AppDataSource.getRepository(Team).delete(id);
     }
+
+
 }       
