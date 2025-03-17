@@ -11,7 +11,7 @@
                 <input id="password" type="password" placeholder="Mot de passe" v-model="player.password" />
             </div>
             <button class="btn" type="submit">
-                Connexion
+                S'inscrire
             </button>
             <div id="error" class="red" @v-show="showError" style="white-space: pre-line">{{ errorMessages }}</div>
 
