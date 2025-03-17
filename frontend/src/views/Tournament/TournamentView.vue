@@ -22,8 +22,12 @@
         </div>
         <div>
             <h2 class="green">Matches:</h2>
+            <hr>
             <div v-for="match in tournament.matches" :key="match.id">
+                
                 <MatchComponent :match="match" />
+                <hr>
+                
             </div>
         </div>
     </div>

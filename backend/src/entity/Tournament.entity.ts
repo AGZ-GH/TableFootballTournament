@@ -19,7 +19,7 @@ export class Tournament {
     @Column()
     endDate!: Date
 
-    @OneToMany(() => Match, (match) => match.tournament)
+    @OneToMany(() => Match, (match) => match.tournament, { onDelete: "CASCADE" })
     matches!: Match[]
 
     @ManyToMany(() => Team)

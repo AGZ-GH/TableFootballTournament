@@ -10,7 +10,6 @@ import TeamNotFoundError from "../error/team/TeamNotFound.error";
 import TeamAlreadyInTournament from "../error/tournament/TeamAlreadyInTournament.error";
 import TournamentAlreadyGenerated from "../error/tournament/TournamentAlreadyGenerated.error";
 import { TeamResponse } from "../response/team/Team.reponse";
-import { MatchResponse } from "../response/match/Match.response";
 
 export class TournamentService {
 

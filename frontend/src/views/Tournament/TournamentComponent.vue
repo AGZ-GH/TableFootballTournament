@@ -12,7 +12,7 @@
                 <td class="green">date de fin:</td>
                 <td>{{ tournament.endDate }}</td>
             </tr>
-            <tr>
+            <tr v-if="tournament.teams">
                 <td class="green">participants: </td>
                 <td>{{ tournament.teams.length }} </td>
             </tr>

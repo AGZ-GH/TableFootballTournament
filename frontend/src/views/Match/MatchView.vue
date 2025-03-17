@@ -1,4 +1,3 @@
-
 <script>
 import MatchComponent from './MatchComponent.vue';
 import { matchService } from '@/services';
@@ -12,7 +11,7 @@ export default {
         }
     },
     beforeMount() {
-        this.matchId = this.$route.params.id;  
+        this.matchId = this.$route.params.id;
         matchService.getMatchById(this.matchId)
             .then(res => {
                 this.match = res.data;
@@ -24,7 +23,13 @@ export default {
 <template>
     <div>
         <div>date de début: {{ match.date }}</div>
-        <div>{{ match.team1.name }} VS  {{ match.team2.name }}</div>
+        <div>
+            <span v-if="match.team1">{{ match.team1.name }}</span>
+            <span v-else> - </span>
+            <span>VS</span>
+            <span v-if="match.team2">{{ match.team2.name }}</span>
+            <span v-else> - </span>
+        </div>
 
     </div>
 </template>
