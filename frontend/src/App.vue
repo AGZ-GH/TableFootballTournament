@@ -49,18 +49,14 @@ export default {
         </div>
         <div v-if="this.isLogged">
           <div>
-            <RouterLink to="/leaderboard">Classement</RouterLink>
+            <RouterLink to="/profile">Profil</RouterLink>
           </div>
           <div>
             <RouterLink to="/tournaments">Tournois</RouterLink>
           </div>
           <div>
-            <RouterLink to="/match">Matchs</RouterLink>
+            <RouterLink to="/leaderboard">Classement</RouterLink>
           </div>
-          <div>
-            <RouterLink to="/profile">Profil</RouterLink>
-          </div>
-
           <div v-if="this.isAdmin">
             <div class="red">Admin:</div>
             <div>
