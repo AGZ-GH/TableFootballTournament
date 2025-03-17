@@ -9,8 +9,8 @@ import TournamentNotFoundError from "../error/tournament/TournamentNotFound.erro
 import TeamNotFoundError from "../error/team/TeamNotFound.error";
 import TeamAlreadyInTournament from "../error/tournament/TeamAlreadyInTournament.error";
 import TournamentAlreadyGenerated from "../error/tournament/TournamentAlreadyGenerated.error";
-import UnevenNumberOfParticipant from "../error/tournament/UnevenNumberOfParticipant.error";
 import { TeamResponse } from "../response/team/Team.reponse";
+import { MatchResponse } from "../response/match/Match.response";
 
 export class TournamentService {
 
@@ -100,20 +100,9 @@ export class TournamentService {
             throw new TournamentAlreadyGenerated(tournamentId);
         }
 
-        if (tournament.teams.length % 2 != 0) {
-            throw new UnevenNumberOfParticipant(tournamentId);
-        }
+        const matchesToSave = this.createMatchTree(tournament);
 
-        for (let i = 0; i <= tournament.teams.length / 2; i = i + 2) {
-            const match = new Match();
-            match.date = tournament.startingDate;
-            match.scoreTeam1 = 0;
-            match.scoreTeam2 = 0;
-            match.team1 = tournament.teams[i];
-            match.team2 = tournament.teams[i + 1];
-            match.tournament = tournament;
-            AppDataSource.manager.save(match);
-        }
+        AppDataSource.manager.save(matchesToSave);
     }
 
     public async getAllTournaments(): Promise<TournamentNoMatchesResponse[]> {
@@ -132,5 +121,71 @@ export class TournamentService {
         });
 
         return tournaments.map(t => TournamentNoMatchesResponse.MapFromEntity(t));
+    }
+
+    private createMatchTree(tournament: Tournament): Match[] {
+        let matches: Match[] = [];
+        // generate tournament as a binary tree
+        // given n nb of team
+        const unassignedTeams = [...tournament.teams];
+        const nbMatches = tournament.teams.length / 2 + tournament.teams.length % 2
+
+        for (let i = 0; i <= nbMatches; i++) {
+            // first node
+            const match = new Match();
+            match.date = tournament.startingDate;
+            match.scoreTeam1 = 0;
+            match.scoreTeam2 = 0;
+            match.tournament = tournament;
+            // search for a parent node
+            for (let m of matches) {
+                if (!m.leftMatch) {
+                    match.nextMatch = m;
+                    m.leftMatch = match;
+                    break;
+                }
+                if (!m.rightMatch) {
+                    match.nextMatch = m;
+                    m.rightMatch = match
+                    break;
+                }
+            }
+            matches.push(match);
+        }
+
+        this.populatedFirstRound(matches, unassignedTeams);
+        return matches;
+    }
+
+    private populatedFirstRound(matches: Match[], unassignedTeams: Team[]) {
+        // populate first round with players
+        // this could be improve by populating them while creating the matches
+        // the height of the tree is sqrt(nbMatches)
+        // therefor the first node at the bottom of the tree is
+        // 2^(sqrt(nbMatches)-1) as this is a binary tree
+        // that would save the cost of reiterating through all the nodes again
+        // at the cost of a more complexe to understand code
+        for (let m of matches) {
+            // nodes at the bottom of the tree, therefor first round
+            if (!m.leftMatch && !m.rightMatch) {
+                m.team1 = unassignedTeams.length != 0 ? unassignedTeams.pop() : undefined;
+                m.team2 = unassignedTeams.length != 0 ? unassignedTeams.pop() : undefined;
+            }
+        }
+        this.handleUnevenParticipants(matches, unassignedTeams);
+    }
+
+    private handleUnevenParticipants(matches: Match[], unassignedTeams: Team[]) {
+        //for uneven number of teams
+        //there should be a team unassigned
+        if (unassignedTeams.length != 0) {
+            for (let m of matches) {
+                // we search the only unbalanced node to give it the remaining team
+                if (m.leftMatch && !m.rightMatch) {
+                    m.team1 = unassignedTeams.length != 0 ? unassignedTeams.pop() : undefined;
+                    break;
+                }
+            }
+        }
     }
 }   

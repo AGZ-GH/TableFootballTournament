@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn, OneToMany } from "typeorm"
 import { Team } from "./Team.entity"
 import { Tournament } from "./Tournament.entity"
 
@@ -16,11 +16,23 @@ export class Match {
     @Column({ default: 0 })
     scoreTeam2: number = 0
 
-    @ManyToOne(() => Team, { eager: true })
-    team1!: Team
+
+    @ManyToOne(() => Match)
+        nextMatch!: Match;
+
+    @OneToOne(() => Match, { onDelete: "CASCADE" })
+    @JoinColumn([{ name: "lm_FK", referencedColumnName: "id" },])
+    leftMatch?: Match;
+
+    @OneToOne(() => Match, { onDelete: "CASCADE" })
+    @JoinColumn([{ name: "rm_FK", referencedColumnName: "id" },])
+    rightMatch?: Match;
 
     @ManyToOne(() => Team, { eager: true })
-    team2!: Team
+    team1?: Team
+
+    @ManyToOne(() => Team, { eager: true })
+    team2?: Team
 
     @ManyToOne(() => Tournament, (tournament) => tournament.matches)
     tournament!: Tournament

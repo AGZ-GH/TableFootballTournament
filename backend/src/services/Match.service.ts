@@ -51,18 +51,10 @@ export class MatchService {
 
     public async getMatchById(id: number): Promise<MatchResponse> {
         const match = await this.matchRepository.findOneBy({ id: id });
-        const matchResponse = new MatchResponse();
         if (!match) {
             throw new MatchNotFoundError(id);
         }
-        matchResponse.id = match.id;
-        matchResponse.date = match.date;
-        matchResponse.scoreTeam1 = match.scoreTeam1;
-        matchResponse.scoreTeam2 = match.scoreTeam2;
-        matchResponse.team1 = match.team1;
-        matchResponse.team2 = match.team2;
-
-        return matchResponse;
+        return MatchResponse.MapFromEntity(match);
     }
 
     public async deleteMatch(id: number) {
