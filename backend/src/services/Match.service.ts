@@ -2,11 +2,14 @@ import { AppDataSource } from "../data-source";
 import { Match } from "../entity/Match.entity";
 import { Team } from "../entity/Team.entity";
 import { Tournament } from "../entity/Tournament.entity";
+import MatchNotFoundError from "../error/match/MatchNotFound.error";
 import { CreateMatchRequest } from "../request/match/CreateMatch.request";
 import { UpdateMatchRequest } from "../request/match/UpdateMatch.request";
 import { MatchResponse } from "../response/match/Match.response";
 
 export class MatchService {
+    private readonly matchRepository = AppDataSource.getRepository(Match);
+
     public async createMatch(match: CreateMatchRequest) {
         const newMatch = new Match();
         newMatch.date = match.date;
@@ -23,7 +26,7 @@ export class MatchService {
         const tournament = new Tournament();
         tournament.id = match.tournamentId;
 
-        await AppDataSource.getRepository(Match).save(newMatch);
+        await this.matchRepository.save(newMatch);
     }
 
     public async updateMatch(id: number, match: UpdateMatchRequest) {
@@ -43,15 +46,14 @@ export class MatchService {
         const tournament = new Tournament();
         tournament.id = match.tournamentId;
 
-        await AppDataSource.getRepository(Match).save(updatedMatch);
+        await this.matchRepository.save(updatedMatch);
     }
 
     public async getMatchById(id: number): Promise<MatchResponse> {
-        const match = await AppDataSource.getRepository(Match).findOneBy({ id: id });
+        const match = await this.matchRepository.findOneBy({ id: id });
         const matchResponse = new MatchResponse();
         if (!match) {
-            matchResponse.id = -1;
-            return matchResponse;
+            throw new MatchNotFoundError(id);
         }
         matchResponse.id = match.id;
         matchResponse.date = match.date;
@@ -64,11 +66,11 @@ export class MatchService {
     }
 
     public async deleteMatch(id: number) {
-        return await AppDataSource.getRepository(Match).delete(id);
+        return await this.matchRepository.delete(id);
     }
 
     public async findAll(): Promise<MatchResponse[]> {
-        const matches = await AppDataSource.getRepository(Match).find({
+        const matches = await this.matchRepository.find({
             select: {
                 id: true,
                 date: true,
@@ -84,10 +86,10 @@ export class MatchService {
     }
 
     public async findTournamentMatches(id: number): Promise<MatchResponse[]> {
-        const matches = await AppDataSource.getRepository(Match)
+        const matches = await this.matchRepository
             .createQueryBuilder("match")
-            .leftJoinAndSelect("match.team1","team1")
-            .leftJoinAndSelect("match.team2","team2")
+            .leftJoinAndSelect("match.team1", "team1")
+            .leftJoinAndSelect("match.team2", "team2")
             .where("tournamentId = :id", { id })
             .getMany();
         return matches.map(m => MatchResponse.MapFromEntity(m));

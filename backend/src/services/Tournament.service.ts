@@ -14,6 +14,9 @@ import { TeamResponse } from "../response/team/Team.reponse";
 
 export class TournamentService {
 
+    private readonly tournamentRepository = AppDataSource.getRepository(Tournament);
+    private readonly teamRepository = AppDataSource.getRepository(Team);
+
     public async createTournament(tournament: CreateTournamentRequest) {
         const tournamentEntity = new Tournament();
         tournamentEntity.name = tournament.name;
@@ -23,14 +26,12 @@ export class TournamentService {
         tournamentEntity.matches = [];
         tournamentEntity.teams = [];
 
-        return await AppDataSource.getRepository(Tournament).save(tournamentEntity);
+        return await this.tournamentRepository.save(tournamentEntity);
     }
     public async getTournamentById(id: number): Promise<TournamentNoMatchesResponse> {
-        const tournament = await AppDataSource.getRepository(Tournament).findOneBy({ id: id });
-        const tournamentResponse = new TournamentResponse();
-        if (tournament == null) {
-            tournamentResponse.id = -1;
-            return tournamentResponse;
+        const tournament = await this.tournamentRepository.findOneBy({ id: id });
+        if (!tournament) {
+            throw new TournamentNotFoundError(id);
         }
 
         return TournamentNoMatchesResponse.MapFromEntity(tournament);
@@ -38,8 +39,7 @@ export class TournamentService {
 
     public async getTournamentWithMatchesById(id: number): Promise<TournamentResponse> {
         //player in matches are eager !
-        const tournament = await AppDataSource
-            .getRepository(Tournament)
+        const tournament = await this.tournamentRepository
             .findOne({
                 where: { id: id },
                 relations: {
@@ -56,19 +56,18 @@ export class TournamentService {
     }
 
     public async deleteTournamentById(id: number): Promise<void> {
-        await AppDataSource.getRepository(Tournament).delete(id);
+        await this.tournamentRepository.delete(id);
     }
 
     public async addTeamToTournament(tournamentId: number, teamId: number) {
-        const tournament = await AppDataSource
-            .getRepository(Tournament)
+        const tournament = await this.tournamentRepository
             .findOne({ where: { id: tournamentId }, relations: ['teams'] });
 
         if (!tournament) {
             throw new TournamentNotFoundError(tournamentId);
         }
 
-        const team = await AppDataSource.getRepository(Team).findOneBy({ id: teamId })
+        const team = await this.teamRepository.findOneBy({ id: teamId })
         if (!team) {
             throw new TeamNotFoundError(teamId);
         }
@@ -80,13 +79,12 @@ export class TournamentService {
         })
 
         tournament.teams.push(team);
-        AppDataSource.manager.save(tournament);
+        this.tournamentRepository.save(tournament);
         return TeamResponse.MapFromEntity(team);
     }
 
     public async generateTournament(tournamentId: number) {
-        const tournament = await AppDataSource
-            .getRepository(Tournament)
+        const tournament = await this.tournamentRepository
             .findOne({
                 where: { id: tournamentId }, relations: {
                     teams: true,
@@ -119,7 +117,7 @@ export class TournamentService {
     }
 
     public async getAllTournaments(): Promise<TournamentNoMatchesResponse[]> {
-        const tournaments = await AppDataSource.getRepository(Tournament).find({
+        const tournaments = await this.tournamentRepository.find({
             select: {
                 id: true,
                 name: true,

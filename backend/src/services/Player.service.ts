@@ -9,14 +9,17 @@ import { LoggedPlayerResponse } from "../response/player/LoggedPlayerResponse";
 import InvalidPlayerNameError from "../error/player/InvalidPlayerName.error";
 import InvalidPlayerPasswordError from "../error/player/InvalidPlayerPassword.error";
 import PlayerNameUnavailable from "../error/player/PlayerNameUnavailable.error";
+import PlayerNotFoundError from "../error/player/PlayerNotFound.error";
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 export class PlayerService {
+
+    private readonly playerRepository = AppDataSource.getRepository(Player);
     public async createPlayer(player: CreatePlayerRequest) {
         const playerNameIsUsed = await this.checkPlayerNameavAilability(player.lastname);
-        if(playerNameIsUsed){
+        if (playerNameIsUsed) {
             throw new PlayerNameUnavailable();
         }
         const newPlayer = new Player();
@@ -26,7 +29,7 @@ export class PlayerService {
         newPlayer.password = await bcrypt.hashSync(player.password, salt);
         newPlayer.isAdmin = false;
 
-        await AppDataSource.getRepository(Player).save(newPlayer);
+        await this.playerRepository.save(newPlayer);
     }
 
     public async UpdatePlayer(id: number, player: UpdatePlayerRequest) {
@@ -35,32 +38,24 @@ export class PlayerService {
         updatedPlayer.firstname = player.firstName;
         updatedPlayer.lastname = player.lastName;
 
-        return await AppDataSource.getRepository(Player).update(updatedPlayer.id, updatedPlayer);
+        return await this.playerRepository.update(updatedPlayer.id, updatedPlayer);
     }
 
     private async checkPlayerNameavAilability(lastname: string) {
-        const player = await AppDataSource.getRepository(Player).findOneBy({ lastname: lastname });
+        const player = await this.playerRepository.findOneBy({ lastname: lastname });
         return !!player;
     }
 
     public async getPlayerById(id: number): Promise<PlayerResponse> {
-        const playerEntity = await AppDataSource.getRepository(Player).findOneBy({ id: id });
-        const player = new PlayerResponse();
+        const playerEntity = await this.playerRepository.findOneBy({ id: id });
         if (!playerEntity) {
-            player.id = -1;
-            return player;
+            throw new PlayerNotFoundError(id);
         }
-
-        player.id = playerEntity.id;
-        player.firstname = playerEntity.firstname;
-        player.lastname = playerEntity.lastname;
-
-        return player;
+        return PlayerResponse.MapFromEntity(playerEntity);
     }
 
     public async loginPlayer(playerLogging: LoginPlayerRequest): Promise<LoggedPlayerResponse> {
-        const player = await AppDataSource
-            .getRepository(Player)
+        const player = await this.playerRepository
             .findOne({ where: { lastname: Equal(playerLogging.lastname) } })
 
         if (!player || player.id < 1) {
@@ -79,7 +74,7 @@ export class PlayerService {
     }
 
     async deletePlayerById(id: number) {
-        return await AppDataSource.getRepository(Player).delete(id);
+        return await this.playerRepository.delete(id);
     }
 
     async checkIsAdmin(token: string): Promise<boolean> {
