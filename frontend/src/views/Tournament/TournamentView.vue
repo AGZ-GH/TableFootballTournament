@@ -30,9 +30,7 @@
 </template>
 
 <script>
-import { tournamentService } from '@/services'
-import { playerService } from '@/services'
-import { teamService } from '@/services';
+import { tournamentService, playerService, teamService} from '@/services'
 import TournamentComponent from './TournamentComponent.vue';
 import MatchComponent from '../Match/MatchComponent.vue';
 import moment from 'moment';
@@ -57,7 +55,7 @@ export default {
             teams: [],
         }
     },
-    mounted() {
+    beforeMount() {
         this.tournamentId = this.$route.params.id
         const isAdmin = playerService.isAdmin()
             .then(answer => { this.isAdmin = answer; });

@@ -71,7 +71,7 @@ export class PlayerService {
         const response = new LoggedPlayerResponse();
         response.id = player.id;
         response.isAdmin = player.isAdmin;
-        response.token = jwt.sign({ userId: player.id, isAdmin: player.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        response.token = jwt.sign({ userId: player.id, isAdmin: player.isAdmin }, process.env.JWT_SECRET, { expiresIn: '24h' });
         return response;
     }
 
