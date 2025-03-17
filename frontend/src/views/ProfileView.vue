@@ -1,13 +1,21 @@
 <template>
-    <div>
-        <div>
+    <div style="text-align: center;">
+        <h2 class="red">
             Profile
-        </div>
+        </h2>
         <div>
-            <div>Prénom: {{ player.firstname }}</div>
-            <div>Nom: {{ player.lastname }}</div>
+            <table >
+                <tr>
+                    <td class="green">Prénom:</td>
+                    <td>{{ player.firstname }}</td>
+                </tr>
+                <tr>
+                    <td class="green">Nom:</td>
+                    <td>{{ player.lastname }}</td>
+                </tr>
+            </table>
         </div>
-        </div>
+    </div>
 
 </template>
 

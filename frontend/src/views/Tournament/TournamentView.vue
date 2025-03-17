@@ -62,8 +62,10 @@ export default {
             .then(answer => { this.isAdmin = answer; });
         tournamentService.getTournamentWithMatchesById(this.tournamentId)
             .then(res => {
-                this.tournament = res.data
-                this.tournament.matches.forEach((m) => m.date = moment(m.date).format("DD/MM/YYYY"));
+                this.tournament = res.data;
+                this.tournament.startingDate=moment(this.tournament.startingDate).format("DD/ MM / YYYY");
+                this.tournament.endDate=moment(this.tournament.endDate).format("DD / MM / YYYY");
+                this.tournament.matches.forEach((m) => m.date = moment(m.date).format("DD / MM / YYYY"));
             })
             .catch(err => console.error(err));
 

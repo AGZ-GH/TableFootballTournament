@@ -51,12 +51,13 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    display: flex;
+    display:grid;
     place-items: center;
   }
 
   #app {
     display:flex;
+    min-width: none;
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }

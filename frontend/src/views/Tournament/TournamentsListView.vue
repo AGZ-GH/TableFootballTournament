@@ -9,6 +9,7 @@ import TournamentComponent from './TournamentComponent.vue';
 
 <script>
 import { tournamentService } from '@/services'
+import moment from 'moment';
 
 export default {
     name: 'TournamentListView',
@@ -21,6 +22,11 @@ export default {
         tournamentService.getTournamentList()
             .then(res => {
                 this.tournaments = res.data
+                this.tournaments.forEach((t) => {
+                    t.startingDate = moment(t.startingDate).format("DD / MM / YYYY");
+                    t.endDate = moment(t.endDate).format("DD / MM / YYYY");
+                });
+
             })
             .catch(err => console.error(err));
     },
