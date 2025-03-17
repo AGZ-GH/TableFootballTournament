@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { TeamService } from "../services/Team.service";
 import { CreateTeamRequest } from "../request/team/CreateTeam.request";
 import { UpdateTeamRequest } from "../request/team/UpdateTeam.request";
+import { FilterTeamByIdRequest } from "../request/team/FilterTeamById.request";
 
 const express = require("express");
 const router = express.Router();
@@ -23,6 +24,16 @@ router.get("/find/byPlayer/:playerId(\\d+)", async (req: Request, res: Response,
     try {
         const id = Number(req.params.playerId);
         const team = await teamService.getTeamByPlayerId(id);
+        return res.status(200).json(team);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+
+router.post("/filter/byIds/list", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const team = await teamService.filterTeamsByIds(req.body as FilterTeamByIdRequest);
         return res.status(200).json(team);
     }
     catch (error) {

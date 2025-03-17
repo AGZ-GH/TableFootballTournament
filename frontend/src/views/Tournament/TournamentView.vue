@@ -68,14 +68,15 @@ export default {
                 this.tournament.endDate = moment(this.tournament.endDate).format("DD / MM / YYYY");
                 this.tournament.matches.forEach((m) => m.date = moment(m.date).format("DD / MM / YYYY"));
                 this.generateVisible = this.tournament.matches.length == 0;
+                if (isAdmin) {
+                    teamService.getTeamListFilteredByIds(this.tournament.teams.map(t => t.id))
+                        .then(res => { this.teams = res.data })
+                        .catch(err => console.error(err))
+                }
             })
             .catch(err => console.error(err));
 
-        if (isAdmin) {
-            teamService.getListAllTeams()
-                .then(res => this.teams = res.data)
-                .catch(err => console.error(err))
-        }
+
     },
     methods: {
         addTeamToTournament() {
@@ -102,8 +103,8 @@ export default {
         signInTournament() {
             teamService.getPlayerTeam(localStorage.getItem("userId")).then((res) => {
                 tournamentService.addTeamToTournament(res.data.id, this.tournamentId).then((result) => {
-                        this.tournament.teams.push(result.data);
-                    }
+                    this.tournament.teams.push(result.data);
+                }
                 ).catch(err => console.error(err));
             }).catch(err => console.error(err));
         }

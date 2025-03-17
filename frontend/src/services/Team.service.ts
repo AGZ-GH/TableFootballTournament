@@ -2,7 +2,7 @@ import Axios from "./Caller.service";
 
 const BASE_PATH = "team/";
 
-const getTeamById = (id:number) => {
+const getTeamById = (id: number) => {
     return Axios.get(BASE_PATH + "find/" + id)
 }
 
@@ -18,9 +18,15 @@ const getPlayerTeam = (playerId: number) => {
     console.log(playerId);
     return Axios.get(BASE_PATH + "find/byPlayer/" + playerId)
 }
+
+const getTeamListFilteredByIds = (ids: number[]) => {
+    return Axios.post(BASE_PATH + "filter/byIds/list", { teamIds: ids });
+
+}
 export const teamService = {
-    getAllTeams,    
+    getAllTeams,
     getListAllTeams,
     getTeamById,
     getPlayerTeam,
+    getTeamListFilteredByIds,
 }

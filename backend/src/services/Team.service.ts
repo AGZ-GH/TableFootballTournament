@@ -1,9 +1,11 @@
+import { In, Not } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Player } from "../entity/Player.entity";
 import { Team } from "../entity/Team.entity";
 import PlayerTeamNotFound from "../error/team/PlayerTeamNotFound.error";
 import TeamNotFoundError from "../error/team/TeamNotFound.error";
 import { CreateTeamRequest } from "../request/team/CreateTeam.request";
+import { FilterTeamByIdRequest } from "../request/team/FilterTeamById.request";
 import { UpdateTeamRequest } from "../request/team/UpdateTeam.request";
 import { TeamResponse } from "../response/team/Team.reponse";
 import { TeamListResponse } from "../response/team/TeamList.response";
@@ -64,8 +66,8 @@ export class TeamService {
     public async getTeamByPlayerId(playerId: number): Promise<TeamResponse> {
         const teamEntity = await this.teamRepository
             .createQueryBuilder('team')
-            .leftJoinAndSelect("team.player1","player1")
-            .leftJoinAndSelect("team.player2","player2")
+            .leftJoinAndSelect("team.player1", "player1")
+            .leftJoinAndSelect("team.player2", "player2")
             .where('p1_FK = :playerId OR p2_FK = :playerId', { playerId })
             .getOne();
 
@@ -73,6 +75,20 @@ export class TeamService {
             throw new PlayerTeamNotFound(playerId);
         }
         return TeamResponse.MapFromEntity(teamEntity);
+    }
+
+    public async filterTeamsByIds(req: FilterTeamByIdRequest): Promise<TeamListResponse[]> {
+        const ids = req.teamIds ?? [];
+        const teamEntities = await this.teamRepository
+            .find({ 
+                select: { 
+                id: true, 
+                name: true }, 
+                where: { 
+                    id: Not(In(ids)) 
+                } 
+            });
+        return teamEntities.map(t => TeamListResponse.MapFromEntity(t));
     }
 
     public async getAllTeams(): Promise<TeamResponse[]> {
