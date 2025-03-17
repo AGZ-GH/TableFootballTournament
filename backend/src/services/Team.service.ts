@@ -1,6 +1,8 @@
 import { AppDataSource } from "../data-source";
 import { Player } from "../entity/Player.entity";
 import { Team } from "../entity/Team.entity";
+import PlayerTeamNotFound from "../error/team/PlayerTeamNotFound.error";
+import TeamNotFoundError from "../error/team/TeamNotFound.error";
 import { CreateTeamRequest } from "../request/team/CreateTeam.request";
 import { UpdateTeamRequest } from "../request/team/UpdateTeam.request";
 import { TeamResponse } from "../response/team/Team.reponse";
@@ -10,6 +12,9 @@ import { PlayerService } from "./Player.service";
 const playerService = new PlayerService();
 
 export class TeamService {
+    private readonly teamRepository = AppDataSource.getRepository(Team);
+    private readonly playerRepository = AppDataSource.getRepository(Player);
+
     public async createTeam(team: CreateTeamRequest) {
         const newTeam = new Team();
 
@@ -21,7 +26,7 @@ export class TeamService {
         newTeam.name = team.name;
         newTeam.player1 = p1;
         newTeam.player2 = p2;
-        await AppDataSource.getRepository(Team).save(newTeam);
+        await this.teamRepository.save(newTeam);
     }
 
     public async updateTeamById(id: number, team: UpdateTeamRequest) {
@@ -29,18 +34,17 @@ export class TeamService {
         updatedTeam.id = id
         const p1 = new Player();
         p1.id = team.player1Id;
-        const p2 = new Player();    
+        const p2 = new Player();
         p2.id = team.player2Id;
 
         updatedTeam.player1 = p1;
         updatedTeam.player2 = p2;
 
-        return await AppDataSource.getRepository(Player).update(updatedTeam.id, updatedTeam);
+        return await this.playerRepository.update(updatedTeam.id, updatedTeam);
     }
 
     public async getTeamById(teamId: number): Promise<TeamResponse> {
-        const teamEntity = await AppDataSource
-            .getRepository(Team)
+        const teamEntity = await this.teamRepository
             .findOne({
                 where: {
                     id: teamId
@@ -50,16 +54,29 @@ export class TeamService {
                     player2: true,
                 }
             });
-        const team = new TeamResponse();
+
         if (!teamEntity) {
-            team.id = -1;
-            return team;
+            throw new TeamNotFoundError(teamId);
+        }
+        return TeamResponse.MapFromEntity(teamEntity);
+    }
+
+    public async getTeamByPlayerId(playerId: number): Promise<TeamResponse> {
+        const teamEntity = await this.teamRepository
+            .createQueryBuilder('team')
+            .leftJoinAndSelect("team.player1","player1")
+            .leftJoinAndSelect("team.player2","player2")
+            .where('p1_FK = :playerId OR p2_FK = :playerId', { playerId })
+            .getOne();
+
+        if (!teamEntity) {
+            throw new PlayerTeamNotFound(playerId);
         }
         return TeamResponse.MapFromEntity(teamEntity);
     }
 
     public async getAllTeams(): Promise<TeamResponse[]> {
-        const tournaments = await AppDataSource.getRepository(Team).find({
+        const tournaments = await this.teamRepository.find({
             select: {
                 id: true,
                 name: true,
@@ -74,7 +91,7 @@ export class TeamService {
     }
 
     public async getAllTeamsIdAndName(): Promise<TeamListResponse[]> {
-        const team = await AppDataSource.getRepository(Team).find({
+        const team = await this.teamRepository.find({
             select: {
                 id: true,
                 name: true,
@@ -85,7 +102,7 @@ export class TeamService {
     }
 
     public async deleteTeamById(id: number) {
-        return await AppDataSource.getRepository(Team).delete(id);
+        return await this.teamRepository.delete(id);
     }
 
 

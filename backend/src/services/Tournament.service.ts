@@ -10,6 +10,7 @@ import TeamNotFoundError from "../error/team/TeamNotFound.error";
 import TeamAlreadyInTournament from "../error/tournament/TeamAlreadyInTournament.error";
 import TournamentAlreadyGenerated from "../error/tournament/TournamentAlreadyGenerated.error";
 import UnevenNumberOfParticipant from "../error/tournament/UnevenNumberOfParticipant.error";
+import { TeamResponse } from "../response/team/Team.reponse";
 
 export class TournamentService {
 
@@ -80,6 +81,7 @@ export class TournamentService {
 
         tournament.teams.push(team);
         AppDataSource.manager.save(tournament);
+        return TeamResponse.MapFromEntity(team);
     }
 
     public async generateTournament(tournamentId: number) {

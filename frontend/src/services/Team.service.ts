@@ -13,8 +13,14 @@ const getAllTeams = () => {
 const getListAllTeams = () => {
     return Axios.get(BASE_PATH + "list/all");
 }
+
+const getPlayerTeam = (playerId: number) => {
+    console.log(playerId);
+    return Axios.get(BASE_PATH + "find/byPlayer/" + playerId)
+}
 export const teamService = {
     getAllTeams,    
     getListAllTeams,
     getTeamById,
+    getPlayerTeam,
 }

@@ -39,8 +39,8 @@ router.post("/generate/:tournamentId", async (req: Request, res: Response): Prom
 router.post("/addTeam", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = req.body as AddTeamToTournamentRequest;
-        await tournamentService.addTeamToTournament(data.tournamentId, data.teamId)
-        return res.status(200).send({ data: "Team added" });
+        const tournament = await tournamentService.addTeamToTournament(data.tournamentId, data.teamId)
+        return res.status(200).json(tournament);
     } catch (error) {
         next(error);
     }

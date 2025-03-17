@@ -64,8 +64,8 @@ export default {
         tournamentService.getTournamentWithMatchesById(this.tournamentId)
             .then(res => {
                 this.tournament = res.data;
-                this.tournament.startingDate=moment(this.tournament.startingDate).format("DD/ MM / YYYY");
-                this.tournament.endDate=moment(this.tournament.endDate).format("DD / MM / YYYY");
+                this.tournament.startingDate = moment(this.tournament.startingDate).format("DD/ MM / YYYY");
+                this.tournament.endDate = moment(this.tournament.endDate).format("DD / MM / YYYY");
                 this.tournament.matches.forEach((m) => m.date = moment(m.date).format("DD / MM / YYYY"));
                 this.generateVisible = this.tournament.matches.length == 0;
             })
@@ -89,7 +89,7 @@ export default {
                         if (res.status == 200) {
                             this.signInInfoMessage = "Inscription réalisé!"
                             teamService.getTeamById(this.selectedTeam)
-                                .then((res) => { this.tournament.teams.push(res.data); })
+                            this.tournament.teams.push(res.data);
                         }
                     })
                     .catch(err => console.error(err));
@@ -98,8 +98,14 @@ export default {
         generateTournamentMatches() {
             tournamentService.generateTournament(this.tournamentId);
         },
+
         signInTournament() {
-            console.log("not implemented yet");
+            teamService.getPlayerTeam(localStorage.getItem("userId")).then((res) => {
+                tournamentService.addTeamToTournament(res.data.id, this.tournamentId).then((result) => {
+                        this.tournament.teams.push(result.data);
+                    }
+                ).catch(err => console.error(err));
+            }).catch(err => console.error(err));
         }
     }
 }
