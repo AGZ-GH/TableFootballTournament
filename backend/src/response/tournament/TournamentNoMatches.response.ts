@@ -1,5 +1,4 @@
 import { Tournament } from "../../entity/Tournament.entity"
-import { MatchResponse } from "../match/Match.response"
 
 export class TournamentNoMatchesResponse {
     public static MapFromEntity(t: Tournament){

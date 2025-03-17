@@ -9,7 +9,7 @@
                 <button v-on:click="addTeamToTournament">Ajouter l'équipe au tournoi</button>
                 <div v-show="showSignInInfo" class="green"> {{ signInInfoMessage }}</div>
             </div>
-            <button v-on:click="generateTournamentMatches">Générer les matchs du tournoi</button>
+            <button v-on:click="generateTournamentMatches" v-if="generateVisible">Générer les matchs du tournoi</button>
             <div>
                 <button v-on:click="signInTournament">S'inscrire au tournois</button>
             </div>
@@ -47,6 +47,7 @@ export default {
     },
     data() {
         return {
+            generateVisible: false,
             showSignInInfo: false,
             signInInfoMessage: "",
             tournamentId: 0,
@@ -66,6 +67,7 @@ export default {
                 this.tournament.startingDate=moment(this.tournament.startingDate).format("DD/ MM / YYYY");
                 this.tournament.endDate=moment(this.tournament.endDate).format("DD / MM / YYYY");
                 this.tournament.matches.forEach((m) => m.date = moment(m.date).format("DD / MM / YYYY"));
+                this.generateVisible = this.tournament.matches.length == 0;
             })
             .catch(err => console.error(err));
 

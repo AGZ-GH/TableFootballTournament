@@ -8,6 +8,8 @@ import { TournamentNoMatchesResponse } from "../response/tournament/TournamentNo
 import TournamentNotFoundError from "../error/Tournament/TournamentNotFound.error";
 import TeamNotFoundError from "../error/Team/TeamNotFound.error";
 import TeamAlreadyInTournament from "../error/Tournament/TeamAlreadyInTournament.error";
+import TournamentAlreadyGenerated from "../error/Tournament/TournamentAlreadyGenerated.error";
+import UnevenNumberOfParticipant from "../error/Tournament/UnevenNumberOfParticipant.error";
 
 export class TournamentService {
 
@@ -91,15 +93,15 @@ export class TournamentService {
             });
 
         if (!tournament) {
-            throw new Error("Tournament not found");
+            throw new TournamentNotFoundError(tournamentId);
         }
 
         if (tournament?.matches.length > 0) {
-            throw new Error("Tournament already generated");
+            throw new TournamentAlreadyGenerated(tournamentId);
         }
 
         if (tournament.teams.length % 2 != 0) {
-            throw new Error("Uneven number of participant");
+            throw new UnevenNumberOfParticipant(tournamentId);
         }
 
         for (let i = 0; i <= tournament.teams.length / 2; i = i + 2) {
