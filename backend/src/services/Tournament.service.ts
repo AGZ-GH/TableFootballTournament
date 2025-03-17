@@ -5,11 +5,11 @@ import { CreateTournamentRequest } from "../request/tournament/CreateTournament.
 import { Team } from "../entity/Team.entity";
 import { Match } from "../entity/Match.entity";
 import { TournamentNoMatchesResponse } from "../response/tournament/TournamentNoMatches.response";
-import TournamentNotFoundError from "../error/Tournament/TournamentNotFound.error";
-import TeamNotFoundError from "../error/Team/TeamNotFound.error";
-import TeamAlreadyInTournament from "../error/Tournament/TeamAlreadyInTournament.error";
-import TournamentAlreadyGenerated from "../error/Tournament/TournamentAlreadyGenerated.error";
-import UnevenNumberOfParticipant from "../error/Tournament/UnevenNumberOfParticipant.error";
+import TournamentNotFoundError from "../error/tournament/TournamentNotFound.error";
+import TeamNotFoundError from "../error/team/TeamNotFound.error";
+import TeamAlreadyInTournament from "../error/tournament/TeamAlreadyInTournament.error";
+import TournamentAlreadyGenerated from "../error/tournament/TournamentAlreadyGenerated.error";
+import UnevenNumberOfParticipant from "../error/tournament/UnevenNumberOfParticipant.error";
 
 export class TournamentService {
 

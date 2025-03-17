@@ -6,9 +6,9 @@ import { LoginPlayerRequest } from "../request/player/LoginPlayer.request";
 import { UpdatePlayerRequest } from "../request/player/UpdatePlayer.request";
 import { PlayerResponse } from "../response/player/Player.response";
 import { LoggedPlayerResponse } from "../response/player/LoggedPlayerResponse";
-import InvalidPlayerNameError from "../error/Player/InvalidPlayerName.error";
-import InvalidPlayerPasswordError from "../error/Player/InvalidPlayerPassword.error";
-import PlayerNameUnavailable from "../error/Player/PlayerNameUnavailable.error";
+import InvalidPlayerNameError from "../error/player/InvalidPlayerName.error";
+import InvalidPlayerPasswordError from "../error/player/InvalidPlayerPassword.error";
+import PlayerNameUnavailable from "../error/player/PlayerNameUnavailable.error";
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
