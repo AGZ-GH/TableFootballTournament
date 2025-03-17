@@ -124,6 +124,10 @@ export class TournamentService {
                 description: true,
                 startingDate: true,
                 endDate: true,
+                teams: true,
+            },
+            relations: {
+                teams: true,
             }
         });
 

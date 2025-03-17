@@ -18,7 +18,7 @@ export default {
             tournaments: []
         }
     },
-    mounted() {
+    beforeMount() {
         tournamentService.getTournamentList()
             .then(res => {
                 this.tournaments = res.data
@@ -26,7 +26,6 @@ export default {
                     t.startingDate = moment(t.startingDate).format("DD / MM / YYYY");
                     t.endDate = moment(t.endDate).format("DD / MM / YYYY");
                 });
-
             })
             .catch(err => console.error(err));
     },
