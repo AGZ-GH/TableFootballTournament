@@ -42,7 +42,6 @@ export default {
             }
             if (this.errorMessages !== "") {
                 this.showError = true
-                event.preventDefault();
             }
             else {
                 playerService.login(this.player)
@@ -67,7 +66,7 @@ export default {
 
                         if (res.status == 500) {
                             this.showError = true
-                            this.errorMessages = "Erreure serveur";
+                            this.errorMessages = "Une erreure serveur est survenu";
                         }
 
                     })

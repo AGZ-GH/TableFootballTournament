@@ -14,7 +14,7 @@ export default {
       .then(session => { this.isLogged = session; })
       .catch(err => console.error(err));
     playerService.isAdmin()
-      .then(answer => {this.isAdmin = answer;});
+      .then(answer => { this.isAdmin = answer; });
   },
   methods: {
     logout() {
@@ -59,7 +59,13 @@ export default {
           </div>
 
           <div v-if="this.isAdmin">
-            <RouterLink to="/tournament/create">Nouveau tournoi</RouterLink>
+            <div class="red">Admin:</div>
+            <div>
+              <RouterLink to="/tournament/create">Créer un tournoi</RouterLink>
+            </div>
+            <div>
+              <RouterLink to="/team/create">Créer une Equipe</RouterLink>
+            </div>
           </div>
           <div>
             <button @click="logout()">Déconnexion</button>
@@ -98,7 +104,7 @@ nav a.router-link-exact-active:hover {
 }
 
 nav a {
-  display:flexbox;
+  display: flexbox;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
 }
@@ -113,7 +119,7 @@ nav a:first-of-type {
   }
 
   nav {
-    max-width:120px;
+    max-width: 120px;
     text-align: left;
     margin-left: -1rem;
     font-size: 1rem;

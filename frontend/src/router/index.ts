@@ -11,6 +11,7 @@ import NotFoundView from '@/views/NotFoundView.vue';
 import TournamentsListView from '@/views/Tournament/TournamentsListView.vue';
 import CreateTournamentView from '@/views/Tournament/CreateTournamentView.vue';
 import TournamentView from '@/views/Tournament/TournamentView.vue';
+import CreateTeamView from '@/views/Team/CreateTeamView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,6 +63,11 @@ const router = createRouter({
       path: '/leaderboard',
       name: 'leaderboard',
       component: LeaderboardView,
+    },
+    {
+      path: '/team/create',
+      name: 'createTeam',
+      component: CreateTeamView,
     },
     {
       path: '/:pathMatch(.*)*',
