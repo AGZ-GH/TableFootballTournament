@@ -1,5 +1,4 @@
 <script>
-import { RouterLink, RouterView } from 'vue-router'
 import { playerService } from '@/services'
 
 export default {
@@ -30,8 +29,12 @@ export default {
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
-    <h2 class="red" style="text-align: center;">Tournois de baby-foot <br>manager</h2>
+    <div >
+      <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
+    </div>
+    <div>
+      <h2 class="red">Tournoi de baby-foot manager</h2>
+    </div>
     <div class="wrapper">
     </div>
     <ul>
@@ -64,7 +67,10 @@ export default {
               <RouterLink to="/tournament/create">Créer un tournoi</RouterLink>
             </div>
             <div>
-              <RouterLink to="/team/create">Créer une Equipe</RouterLink>
+              <RouterLink to="/team/create">Créer une Équipe</RouterLink>
+            </div>
+            <div>
+              <RouterLink to="/team/manage">Gérer les Équipes</RouterLink>
             </div>
           </div>
           <div>
@@ -85,7 +91,6 @@ export default {
 <style scoped>
 .logo {
   display: block;
-  margin: 0 auto 2rem;
 }
 
 nav {
@@ -114,12 +119,8 @@ nav a:first-of-type {
 }
 
 @media (min-width: 102px) {
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
   nav {
-    max-width: 120px;
+    max-width: 240px;
     text-align: left;
     margin-left: -1rem;
     font-size: 1rem;

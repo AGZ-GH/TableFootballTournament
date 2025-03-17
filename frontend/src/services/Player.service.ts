@@ -40,6 +40,10 @@ const getPlayerData = (id: number) => {
     return Axios.get(pathName + id);
 }
 
+const getTeamlessPlayers = () => {
+    return Axios.get(pathName + "/find/teamless/list")
+}
+
 
 export const playerService = {
     login,
@@ -48,5 +52,6 @@ export const playerService = {
     isLogged,
     signIn,
     getPlayerData,
-    isAdmin
+    isAdmin,
+    getTeamlessPlayers,
 }

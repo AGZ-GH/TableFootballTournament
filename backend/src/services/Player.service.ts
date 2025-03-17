@@ -10,6 +10,7 @@ import InvalidPlayerNameError from "../error/player/InvalidPlayerName.error";
 import InvalidPlayerPasswordError from "../error/player/InvalidPlayerPassword.error";
 import PlayerNameUnavailable from "../error/player/PlayerNameUnavailable.error";
 import PlayerNotFoundError from "../error/player/PlayerNotFound.error";
+import { Team } from "../entity/Team.entity";
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -17,6 +18,7 @@ const jwt = require('jsonwebtoken');
 export class PlayerService {
 
     private readonly playerRepository = AppDataSource.getRepository(Player);
+    private readonly teamRepository = AppDataSource.getRepository(Team);
     public async createPlayer(player: CreatePlayerRequest) {
         const playerNameIsUsed = await this.checkPlayerNameavAilability(player.lastname);
         if (playerNameIsUsed) {
@@ -73,11 +75,30 @@ export class PlayerService {
         return response;
     }
 
-    async deletePlayerById(id: number) {
+    public async getTeamlessPlayers(): Promise<PlayerResponse[]> {
+        const teamPlayer1SubQuery = this.teamRepository
+            .createQueryBuilder("team")
+            .select("team.p1_FK");
+
+        const teamPlayer2SubQuery = this.teamRepository
+            .createQueryBuilder("team")
+            .select("team.p2_FK");
+
+        const teamlessPlayers = await this.playerRepository
+            .createQueryBuilder("player")
+            .select(["id", "lastname", "firstname"])
+            .where("player.id NOT IN (" + teamPlayer1SubQuery.getQuery() + ")"
+                + "AND player.id NOT IN (" + teamPlayer2SubQuery.getQuery() + ")")
+            .getRawMany();
+        console.log(JSON.stringify(teamlessPlayers));
+        return teamlessPlayers.map(p => PlayerResponse.MapFromEntity(p));
+    }
+
+    public async deletePlayerById(id: number) {
         return await this.playerRepository.delete(id);
     }
 
-    async checkIsAdmin(token: string): Promise<boolean> {
+    public async checkIsAdmin(token: string): Promise<boolean> {
         return jwt.verify(token, process.env.JWT_SECRET).isAdmin;
     }
 }   

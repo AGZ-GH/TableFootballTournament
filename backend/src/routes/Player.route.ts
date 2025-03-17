@@ -75,4 +75,13 @@ router.post("/checkAdmin", async (req: Request, res: Response, next: NextFunctio
     }
 });
 
+router.get("/find/teamless/list", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const teamlessPlayers = await playerService.getTeamlessPlayers();
+        return res.status(200).send(teamlessPlayers);
+    }
+    catch (error) {
+        next(error);
+    }
+});
 module.exports = router;

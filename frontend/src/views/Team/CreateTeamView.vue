@@ -8,16 +8,16 @@
                 <tr style="text-align: center;">
                     <th class="green">Joueur 1: </th>
                     <th>
-                        <select v-model="teamlessPlayers">
-                            <option v-for="player in teamlessPlayers" :value="player1.id">{{ player.name }}</option>
+                        <select v-model="team.player1Id">
+                            <option v-for="player in teamlessPlayers" :value="player.id">{{ player.lastname }}</option>
                         </select>
                     </th>
                 </tr>
                 <tr style="text-align: center;">
                     <td class="green">Joueur 2:</td>
                     <td>
-                        <select v-model="teamlessPlayers">
-                            <option v-for="player in teamlessPlayers" :value="player2.id">{{ player.name }}</option>
+                        <select v-model="team.player2Id">
+                            <option v-for="player in teamlessPlayers" :value="player.id">{{ player.lastname }}</option>
                         </select>
                     </td>
                 </tr>
@@ -33,7 +33,7 @@
 
 <script>
 
-import { playerService } from '@/services'
+import { playerService, teamService } from '@/services'
 
 export default {
     name: 'CreateTeamView',
@@ -42,33 +42,36 @@ export default {
             team: {
                 name: "",
                 player1Id: 0,
-                player2Id: 0
+                player2Id: 0,
             },
-            teamlessPlayers: [],
+            teamlessPlayers: Object,
             errorMessages: "",
             showError: false,
         }
     },
+    mounted() {
+        playerService.getTeamlessPlayers().then(res => { this.teamlessPlayers = res.data; console.log(JSON.stringify(this.teamlessPlayers)) });
+    },
     methods: {
         createTeam: function (event) {
             this.errorMessages = "";
-            if (!this.team.name || this.player.name.trim().length === 0) {
+            if (!this.team.name || this.team.name.trim().length === 0) {
                 this.errorMessages += "Veuilliez renseigner un nom pour l'équipe!\n";
             }
-            if (this.player1Id <= 0) {
+            if (this.team.player1Id <= 0) {
                 this.errorMessages += "Il faut au moins un joueur pour créer une équipe!\n";
+            }
+            if (this.team.player1Id == this.team.player2Id) {
+                this.errorMessages += "Les deux joueurs ne peuvent être identiques !\n";
             }
             if (this.errorMessages !== "") {
                 this.showError = true
             }
             else {
-                playerService.login(this.player)
+                 teamService.createTeam(this.team)
                     .then(res => {
                         if (res.status == 200) {
-                            this.$router.push("/").then(() => { this.$router.go(0) });
-                        }
-                        if (res.status == 400) {
-                            this.showError = true
+                            this.$router.go(0);
                         }
                         if (res.status == 500) {
                             this.showError = true
