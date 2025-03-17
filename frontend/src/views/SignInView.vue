@@ -64,7 +64,6 @@ export default {
                             }
                         }
                         if (res.status == 200) {
-                            console.log("logging in");
                             playerService.login({
                                 lastname: this.player.lastname,
                                 password: this.player.password
@@ -78,7 +77,6 @@ export default {
                     })
                     .catch(err => console.error(err));
             }
-
         }
     }
 }

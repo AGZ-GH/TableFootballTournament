@@ -90,7 +90,6 @@ export class PlayerService {
             .where("player.id NOT IN (" + teamPlayer1SubQuery.getQuery() + ")"
                 + "AND player.id NOT IN (" + teamPlayer2SubQuery.getQuery() + ")")
             .getRawMany();
-        console.log(JSON.stringify(teamlessPlayers));
         return teamlessPlayers.map(p => PlayerResponse.MapFromEntity(p));
     }
 

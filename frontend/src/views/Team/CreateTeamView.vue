@@ -50,7 +50,7 @@ export default {
         }
     },
     mounted() {
-        playerService.getTeamlessPlayers().then(res => { this.teamlessPlayers = res.data; console.log(JSON.stringify(this.teamlessPlayers)) });
+        playerService.getTeamlessPlayers().then(res => { this.teamlessPlayers = res.data;});
     },
     methods: {
         createTeam: function (event) {

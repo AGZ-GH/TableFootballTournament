@@ -19,7 +19,6 @@ const getListAllTeams = () => {
 }
 
 const getPlayerTeam = (playerId: number) => {
-    console.log(playerId);
     return Axios.get(BASE_PATH + "find/byPlayer/" + playerId)
 }
 
