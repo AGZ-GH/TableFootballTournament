@@ -1,10 +1,24 @@
 import "reflect-metadata"
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
-import "express-async-errors"; 
-import {errorHandler} from "./middleware/ErrorHandler.middleware"
+import "express-async-errors";
+import { errorHandler } from "./middleware/ErrorHandler.middleware"
+
 dotenv.config();
 
+const swaggerJsdoc = require('swagger-jsdoc');
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'TFT API',
+      version: '1.0.0',
+    },
+  },
+  apis: ['./src/routes/*.ts'],
+};
+
+const swaggerUi = require('swagger-ui-express');
 
 const app: Express = express();
 
@@ -26,6 +40,7 @@ app.use("/player", playerRoute);
 app.use("/team", teamRoute);
 app.use("/tournament", tournamentRoute);
 app.use("/match", matchRoute);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(options)));
 
 //error handler 
 app.use(errorHandler);
