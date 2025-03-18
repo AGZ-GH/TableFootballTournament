@@ -1,4 +1,3 @@
-import { PlayerService } from "../services/Player.service";
 import { validateData } from "../middleware/DataValidation.middleware";
 import { loginPlayerSchema } from "../request/player/LoginPlayer.schema"
 import { checkAdmin, deletePlayer, findTeamlessPlayers, getPlayer, loginPlayer, updatePlayer } from "../controller/Player.controller";
@@ -6,8 +5,6 @@ import { updatePlayerSchema } from "../request/player/UpdatePlayer.schema";
 
 const express = require("express");
 const router = express.Router();
-
-const playerService = new PlayerService();
 
 router.get("/:playerId(\\d+)", getPlayer);
 router.post("/create");
