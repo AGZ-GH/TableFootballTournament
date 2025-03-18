@@ -1,5 +1,5 @@
 <template>
-    <div class="text-center content-center">
+    <div class="text-center content-center w-full max-w-1/2">
         <TournamentComponent :tournament="tournament" />
         <div>
             <div v-if="this.isAdmin">
@@ -29,8 +29,9 @@
                 <hr>
             </div>
         </div>
-        <div>
-            <h2 class="green text-2xl">Équipes inscrites:</h2>
+        <h2 class="green text-2xl">Équipes inscrites:</h2>
+
+        <div class="grid grid-cols-1     text-left">
             <div v-for="team in tournament.teams" :key="team.id">
                 <TeamViewComponent :team="team" />
             </div>
