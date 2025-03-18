@@ -1,21 +1,25 @@
 <template>
-    <form @submit.prevent="createTournament">
-        <div class="input-mb-3">
-            <div class="row">
+    <form @submit.prevent="createTournament" class="grid content-center">
+        <div class="flex flex-col">
+            <div class="bg-stone-200  p-2 rounded-t-2xl border-stone-500 border-2 hover:bg-stone-400 text-stone-800">
                 <input id="name" type="text" placeholder="Nom" v-model="tournament.name" />
             </div>
-            <div class="row">
+            <div class="bg-stone-200  p-2  border-stone-500 border-2 hover:bg-stone-400 text-stone-800">
                 <input id="description" type="text" placeholder="description" v-model="tournament.description" />
             </div>
-            <div class="row">
-                <input id="startDate" type="date" placeholder="" v-model="tournament.startDate" />
+            <div class="bg-stone-200 border-stone-500 p-2 border-2 hover:bg-stone-400 text-stone-800">
+                <label>Date de début:
+                    <input id="startDate" type="date" placeholder="" v-model="tournament.startDate" />
+                </label>
             </div>
 
-            <div class="row">
-                <input id="endDate" type="date" placeholder="" v-model="tournament.endDate" />
+            <div class="bg-stone-200  p-2 rounded-b-2xl border-stone-500 border-2 hover:bg-stone-400 text-stone-800">
+                <label>Date de fin:
+                    <input id="endDate" type="date" placeholder="" v-model="tournament.endDate" />
+                </label>
             </div>
             <div id="error" class="red" @v-show="showError" style="white-space: pre-line">{{ errorMessages }}</div>
-            <button class="btn" type="submit">
+            <button class="bg-stone-800 p-2 mt-6 rounded-2xl hover:bg-stone-600" type="submit">
                 Créer
             </button>
         </div>
@@ -70,10 +74,10 @@ export default {
             else {
                 tournamentService.createTournament(this.tournament)
                     .then(res => {
-                        if(res.status == 201){
+                        if (res.status == 201) {
                             this.$router.push("/").then(() => { this.$router.go(0) });
                         }
-                        else{
+                        else {
                             this.errorMessages += "Une erreure serveur est survenue\n";
                             this.showError = true;
                         }

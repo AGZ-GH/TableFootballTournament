@@ -1,30 +1,23 @@
 <template>
-    <form @submit.prevent="createTeam">
-        <div class="input-mb-3">
-            <div class="row">
-                <input id="lastname" type="text" placeholder="Nom de l'équipe" v-model="team.name" />
-            </div>
-            <table>
-                <tr style="text-align: center;">
-                    <th class="green">Joueur 1: </th>
-                    <th>
-                        <select v-model="team.player1Id">
-                            <option v-for="player in teamlessPlayers" :value="player.id">{{ player.lastname }}</option>
-                        </select>
-                    </th>
-                </tr>
-                <tr style="text-align: center;">
-                    <td class="green">Joueur 2:</td>
-                    <td>
-                        <select v-model="team.player2Id">
-                            <option v-for="player in teamlessPlayers" :value="player.id">{{ player.lastname }}</option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
+    <form @submit.prevent="createTeam" class=" grid content-center">
+        <div class="bg-stone-200  p-2 rounded-t-2xl border-stone-500 border-2 hover:bg-stone-400 text-stone-800">
+            <input id="lastname" type="text" placeholder="Nom de l'équipe" v-model="team.name" />
+        </div>
+        <div class="grid grid-cols-2 content-center text-center bg-stone-800 border-stone-500 border-2 ">
+            <div class="m-auto">Joueur 1:</div>
+            <select v-model="team.player1Id" class="bg-stone-200  p-2   text-stone-800">
+                <option v-for="player in teamlessPlayers" :value="player.id">{{ player.lastname }}</option>
+            </select>
         </div>
 
-        <button class="btn" type="submit">
+        <div class="grid grid-cols-2 text-center bg-stone-800 rounded-b-2xl border-stone-500 border-2">
+            <div class="m-auto">Joueur 2:</div>
+            <select v-model="team.player2Id" class="bg-stone-200  p-2 rounded-br-2xl   text-stone-800">
+                <option v-for="player in teamlessPlayers" :value="player.id">{{ player.lastname }}</option>
+            </select>
+        </div>
+
+        <button class="bg-stone-800 p-2 mt-6 rounded-2xl hover:bg-stone-600" type="submit">
             Créer l'équipe
         </button>
         <div id="error" class="red" @v-show="showError" style="white-space: pre-line">{{ errorMessages }}</div>
@@ -50,7 +43,7 @@ export default {
         }
     },
     mounted() {
-        playerService.getTeamlessPlayers().then(res => { this.teamlessPlayers = res.data;});
+        playerService.getTeamlessPlayers().then(res => { this.teamlessPlayers = res.data; });
     },
     methods: {
         createTeam: function (event) {
@@ -68,7 +61,7 @@ export default {
                 this.showError = true
             }
             else {
-                 teamService.createTeam(this.team)
+                teamService.createTeam(this.team)
                     .then(res => {
                         if (res.status == 200) {
                             this.$router.go(0);
