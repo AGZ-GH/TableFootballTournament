@@ -3,6 +3,9 @@ import { PlayerService } from "../services/Player.service";
 import { CreatePlayerRequest } from "../request/player/CreatePlayer.request";
 import { UpdatePlayerRequest } from "../request/player/UpdatePlayer.request";
 import { LoginPlayerRequest } from "../request/player/LoginPlayer.request";
+import { validateData } from "../middleware/DataValidation.middleware";
+import { loginPlayerSchema } from "../request/player/LoginPlayer.schema"
+import { loginPlayer } from "../controller/Player.controller";
 
 const express = require("express");
 const router = express.Router();
@@ -53,16 +56,8 @@ router.delete("/:playerId(\\d+)", async (req: Request, res: Response, next: Next
     }
 });
 
-router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const loggingData = await playerService.loginPlayer(req.body as LoginPlayerRequest);
-        return res.status(200).send(loggingData);
-    }
-    catch (error) {
-        next(error);
-    }
-});
-
+router.post("/login", validateData(loginPlayerSchema), loginPlayer);
+    
 router.post("/checkAdmin", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.headers["authorization"]?.toString().substring(7) ?? "";
