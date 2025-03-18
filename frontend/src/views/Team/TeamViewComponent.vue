@@ -1,6 +1,9 @@
 <template>
-        <h3 class = "red">{{ team.name }}</h3>
-        <div>joueurs: {{ team.player1.lastname }} et  {{ team.player2.lastname }}</div>
+    <div class="grid grid-cols-3 text-left">
+        <span class="beige">{{ team.name }} </span>
+        <span class="green">{{ team.player1.lastname }} et {{ team.player2.lastname }}</span>
+        
+    </div>
 </template>
 
 <script>

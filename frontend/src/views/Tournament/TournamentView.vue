@@ -1,40 +1,45 @@
 <template>
-    <div class="container" style="text-align: center;">
+    <div class="text-center content-center">
         <TournamentComponent :tournament="tournament" />
         <div>
             <div v-if="this.isAdmin">
-                <select v-model="selectedTeam">
-                    <option v-for="team in teams" :value="team.id">{{ team.name }}</option>
-                </select>
-                <button v-on:click="addTeamToTournament">Ajouter l'équipe au tournoi</button>
+                <div class="grid grid-cols-2">
+                    <select v-model="selectedTeam"
+                        class="bg-stone-200  p-2 rounded-l-2xl hover:bg-stone-400 text-stone-800">
+                        <option v-for="team in teams" :value="team.id">{{ team.name }}</option>
+                    </select>
+                    <button v-on:click="addTeamToTournament" class="bg-stone-800 p-2 rounded-r-2xl hover:bg-stone-600">
+                        Ajouter
+                    </button>
+                </div>
                 <div v-show="showSignInInfo" class="green"> {{ signInInfoMessage }}</div>
             </div>
             <button v-on:click="generateTournamentMatches" v-if="generateVisible">Générer les matchs du tournoi</button>
-            <div>
-                <button v-on:click="signInTournament">S'inscrire au tournois</button>
+            <div class="m-5">
+                <button class="bg-stone-800 p-2 rounded-2xl hover:bg-stone-600" v-on:click="signInTournament">S'inscrire
+                    au tournois</button>
             </div>
         </div>
+
         <div>
-            <h2 class="green">Équipes inscrites:</h2>
-            <div v-for="team in tournament.teams" :key="team.id">
-                <TeamViewComponent :team="team" />
-            </div>
-        </div>
-        <div>
-            <h2 class="green">Matches:</h2>
+            <h2 class="green text-2xl">Matches:</h2>
             <hr>
             <div v-for="match in tournament.matches" :key="match.id">
-                
                 <MatchComponent :match="match" />
                 <hr>
-                
+            </div>
+        </div>
+        <div>
+            <h2 class="green text-2xl">Équipes inscrites:</h2>
+            <div v-for="team in tournament.teams" :key="team.id">
+                <TeamViewComponent :team="team" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { tournamentService, playerService, teamService} from '@/services'
+import { tournamentService, playerService, teamService } from '@/services'
 import TournamentComponent from './TournamentComponent.vue';
 import MatchComponent from '../Match/MatchComponent.vue';
 import moment from 'moment';
