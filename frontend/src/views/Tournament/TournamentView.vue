@@ -65,7 +65,7 @@ export default {
         }
     },
     beforeMount() {
-        this.tournamentId = this.$route.params.id
+        this.tournamentId = parseInt(this.$route.params.id);
         const isAdmin = playerService.isAdmin()
             .then(answer => { this.isAdmin = answer; });
         tournamentService.getTournamentWithMatchesById(this.tournamentId)

@@ -1,14 +1,12 @@
-import { NextFunction, Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
 import { validateData } from "../middleware/DataValidation.middleware";
 import { addTeamToTournament, createTournament, deleteTournamentById, generateTournament, getAllTournaments, getTournamentById, getTournamentWithMatchesById } from "../controller/Tournament.controller";
 import { addTeamToTournamentSchema } from "../request/tournament/AddTeamToTournament.schema";
-import { createTeamSchema } from "../request/team/CreateTeam.schema";
+import { createTournamentSchema } from "../request/tournament/CreateTournament.schema";
 
 const express = require("express");
 const router = express.Router();
 
-router.post("/create", validateData(createTeamSchema), createTournament);
+router.post("/create", validateData(createTournamentSchema), createTournament);
 router.post("/generate/:tournamentId",generateTournament);
 router.post("/addTeam", validateData(addTeamToTournamentSchema), addTeamToTournament);
 router.get("/find/:tournamentId(\\d+)",getTournamentById);
