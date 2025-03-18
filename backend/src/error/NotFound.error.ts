@@ -1,7 +1,8 @@
+import { StatusCodes } from "http-status-codes";
 import { HttpError } from "./HttpError";
 
 export default class NotFoundError extends HttpError {
-    private static readonly statusCode = 404;
+    private static readonly statusCode = StatusCodes.NOT_FOUND;
     private readonly code: number;
     private readonly context: { [key: string]: any };
 

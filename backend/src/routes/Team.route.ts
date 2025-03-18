@@ -3,6 +3,7 @@ import { TeamService } from "../services/Team.service";
 import { CreateTeamRequest } from "../request/team/CreateTeam.request";
 import { UpdateTeamRequest } from "../request/team/UpdateTeam.request";
 import { FilterTeamByIdRequest } from "../request/team/FilterTeamById.request";
+import { StatusCodes } from "http-status-codes";
 
 const express = require("express");
 const router = express.Router();
@@ -34,7 +35,7 @@ router.get("/find/byPlayer/:playerId(\\d+)", async (req: Request, res: Response,
 router.post("/filter/byIds/list", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const team = await teamService.filterTeamsByIds(req.body as FilterTeamByIdRequest);
-        return res.status(200).json(team);
+        return res.status(StatusCodes.OK).json(team);
     }
     catch (error) {
         next(error);
@@ -44,7 +45,7 @@ router.post("/filter/byIds/list", async (req: Request, res: Response, next: Next
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
         await teamService.createTeam(req.body as CreateTeamRequest);
-        return res.status(200).send("Team created");
+        return res.status(StatusCodes.CREATED).send("Team created");
     }
     catch (error) {
         next(error);
@@ -55,7 +56,7 @@ router.post("/:teamId(\\d+)", async (req: Request, res: Response, next: NextFunc
     try {
         const id = Number(req.params.teamId);
         teamService.updateTeamById(id, req.body as UpdateTeamRequest);
-        return res.status(200).send("Team updated");
+        return res.status(StatusCodes.OK).send("Team updated");
     }
     catch (error) {
         next(error);
@@ -65,7 +66,7 @@ router.post("/:teamId(\\d+)", async (req: Request, res: Response, next: NextFunc
 router.get("/all", async (req: Request, res: Response): Promise<Response> => {
     try {
         const tournaments = await teamService.getAllTeams();
-        return res.status(200).json(tournaments);
+        return res.status(StatusCodes.OK).json(tournaments);
     }
     catch (error) {
         console.error(error);
@@ -75,7 +76,7 @@ router.get("/all", async (req: Request, res: Response): Promise<Response> => {
 router.get("/list/all", async (req: Request, res: Response): Promise<Response> => {
     try {
         const tournaments = await teamService.getAllTeamsIdAndName();
-        return res.status(200).json(tournaments);
+        return res.status(StatusCodes.OK).json(tournaments);
     }
     catch (error) {
         console.error(error);
@@ -87,7 +88,7 @@ router.delete("/:teamId(\\d+)", async (req: Request, res: Response): Promise<Res
     const id = Number(req.params.teamId);
     try {
         await teamService.deleteTeamById(id);
-        return res.status(200).send("Team deleted");
+        return res.status(StatusCodes.OK).send("Team deleted");
     }
     catch (error) {
         console.error(error);

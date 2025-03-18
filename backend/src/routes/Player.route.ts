@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import { PlayerService } from "../services/Player.service";
 import { CreatePlayerRequest } from "../request/player/CreatePlayer.request";
 import { UpdatePlayerRequest } from "../request/player/UpdatePlayer.request";
-import { LoginPlayerRequest } from "../request/player/LoginPlayer.request";
 import { validateData } from "../middleware/DataValidation.middleware";
 import { loginPlayerSchema } from "../request/player/LoginPlayer.schema"
 import { loginPlayer } from "../controller/Player.controller";
+import { StatusCodes } from "http-status-codes";
 
 const express = require("express");
 const router = express.Router();
@@ -17,7 +17,7 @@ router.get("/:playerId(\\d+)", async (req: Request, res: Response, next: NextFun
     try {
         const id = Number(req.params.playerId);
         const player = await playerService.getPlayerById(id);
-        return res.status(200).json(player);
+        return res.status(StatusCodes.OK).json(player);
     }
     catch (error) {
         next(error);
@@ -27,7 +27,7 @@ router.get("/:playerId(\\d+)", async (req: Request, res: Response, next: NextFun
 router.post("/create", async (req: Request, res: Response, next: NextFunction) => {
     try {
         await playerService.createPlayer(req.body as CreatePlayerRequest);
-        return res.status(200).send("Player created");
+        return res.status(StatusCodes.CREATED).send("Player created");
     }
     catch (error) {
         next(error);
@@ -38,7 +38,7 @@ router.post("/update/:playerId(\\d+)", async (req: Request, res: Response, next:
     try {
         const id = Number(req.params.playerId);
         await playerService.UpdatePlayer(id, req.body as UpdatePlayerRequest);
-        return res.status(200).send("Player updated");
+        return res.status(StatusCodes.OK).send("Player updated");
     }
     catch (error) {
         next(error);
@@ -49,7 +49,7 @@ router.delete("/:playerId(\\d+)", async (req: Request, res: Response, next: Next
     const id = Number(req.params.playerId);
     try {
         await playerService.deletePlayerById(id)
-        return res.status(200).send("Player deleted");
+        return res.status(StatusCodes.OK).send("Player deleted");
     }
     catch (error) {
         next(error);
@@ -57,13 +57,13 @@ router.delete("/:playerId(\\d+)", async (req: Request, res: Response, next: Next
 });
 
 router.post("/login", validateData(loginPlayerSchema), loginPlayer);
-    
+
 router.post("/checkAdmin", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.headers["authorization"]?.toString().substring(7) ?? "";
         const isAdmin = await playerService.checkIsAdmin(token);
 
-        return isAdmin ? res.status(200).send() : res.status(401);
+        return isAdmin ? res.status(StatusCodes.OK).send() : res.status(401);
     }
     catch (error) {
         next(error);
@@ -73,7 +73,7 @@ router.post("/checkAdmin", async (req: Request, res: Response, next: NextFunctio
 router.get("/find/teamless/list", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const teamlessPlayers = await playerService.getTeamlessPlayers();
-        return res.status(200).send(teamlessPlayers);
+        return res.status(StatusCodes.OK).send(teamlessPlayers);
     }
     catch (error) {
         next(error);

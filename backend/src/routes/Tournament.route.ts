@@ -3,6 +3,7 @@ import { TournamentService } from "../services/Tournament.service";
 import { CreateTournamentRequest } from "../request/tournament/CreateTournament.request";
 import { AddTeamToTournamentRequest } from "../request/tournament/AddTeamToTournament.request";
 import { PlayerService } from "../services/Player.service";
+import { StatusCodes } from "http-status-codes";
 
 const express = require("express");
 const router = express.Router();
@@ -31,14 +32,14 @@ router.post("/generate/:tournamentId", async (req: Request, res: Response, next:
         .catch(error => {
             next(error);
         })
-    return res.status(200).send({ data: "Tournament created" });
+    return res.status(StatusCodes.OK).send({ data: "Tournament created" });
 });
 
 router.post("/addTeam", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = req.body as AddTeamToTournamentRequest;
         const tournament = await tournamentService.addTeamToTournament(data.tournamentId, data.teamId)
-        return res.status(200).json(tournament);
+        return res.status(StatusCodes.OK).json(tournament);
     } catch (error) {
         next(error);
     }
@@ -48,8 +49,7 @@ router.get("/find/:tournamentId(\\d+)", async (req: Request, res: Response, next
     const id = Number(req.params.tournamentId);
     try {
         const tournament = await tournamentService.getTournamentById(id)
-            .catch((error) => res.status(500).send("Failed to get tournament"));
-        return res.status(200).json(tournament);
+        return res.status(StatusCodes.OK).json(tournament);
     }
     catch (error) {
         next(error);
@@ -59,7 +59,7 @@ router.get("/find/:tournamentId(\\d+)", async (req: Request, res: Response, next
 router.get("/all", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const tournaments = await tournamentService.getAllTournaments();
-        return res.status(200).json(tournaments);
+        return res.status(StatusCodes.OK).json(tournaments);
     }
     catch (error) {
         next(error);
@@ -69,7 +69,7 @@ router.get("/find/withMatches/:tournamentId(\\d+)", async (req: Request, res: Re
     try {
         const id = Number(req.params.tournamentId);
         const tournaments = await tournamentService.getTournamentWithMatchesById(id);
-        return res.status(200).json(tournaments);
+        return res.status(StatusCodes.OK).json(tournaments);
     }
     catch (error) {
         next(error);
@@ -79,7 +79,7 @@ router.delete("/:tournamentId(\\d+)", async (req: Request, res: Response, next: 
     const id = Number(req.params.productID);
     try {
         await tournamentService.deleteTournamentById(id)
-        return res.status(200).send("Tournament deleted");
+        return res.status(StatusCodes.OK).send("Tournament deleted");
     }
     catch (error) {
         next(error);

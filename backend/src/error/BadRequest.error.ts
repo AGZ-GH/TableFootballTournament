@@ -1,7 +1,8 @@
+import { StatusCodes } from "http-status-codes";
 import { HttpError } from "./HttpError";
 
 export default class BadRequestError extends HttpError {
-    private static readonly statusCode = 400;
+    private static readonly statusCode = StatusCodes.BAD_REQUEST;
     private readonly code: number;
     private readonly context: { [key: string]: any };
 
