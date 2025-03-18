@@ -1,99 +1,19 @@
-import { NextFunction, Request, Response } from "express";
-import { TeamService } from "../services/Team.service";
-import { CreateTeamRequest } from "../request/team/CreateTeam.request";
-import { UpdateTeamRequest } from "../request/team/UpdateTeam.request";
-import { FilterTeamByIdRequest } from "../request/team/FilterTeamById.request";
-import { StatusCodes } from "http-status-codes";
+import { createTeam, deleteTeamById, filterTeamsByIds, getAllTeams, getAllTeamsIdAndName, getTeamById, getTeamByPlayerId, updateTeamById } from "../controller/Team.controller";
+import { validateData } from "../middleware/DataValidation.middleware";
+import { createTeamSchema } from "../request/team/CreateTeam.schema";
+import { filterTeamByIdSchema } from "../request/team/FilterTeamById.schema";
+import { updateTeamSchema } from "../request/team/UpdateTeam.schema";
 
 const express = require("express");
 const router = express.Router();
 
-const teamService = new TeamService();
-
-router.get("/find/:teamId(\\d+)", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const id = Number(req.params.teamId);
-        const team = await teamService.getTeamById(id);
-        return res.status(200).json(team);
-    }
-    catch (error) {
-        next(error);
-    }   
-});
-
-router.get("/find/byPlayer/:playerId(\\d+)", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const id = Number(req.params.playerId);
-        const team = await teamService.getTeamByPlayerId(id);
-        return res.status(200).json(team);
-    }
-    catch (error) {
-        next(error);
-    }
-});
-
-router.post("/filter/byIds/list", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const team = await teamService.filterTeamsByIds(req.body as FilterTeamByIdRequest);
-        return res.status(StatusCodes.OK).json(team);
-    }
-    catch (error) {
-        next(error);
-    }
-});
-
-router.post("/", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        await teamService.createTeam(req.body as CreateTeamRequest);
-        return res.status(StatusCodes.CREATED).send("Team created");
-    }
-    catch (error) {
-        next(error);
-    }
-});
-
-router.post("/:teamId(\\d+)", async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const id = Number(req.params.teamId);
-        teamService.updateTeamById(id, req.body as UpdateTeamRequest);
-        return res.status(StatusCodes.OK).send("Team updated");
-    }
-    catch (error) {
-        next(error);
-    }
-});
-
-router.get("/all", async (req: Request, res: Response): Promise<Response> => {
-    try {
-        const tournaments = await teamService.getAllTeams();
-        return res.status(StatusCodes.OK).json(tournaments);
-    }
-    catch (error) {
-        console.error(error);
-        return res.status(500).send("Failed to fetch all the teams");
-    }
-});
-router.get("/list/all", async (req: Request, res: Response): Promise<Response> => {
-    try {
-        const tournaments = await teamService.getAllTeamsIdAndName();
-        return res.status(StatusCodes.OK).json(tournaments);
-    }
-    catch (error) {
-        console.error(error);
-        return res.status(500).send("Failed to fetch all the teams list");
-    }
-});
-
-router.delete("/:teamId(\\d+)", async (req: Request, res: Response): Promise<Response> => {
-    const id = Number(req.params.teamId);
-    try {
-        await teamService.deleteTeamById(id);
-        return res.status(StatusCodes.OK).send("Team deleted");
-    }
-    catch (error) {
-        console.error(error);
-        return res.status(500).send("Failed to delete team")
-    }
-});
+router.get("/find/:teamId(\\d+)", getTeamById);
+router.get("/find/byPlayer/:playerId(\\d+)", getTeamByPlayerId);
+router.post("/filter/byIds/list", validateData(filterTeamByIdSchema), filterTeamsByIds);
+router.post("/", validateData(createTeamSchema), createTeam);
+router.post("/:teamId(\\d+)", validateData(updateTeamSchema), updateTeamById);
+router.get("/all", getAllTeams);
+router.get("/list/all", getAllTeamsIdAndName);
+router.delete("/:teamId(\\d+)", deleteTeamById);
 
 module.exports = router;
