@@ -1,4 +1,6 @@
 @import './base.css';
+@import "tailwindcss";
+
 
 #app {
   max-width: 1280px;
@@ -51,7 +53,7 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    display:grid;
+    display:flex;
     place-items: center;
   }
 

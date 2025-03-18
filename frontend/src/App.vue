@@ -29,100 +29,51 @@ export default {
 
 <template>
   <header>
-    <div >
-      <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
-    </div>
-    <div>
-      <h2 class="red">Tournoi de baby-foot manager</h2>
-    </div>
-    <div class="wrapper">
-    </div>
-    <ul>
-      <nav>
-        <div v-if="!this.isLogged">
-          <div>
-            <RouterLink to="/login">Se connecter</RouterLink>
-          </div>
-          <div>
-            <RouterLink to="/signin">S'inscrire</RouterLink>
-          </div>
-        </div>
-        <div v-if="this.isLogged">
-          <div>
-            <RouterLink to="/profile">Profil</RouterLink>
-          </div>
-          <div>
-            <RouterLink to="/tournaments">Tournois</RouterLink>
-          </div>
-          <div>
-            <RouterLink to="/leaderboard">Classement</RouterLink>
-          </div>
-          <div v-if="this.isAdmin">
-            <div class="red">Admin:</div>
-            <div>
-              <RouterLink to="/tournament/create">Créer un tournoi</RouterLink>
-            </div>
-            <div>
-              <RouterLink to="/team/create">Créer une Équipe</RouterLink>
-            </div>
-            <div>
-              <RouterLink to="/team/manage">Gérer les Équipes</RouterLink>
-            </div>
-          </div>
-          <div>
-            <button @click="logout()">Déconnexion</button>
-          </div>
-        </div>
-      </nav>
-    </ul>
-
   </header>
+  <div class="bg-grey-900  flex flex-col content-center gap-6 w-64 p-10 m-10">
+    <div class="content-centered grid">
+      <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
+
+    </div>
+    <h1 class="text-red-900 font-bold text-center">Tournoi de baby-foot manager</h1>
+    <div class="">
+      <div v-if="!this.isLogged" class="">
+        <div>
+          <RouterLink to="/login">Se connecter</RouterLink>
+        </div>
+        <div>
+          <RouterLink to="/signin">S'inscrire</RouterLink>
+        </div>
+      </div>
+      <div v-if="this.isLogged">
+        <div>
+          <RouterLink to="/profile">Profil</RouterLink>
+        </div>
+        <div>
+          <RouterLink to="/tournaments">Tournois</RouterLink>
+        </div>
+        <div>
+          <RouterLink to="/leaderboard">Classement</RouterLink>
+        </div>
+        <div v-if="this.isAdmin" class="mt-6">
+          <div class="text-red-900 font-bold">Admin:</div>
+          <div>
+            <RouterLink to="/tournament/create">Créer un tournoi</RouterLink>
+          </div>
+          <div>
+            <RouterLink to="/team/create">Créer une Équipe</RouterLink>
+          </div>
+          <div>
+            <RouterLink to="/team/manage">Gérer les Équipes</RouterLink>
+          </div>
+        </div>
+        <button @click="logout()" class="bg-stone-800 p-2 mt-6 rounded-2xl hover:bg-stone-600">Déconnexion</button>
+      </div>
+    </div>
+  </div>
   <RouterView />
 </template>
 
 <script>
 
 </script>
-
-<style scoped>
-.logo {
-  display: block;
-}
-
-nav {
-  width: 100%;
-  font-size: 8px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: flexbox;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 102px) {
-  nav {
-    max-width: 240px;
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
