@@ -6,11 +6,11 @@ import { createMatchSchema } from "../request/match/CreateMatch.schema";
 const express = require("express");
 const router = express.Router();
 
-router.get("/find/:matchId", getMatchById);
+router.get("/find/:matchId(\\d+)", getMatchById);
 router.get("/list/all", findAllMatches);
-router.get("/find/byTournament/:tournamentId", findTournamentMatches);
+router.get("/find/byTournament/:tournamentId(\\d+)", findTournamentMatches);
 router.post("/create", validateData(createMatchSchema),createMatch);
-router.post("/:matchId",validateData(updateMatchSchema),updateMatch);
-router.delete("/delete/:matchId", deleteMatch);
+router.post("/update/:matchId(\\d+)",validateData(updateMatchSchema),updateMatch);
+router.delete("/delete/:matchId(\\d+)", deleteMatch);
 
 module.exports = router;

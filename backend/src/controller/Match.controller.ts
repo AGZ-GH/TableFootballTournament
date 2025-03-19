@@ -51,6 +51,7 @@ export const createMatch = async (req: Request, res: Response, next: NextFunctio
 export const updateMatch = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = Number(req.params.matchId);
+        console.log(req.body)
         matchService.updateMatch(id, req.body as UpdateMatchRequest)
         return res.status(StatusCodes.OK).send("Match updated");
     }

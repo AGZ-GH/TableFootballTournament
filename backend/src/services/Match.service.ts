@@ -33,26 +33,26 @@ export class MatchService {
         await this.matchRepository.save(newMatch);
     }
 
-    public async updateMatch(id: number, match: UpdateMatchRequest) {
+    public async updateMatch(id: number, updateMatchData: UpdateMatchRequest) {
+        const currentMatch = await this.getMatchById(id);
         const updatedMatch = new Match();
+
         updatedMatch.id = id;
-        updatedMatch.date = match.date;
-        updatedMatch.scoreTeam1 = 0;
-        updatedMatch.scoreTeam2 = 0;
+        updatedMatch.date = updateMatchData.date ?? currentMatch.date;
+        updatedMatch.scoreTeam1 = updateMatchData.scoreTeam1 ?? currentMatch.scoreTeam1;
+        updatedMatch.scoreTeam2 = updatedMatch.scoreTeam2 ?? currentMatch.scoreTeam2;
 
         const team1 = new Team();
-        team1.id = match.team1Id;
-        updatedMatch.team1 = team1
+        team1.id = updateMatchData.team1Id ?? currentMatch.team1.id ?? undefined;
+        updatedMatch.team1 = team1;
 
         const team2 = new Team();
-        if (match.team2Id) {
-            team2.id = match.team2Id;
-            updatedMatch.team2 = team2
+        if (updateMatchData.team2Id) {
+            team2.id = updateMatchData.team2Id ?? currentMatch.team2.id ?? undefined;
+            updatedMatch.team2 = team2;
         }
 
-        const tournament = new Tournament();
-        tournament.id = match.tournamentId;
-
+        updatedMatch.closed = updateMatchData.closed ?? currentMatch.closed
         await this.matchRepository.save(updatedMatch);
     }
 
