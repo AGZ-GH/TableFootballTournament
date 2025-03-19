@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-console.log('http://'+ import.meta.env.VITE_BACKEND_HOST +':'+ import.meta.env.VITE_BACKEND_DOCKER_PORT   )
-
 const Axios = axios.create({
     baseURL: 'http://'+ import.meta.env.VITE_BACKEND_HOST +':'+ import.meta.env.VITE_BACKEND_DOCKER_PORT
 });

@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col w-full p-5 m-1 gap-7 ">
         <h1 class=" text-3xl font-extrabold text-red-900">{{ tournament.name }}</h1>
-        <div>{{ tournament.description }}</div>
+        <div class="w-auto h-auto">{{ tournament.description }}</div>
         <div>
             <div class=" grid grid-cols-2">
                 <div class="green" id="start">Date de début: </div>

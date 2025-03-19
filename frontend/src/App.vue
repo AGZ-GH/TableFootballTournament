@@ -38,9 +38,6 @@ export default {
 </script>
 
 <template>
-  <header>
-  </header>
-
   <div class="bg-grey-900  flex flex-col content-center gap-6 w-128 p-10 m-10">
     <div class="ml-13" @click="goHome()">
       <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />

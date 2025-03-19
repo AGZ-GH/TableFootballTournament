@@ -8,8 +8,7 @@
             <span v-if="match.team2" class="overflow-hidden">{{ match.team2.name }}</span>
             <span v-else> - </span>
         </div>
-
-    </div>
+        </div>
 </template>
 
 <script>
