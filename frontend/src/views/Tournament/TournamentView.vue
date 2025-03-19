@@ -15,9 +15,14 @@
                 <div v-show="showSignInInfo" class="green"> {{ signInInfoMessage }}</div>
             </div>
             <button v-on:click="generateTournamentMatches" v-if="generateVisible">Générer les matchs du tournoi</button>
-            <div class="m-5">
-                <button class="bg-stone-800 p-2 rounded-2xl hover:bg-stone-600" v-on:click="signInTournament">S'inscrire
-                    au tournois</button>
+            <div class="m-5" v-if="generateVisible">
+                <button class="bg-stone-800 p-2 rounded-2xl hover:bg-stone-600" v-on:click="signInTournament">
+                    S'inscrire au tournois
+                </button>
+                <div v-if="signInErrorMessageVisible" class="red"> {{ signInErrorMessage }}</div>
+            </div>
+            <div v-else class="beige">
+                Inscriptions fermées !
             </div>
         </div>
 
@@ -31,7 +36,7 @@
         </div>
         <h2 class="green text-2xl">Équipes inscrites:</h2>
 
-        <div class="grid grid-cols-1     text-left">
+        <div class="grid grid-cols-1 text-left">
             <div v-for="team in tournament.teams" :key="team.id">
                 <TeamViewComponent :team="team" />
             </div>
@@ -63,6 +68,8 @@ export default {
             isAdmin: false,
             selectedTeam: 0,
             teams: [],
+            signInErrorMessage: "",
+            signInErrorMessageVisible: false,
         }
     },
     beforeMount() {
@@ -83,8 +90,6 @@ export default {
                 }
             })
             .catch(err => console.error(err));
-
-
     },
     methods: {
         addTeamToTournament() {
@@ -109,12 +114,32 @@ export default {
         },
 
         signInTournament() {
-            teamService.getPlayerTeam(localStorage.getItem("userId")).then((res) => {
-                tournamentService.addTeamToTournament(res.data.id, this.tournamentId).then((result) => {
-                    this.tournament.teams.push(result.data);
-                }
-                ).catch(err => console.error(err));
-            }).catch(err => console.error(err));
+            this.signInErrorMessageVisible = false;
+            if (this.tournament.matches.length && this.tournament.matches.length != 0) {
+                this.signInErrorMessageVisible = true;
+                this.signInErrorMessage = "Le tournois a déjà été plannifié !";
+            }
+            else {
+                teamService.getPlayerTeam(playerService.getPlayerId()).then((res) => {
+                    if (!res.data.id) {
+                        this.signInErrorMessageVisible = true;
+                        this.signInErrorMessage = "Il vous faut une équipe pour vous inscrire";
+                    }
+                    tournamentService.addTeamToTournament(res.data.id, this.tournamentId).then((result) => {
+                        if (result.status == 200) {
+                            this.tournament.teams.push(result.data);
+                        }
+
+                        if (result.status == 400) {
+                            if (result.response.data.error.includes("is already in the tournament")) {
+                                this.signInErrorMessageVisible = true;
+                                this.signInErrorMessage = "Vous êtes déjà inscrit!";
+                            }
+                        }
+                    }
+                    ).catch(err => console.error(err));
+                }).catch(err => console.error(err));
+            }
         }
     }
 }

@@ -49,7 +49,7 @@ export default {
                 teamService.createTeam(this.team)
                     .then(res => {
                         if (res.status == 201) {
-                            this.$router.push("/tournaments")
+                            this.$router.push("/tournaments").then(() => { this.$router.go(0) })
                         }
                         if (res.status == 500) {
                             this.showError = true

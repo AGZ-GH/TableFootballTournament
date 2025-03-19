@@ -5,25 +5,34 @@
             <div>{{ player.firstname }}</div>
             <div class="green">Nom:</div>
             <div>{{ player.lastname }}</div>
+            <div v-if="team.name" class="green"> Équipe:</div>
+            <div v-if="team.name">{{ team.name }}</div>
         </div>
     </div>
 
 </template>
 
 <script>
-import { playerService } from '@/services'
+import { playerService, teamService } from '@/services'
 
 export default {
     name: 'ProfileView',
     data() {
         return {
-            player: []
+            player: [],
+            team: [],
         }
     },
     mounted() {
-        playerService.getPlayerData(localStorage.getItem('userId'))
+        const playerId = playerService.getPlayerId()
+        playerService.getPlayerData(playerId)
             .then(res => {
                 this.player = res.data
+            })
+            .catch(err => console.error(err));
+        teamService.getPlayerTeam(playerId)
+            .then(res => {
+                this.team = res.data
             })
             .catch(err => console.error(err));
     }
