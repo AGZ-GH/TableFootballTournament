@@ -11,6 +11,7 @@ import NotFoundView from '@/views/NotFoundView.vue';
 import TournamentsListView from '@/views/Tournament/TournamentsListView.vue';
 import CreateTournamentView from '@/views/Tournament/CreateTournamentView.vue';
 import TournamentView from '@/views/Tournament/TournamentView.vue';
+import CreateTeamAdminView from '@/views/Team/CreateTeamAdminView.vue';
 import CreateTeamView from '@/views/Team/CreateTeamView.vue';
 
 const router = createRouter({
@@ -67,6 +68,11 @@ const router = createRouter({
     {
       path: '/team/create',
       name: 'createTeam',
+      component: CreateTeamAdminView,
+    },
+    {
+      path: '/team/new',
+      name: 'newTeam',
       component: CreateTeamView,
     },
     {

@@ -26,12 +26,10 @@ export default {
       playerService.logout();
       this.$router.push("/login").then(() => { this.$router.go(0) });
     },
-    goHome(){
+    goHome() {
       this.$router.push("/");
-
     },
     checkSession() {
-
     },
   }
 }
@@ -55,12 +53,14 @@ export default {
       </div>
       <div v-if="isLogged">
         <ProfileView />
-
         <div>
           <RouterLink to="/tournaments">Tournois</RouterLink>
         </div>
         <div>
           <RouterLink to="/leaderboard">Classement</RouterLink>
+        </div>
+        <div>
+          <RouterLink to="/team/new">Créer son équipe</RouterLink>
         </div>
         <div v-if="isAdmin" class="mt-6">
           <div class="text-red-900 font-bold mb-6">Admin:</div>

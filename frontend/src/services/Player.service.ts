@@ -6,6 +6,16 @@ const login = async (credentials: any) => {
     return Axios.post(pathName + "login", credentials);
 }
 
+const getPlayerId = () => {
+    const id = localStorage.getItem("userId");
+    if(id) {return parseInt(id)};
+    return 0;
+}
+
+const getPlayerTeam = () => {
+    return Axios.get(pathName + "team/" + playerService.getPlayerId());
+}
+
 const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
@@ -54,4 +64,6 @@ export const playerService = {
     getPlayerData,
     isAdmin,
     getTeamlessPlayers,
+    getPlayerId,
+    getPlayerTeam,
 }

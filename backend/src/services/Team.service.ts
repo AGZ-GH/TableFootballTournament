@@ -22,12 +22,16 @@ export class TeamService {
 
         const p1 = new Player();
         p1.id = team.player1Id;
-        const p2 = new Player();
-        p2.id = team.player2Id;
 
         newTeam.name = team.name;
         newTeam.player1 = p1;
-        newTeam.player2 = p2;
+
+        if (team.player2Id) {
+            const p2 = new Player();
+            p2.id = team.player2Id;
+            newTeam.player2 = p2;
+        }
+
         await this.teamRepository.save(newTeam);
     }
 
@@ -80,13 +84,14 @@ export class TeamService {
     public async filterTeamsByIds(req: FilterTeamByIdRequest): Promise<TeamListResponse[]> {
         const ids = req.teamIds ?? [];
         const teamEntities = await this.teamRepository
-            .find({ 
-                select: { 
-                id: true, 
-                name: true }, 
-                where: { 
-                    id: Not(In(ids)) 
-                } 
+            .find({
+                select: {
+                    id: true,
+                    name: true
+                },
+                where: {
+                    id: Not(In(ids))
+                }
             });
         return teamEntities.map(t => TeamListResponse.MapFromEntity(t));
     }

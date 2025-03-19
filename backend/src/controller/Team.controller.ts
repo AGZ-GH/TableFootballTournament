@@ -42,6 +42,7 @@ export const filterTeamsByIds = async (req: Request, res: Response, next: NextFu
 
 export const createTeam = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        console.log(req.body);
         await teamService.createTeam(req.body as CreateTeamRequest);
         return res.status(StatusCodes.CREATED).send("Team created");
     }
