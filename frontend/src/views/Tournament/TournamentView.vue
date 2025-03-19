@@ -14,7 +14,7 @@
                 </div>
                 <div v-show="showSignInInfo" class="green"> {{ signInInfoMessage }}</div>
             </div>
-            <button v-on:click="generateTournamentMatches" v-if="generateVisible">Générer les matchs du tournoi</button>
+            <button v-on:click="generateTournamentMatches" v-if="generateVisible && isAdmin" class="bg-stone-800 p-2 rounded-2xl hover:bg-stone-600">Générer les matchs du tournoi</button>
             <div class="m-5" v-if="generateVisible">
                 <button class="bg-stone-800 p-2 rounded-2xl hover:bg-stone-600" v-on:click="signInTournament">
                     S'inscrire au tournois
