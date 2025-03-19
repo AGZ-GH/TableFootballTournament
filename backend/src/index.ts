@@ -22,7 +22,7 @@ const swaggerUi = require('swagger-ui-express');
 
 const app: Express = express();
 
-const port = process.env.PORT ?? 3000;
+const port = process.env.BACKEND_DOCKER_PORT ?? 3000;
 
 app.use(express.json());
 

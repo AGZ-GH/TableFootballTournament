@@ -1,0 +1,45 @@
+services:
+  mysqldb:
+    image: mysql:8.0.41
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DATABASE_PWD
+      - MYSQL_USER=$DATABASE_USERNAME 
+      - MYSQL_DATABASE=$DATABASE_NAME
+      - MYSQL_PASSWORD=$DATABASE_PWD
+    ports:
+      - $DATABASE_PORT:3306           
+    volumes:
+      - db:/var/lib/mysql
+
+  backend:
+    depends_on:
+      - mysqldb
+      - frontend
+    build: ./backend
+    ports:
+      - $BACKEND_DOCKER_PORT:$BACKEND_DOCKER_PORT
+    environment:
+      - BACKEND_DOCKER_PORT=$BACKEND_DOCKER_PORT
+      - DATABASE_NAME=$DATABASE_NAME
+      - DATABASE_PORT=$DATABASE_PORT
+      - DATABASE_HOST=$DATABASE_HOST
+      - DATABASE_USERNAME=$DATABASE_USERNAME
+      - DATABASE_PWD=$DATABASE_PWD
+      - JWT_SECRET=$JWT_SECRET
+    stdin_open: true
+    tty: true
+
+  frontend:
+    build: ./frontend
+    ports:
+      - $FRONTEND_PORT:$FRONTEND_PORT
+    environment:
+      - VITE_BACKEND_HOST=$BACKEND_HOST
+      - VITE_BACKEND_DOCKER_PORT=$BACKEND_DOCKER_PORT
+    expose: 
+      - 5713
+    stdin_open: true
+    tty: true
+volumes:
+  db:
