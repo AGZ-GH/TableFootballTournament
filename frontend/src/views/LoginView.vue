@@ -1,19 +1,19 @@
 <template>
-    <form @submit.prevent="login" class="content-center">
-        <div class="grid content-center">
-            <div class="row">
-                <input id="lastname" type="text" placeholder="Nom" v-model="player.lastname" 
-                class ="bg-stone-200  p-2 rounded-t-2xl border-stone-500 border-2 hover:bg-stone-400 text-stone-800" />
+    <form @submit.prevent="login" class="grid content-center">
+            <div class="">
+                <input id="lastname" type="text" placeholder="Nom" v-model="player.lastname"
+                    class="bg-stone-200  p-2 rounded-t-2xl border-stone-500 border-2 hover:bg-stone-400 text-stone-800" />
             </div>
-            <div
-            class ="bg-stone-200  p-2 rounded-b-2xl border-stone-500 border-2 hover:bg-stone-400 text-stone-800">
-                <input id="password" type="password" placeholder="Mot de passe" v-model="player.password" />
+            <div>
+                <input id="password" type="password" placeholder="Mot de passe" v-model="player.password"
+                    class="bg-stone-200  p-2 rounded-b-2xl border-stone-500 border-2 hover:bg-stone-400 text-stone-800" />
             </div>
-            <button class="bg-stone-800 p-2 mt-6 rounded-2xl hover:bg-stone-600" type="submit">
-                Connexion
-            </button>
+            <div>
+                <button class="bg-stone-800 p-2 mt-6 rounded-2xl hover:bg-stone-600" type="submit">
+                    Connexion
+                </button>
+            </div>
             <div id="error" class="red" @v-show="showError" style="white-space: pre-line">{{ errorMessages }}</div>
-        </div>
     </form>
 </template>
 

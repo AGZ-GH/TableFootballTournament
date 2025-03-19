@@ -1,21 +1,24 @@
 <template>
     <form @submit.prevent="signIn" class="content-center">
         <div class="grid">
-            <div class="row">
-                <input id="firstname" type="text" placeholder="Prénom" v-model="player.firstname" 
-                class ="bg-stone-200  p-2 rounded-t-2xl border-stone-500 border-2 hover:bg-stone-400 text-stone-800"/>
+            <div class="">
+                <input id="firstname" type="text" placeholder="Prénom" v-model="player.firstname"
+                    class="bg-stone-200  p-2 rounded-t-2xl border-stone-500 border-2 hover:bg-stone-400 text-stone-800" />
             </div>
-            <div class="row">
-                <input id="lastname" type="text" placeholder="Nom" v-model="player.lastname" 
-                class ="bg-stone-200  p-2 border-stone-500 border-2 hover:bg-stone-400 text-stone-800"/>
+            <div class="">
+                <input id="lastname" type="text" placeholder="Nom" v-model="player.lastname"
+                    class="bg-stone-200  p-2 border-stone-500 border-2 hover:bg-stone-400 text-stone-800" />
             </div>
-            <div class="row">
-                <input id="password" type="password" placeholder="Mot de passe" v-model="player.password" 
-                class ="bg-stone-200  p-2 rounded-b-2xl border-stone-500 border-2 hover:bg-stone-400 text-stone-800"/>
+            <div class="">
+                <input id="password" type="password" placeholder="Mot de passe" v-model="player.password"
+                    class="bg-stone-200  p-2 rounded-b-2xl border-stone-500 border-2 hover:bg-stone-400 text-stone-800" />
             </div>
-            <button class="bg-stone-800 p-2 mt-6 rounded-2xl hover:bg-stone-600" type="submit">
-                S'inscrire
-            </button>
+            <div>
+                <button class="bg-stone-800 p-2 mt-6 rounded-2xl hover:bg-stone-600" type="submit">
+                    S'inscrire
+                </button>
+            </div>
+
             <div id="error" class="red" @v-show="showError" style="white-space: pre-line">{{ errorMessages }}</div>
 
         </div>
@@ -66,7 +69,7 @@ export default {
                                 this.errorMessages = "Ce nom de joueur est déjà prit !";
                             }
                         }
-                        if (res.status == 200) {
+                        if (res.status == 201) {
                             playerService.login({
                                 lastname: this.player.lastname,
                                 password: this.player.password
