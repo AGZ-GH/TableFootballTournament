@@ -127,7 +127,7 @@ export class TournamentService {
         // generate tournament as a binary tree
         // given n nb of team
         const unassignedTeams = [...tournament.teams];
-        const nbMatches = tournament.teams.length / 2 + tournament.teams.length % 2
+        const nbMatches = tournament.teams.length
 
         for (let i = 0; i <= nbMatches; i++) {
             // first node
@@ -179,7 +179,8 @@ export class TournamentService {
         //there should be a team unassigned
         if (unassignedTeams.length != 0) {
             for (let m of matches) {
-                // we search the only unbalanced node to give it the remaining team
+                // we qualify the player for round 2 immediatly
+                // the next match being the one unbalanced
                 if (m.leftMatch && !m.rightMatch) {
                     m.team1 = unassignedTeams.length != 0 ? unassignedTeams.pop() : undefined;
                     break;

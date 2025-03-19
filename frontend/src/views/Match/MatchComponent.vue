@@ -53,7 +53,7 @@ export default {
         return {
             updateMessageVisible: false,
             errorMessageVisible: false,
-            errorMessage: "Une erreure est survenue",
+            errorMessage: "",
             updateMessage: "Le match a été mit à jour !",
             matchClosed: this.match.closed,
         }
@@ -81,6 +81,7 @@ export default {
             matchService.updateMatch(updatedMatch).then((res) => {
                 this.updateMessageVisible = false;
                 this.errorMessageVisible = false;
+                this.errorMessage = "";
                 if (res.status == 200) {
                     this.updateMessageVisible = true;
                     setTimeout(() => {
