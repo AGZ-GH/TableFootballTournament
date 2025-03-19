@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="signIn" class="content-center">
+    <form @submit.prevent="signIn" class="content-center w-full">
         <div class="grid">
             <div class="">
                 <input id="firstname" type="text" placeholder="Prénom" v-model="player.firstname"

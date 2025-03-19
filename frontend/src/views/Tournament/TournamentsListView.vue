@@ -2,7 +2,7 @@
 import TournamentComponent from './TournamentComponent.vue';
 </script>
 <template>
-    <div class="flex flex-col ">
+    <div class="flex flex-col w-[60%]">
         <div v-for="tournament in tournaments" :key="tournament.id" v-on:click="goToTournament(tournament.id)"
         class="bg-stone-800 text-center content-cented rounded-2xl  m-2 hover:bg-stone-600">
             <TournamentComponent :tournament="tournament" />
