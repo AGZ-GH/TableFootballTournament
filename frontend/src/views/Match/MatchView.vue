@@ -22,7 +22,7 @@ export default {
 </script>
 <template>
     <div>
-        <div>date de début: {{ match.date }}</div>
+        <div>Date de début: {{ match.date }}</div>
         <div>
             <span v-if="match.team1">{{ match.team1.name }}</span>
             <span v-else> - </span>

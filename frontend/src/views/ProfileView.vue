@@ -1,6 +1,6 @@
 <template>
-    <div class="text-center m-t-5 mb-5">
-        <div class="grid grid-cols-2 text-left mb-5 mr-50">
+    <div class="text-left m-t-5 mb-5">
+        <div class="grid grid-cols-2 text-left gap-2 w-[50%]">
             <div class="green">Prénom:</div>
             <div>{{ player.firstname }}</div>
             <div class="green">Nom:</div>

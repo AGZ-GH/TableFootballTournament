@@ -13,6 +13,7 @@ export class MatchResponse {
             team2: m.team2 ? TeamNoPlayer.MapFromEntity(m.team2) : undefined,
             leftMatchId: m.leftMatch ? m.leftMatch.id : 0,
             rightMatchId: m.rightMatch ? m.rightMatch.id : 0,
+            closed: m.closed,
         } as MatchResponse
     }
     id!: number;
@@ -23,4 +24,5 @@ export class MatchResponse {
     team2!: TeamResponse;
     leftMatchId: number = 0;
     rightMatchId: number = 0;
+    closed!: boolean;
 }

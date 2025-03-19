@@ -26,8 +26,8 @@ export class TeamService {
         newTeam.name = team.name;
         newTeam.player1 = p1;
 
+        const p2 = new Player();
         if (team.player2Id) {
-            const p2 = new Player();
             p2.id = team.player2Id;
             newTeam.player2 = p2;
         }
@@ -40,11 +40,14 @@ export class TeamService {
         updatedTeam.id = id
         const p1 = new Player();
         p1.id = team.player1Id;
+
         const p2 = new Player();
-        p2.id = team.player2Id;
+        if (team.player2Id) {
+            p2.id = team.player2Id;
+            updatedTeam.player2 = p2;
+        }
 
         updatedTeam.player1 = p1;
-        updatedTeam.player2 = p2;
 
         return await this.playerRepository.update(updatedTeam.id, updatedTeam);
     }

@@ -36,13 +36,14 @@ export default {
 </script>
 
 <template>
-  <div class="bg-grey-900  flex flex-col content-center gap-6 w-128 p-10 m-10">
-    <div class="ml-13" @click="goHome()">
+  <div class="bg-grey-900  grid grid-cols-1 max-h-2/3v ml-[25%] w-full gap-6">
+    <div class="content-center w-full" @click="goHome()">
       <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
     </div>
 
-    <h1 class="text-red-900 font-bold text-center mr-50">Tournoi de baby-foot manager</h1>
-    <div class="">
+    <h1 class="text-red-900 font-bold text-left">Tournoi de baby-foot manager</h1>
+
+    <div class="content-center">
       <div v-if="!isLogged" class="">
         <div>
           <RouterLink to="/login">Se connecter</RouterLink>
@@ -51,7 +52,8 @@ export default {
           <RouterLink to="/signin">S'inscrire</RouterLink>
         </div>
       </div>
-      <div v-if="isLogged">
+
+      <nav v-if="isLogged" class="content-center">
         <ProfileView />
         <div>
           <RouterLink to="/tournaments">Tournois</RouterLink>
@@ -62,6 +64,7 @@ export default {
         <div>
           <RouterLink to="/team/new">Créer son équipe</RouterLink>
         </div>
+
         <div v-if="isAdmin" class="mt-6">
           <div class="text-red-900 font-bold mb-6">Admin:</div>
           <div>
@@ -71,11 +74,15 @@ export default {
             <RouterLink to="/team/create">Créer une Équipe</RouterLink>
           </div>
         </div>
+
         <button @click="logout()" class="bg-stone-800 p-2 mt-6 rounded-2xl hover:bg-stone-600">Déconnexion</button>
-      </div>
+
+      </nav>
     </div>
   </div>
-  <RouterView />
+  <div class="max-h-screen overflow-scroll">
+    <RouterView />
+  </div>
 </template>
 
 <script>

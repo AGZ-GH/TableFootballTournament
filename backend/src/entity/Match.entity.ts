@@ -16,9 +16,11 @@ export class Match {
     @Column({ default: 0 })
     scoreTeam2: number = 0
 
+    @Column({ default: false })
+    closed: boolean = false
 
     @ManyToOne(() => Match)
-        nextMatch!: Match;
+    nextMatch!: Match;
 
     @OneToOne(() => Match, { onDelete: "CASCADE" })
     @JoinColumn([{ name: "lm_FK", referencedColumnName: "id" },])

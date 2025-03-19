@@ -17,11 +17,15 @@ export class MatchService {
         newMatch.scoreTeam2 = 0;
 
         const team1 = new Team();
-        const team2 = new Team();
+
         team1.id = match.team1Id;
-        team2.id = match.team2Id;
         newMatch.team1 = team1
-        newMatch.team2 = team2
+
+        const team2 = new Team();
+        if (match.team2Id) {
+            team2.id = match.team2Id;
+            newMatch.team2 = team2
+        }
 
         const tournament = new Tournament();
         tournament.id = match.tournamentId;
@@ -37,11 +41,14 @@ export class MatchService {
         updatedMatch.scoreTeam2 = 0;
 
         const team1 = new Team();
-        const team2 = new Team();
         team1.id = match.team1Id;
-        team2.id = match.team2Id;
         updatedMatch.team1 = team1
-        updatedMatch.team2 = team2
+
+        const team2 = new Team();
+        if (match.team2Id) {
+            team2.id = match.team2Id;
+            updatedMatch.team2 = team2
+        }
 
         const tournament = new Tournament();
         tournament.id = match.tournamentId;

@@ -14,7 +14,9 @@
                 </div>
                 <div v-show="showSignInInfo" class="green"> {{ signInInfoMessage }}</div>
             </div>
-            <button v-on:click="generateTournamentMatches" v-if="generateVisible && isAdmin" class="bg-stone-800 p-2 rounded-2xl hover:bg-stone-600">Générer les matchs du tournoi</button>
+            <button v-on:click="generateTournamentMatches" v-if="generateVisible && isAdmin" class="bg-stone-800 p-2 rounded-2xl mt-5 hover:bg-stone-600">
+                Générer les matchs
+            </button>
             <div class="m-5" v-if="generateVisible">
                 <button class="bg-stone-800 p-2 rounded-2xl hover:bg-stone-600" v-on:click="signInTournament">
                     S'inscrire au tournois
@@ -25,12 +27,11 @@
                 Inscriptions fermées !
             </div>
         </div>
-
         <div>
             <h2 class="green text-2xl">Matches:</h2>
             <hr>
             <div v-for="match in tournament.matches" :key="match.id">
-                <MatchComponent :match="match" />
+                <MatchComponent :match="match" :isAdmin="isAdmin"/>
                 <hr>
             </div>
         </div>
@@ -38,7 +39,7 @@
 
         <div class="grid grid-cols-1 text-left">
             <div v-for="team in tournament.teams" :key="team.id">
-                <TeamViewComponent :team="team" />
+                <TeamViewComponent :team="team"/>
             </div>
         </div>
     </div>
