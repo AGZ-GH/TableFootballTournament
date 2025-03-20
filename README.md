@@ -71,7 +71,7 @@ and that's it your app is up and running
 
 /!\ Mysql docker can be a bit slow the first time, so if you've got a error connect on your first launch just exit and relaunch *docker compose up*
 
-Accessoirement vous pouvez aussi démarrer le docker MySQL une première fois en amount avec 
+Another approach would be to the alone the Mysql docker first by using the command: 
 
 ```
 docker compose up -d mysqldb
