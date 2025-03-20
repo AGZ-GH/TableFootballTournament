@@ -18,9 +18,9 @@ const router = express.Router();
  *       - in: path 
  *         name: playerId
  *         schema:
- *           type: string
+ *           type: number
  *         required: true
- *         description: return the player by it's ID
+ *         description: player ID
  *     responses:
  *       '200':
  *         content:
@@ -47,15 +47,6 @@ router.get("/:playerId(\\d+)", getPlayer);
  *                  application/json:
  *                      schema:
  *                              $ref: "#/components/schemas/CreatePlayerRequest"
- *          parameters:
- *              schema: object
- *              properties:
- *                  firstname:
- *                      type: string 
- *                  lastname:
- *                      type: string
- *                  password:   
- *                      type: string
  *          responses:
  *              '201':
  *                  description: player created
@@ -85,7 +76,7 @@ router.post("/create", validateData(createPlayerSchema), createNewPlayer);
  *         schema:
  *           type: string
  *         required: true
- *         description: return the player by it's ID
+ *         description: player ID
  *     responses:
  *       '200':
  *         description: A successful response
@@ -109,7 +100,7 @@ router.post("/update/:playerId(\\d+)", validateData(updatePlayerSchema), updateP
  *         schema:
  *           type: string
  *         required: true
- *         description:
+ *         description: player ID
  *     responses:
  *       '200':
  *         description: A successful response
