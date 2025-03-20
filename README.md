@@ -71,6 +71,12 @@ and that's it your app is up and running
 
 /!\ Mysql docker can be a bit slow the first time, so if you've got a error connect on your first launch just exit and relaunch *docker compose up*
 
+Accessoirement vous pouvez aussi démarrer le docker MySQL une première fois en amount avec 
+
+```
+docker compose up -d mysqldb
+```
+
 /!\ Mysql has it's own storage so in order to add or change the database user you will have to either drop it (*docker compose down -v* **THIS WILL DELETE THE DATABSE**) or manually connect with *docker exec -it [docker id] mysql -u[user] -p* to the running docker to manually do it
 
 

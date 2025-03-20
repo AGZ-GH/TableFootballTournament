@@ -105,7 +105,7 @@ router.post("/update/:matchId(\\d+)", validateData(updateMatchSchema), updateMat
 /**
 * @swagger
 * match/delete/{matchId}:
-*   delete:
+*   delete      :
 *       summary: Delete a tournament
 *       description: Delete a tournament
 *       tags: [Match]
