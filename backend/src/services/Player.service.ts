@@ -40,7 +40,7 @@ export class PlayerService {
 
         await this.playerRepository.save(newPlayer);
     }
-    
+
     /**
      * perfom an update of the player with the given ID
      * @async
@@ -117,11 +117,13 @@ export class PlayerService {
     public async getTeamlessPlayers(): Promise<PlayerResponse[]> {
         const teamPlayer1SubQuery = this.teamRepository
             .createQueryBuilder("team")
-            .select("team.p1_FK");
-
+            .select("team.p1_FK")
+            .where("team.p1_FK IS NOT NULL");
+        
         const teamPlayer2SubQuery = this.teamRepository
             .createQueryBuilder("team")
-            .select("team.p2_FK");
+            .select("team.p2_FK")
+            .where("team.p2_FK IS NOT NULL");
 
         const teamlessPlayers = await this.playerRepository
             .createQueryBuilder("player")
