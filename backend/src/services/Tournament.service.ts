@@ -16,6 +16,12 @@ export class TournamentService {
     private readonly tournamentRepository = AppDataSource.getRepository(Tournament);
     private readonly teamRepository = AppDataSource.getRepository(Team);
 
+    /**
+     * add a tournament to the database
+     * @async
+     * @param {CreateTournamentRequest} tournament tournament data to add
+     * @returns {Tournament} the saved entity in the database
+     */
     public async createTournament(tournament: CreateTournamentRequest) {
         const tournamentEntity = new Tournament();
         tournamentEntity.name = tournament.name;
@@ -27,6 +33,14 @@ export class TournamentService {
 
         return await this.tournamentRepository.save(tournamentEntity);
     }
+
+    /**
+     * fetch a tournament by a given ID
+     * @async
+     * @param {number} id id ofthe tournament
+     * @throws {TournamentNotFoundError}
+     * @returns {TournamentNoMatchesResponse} data of the tournament searched
+     */
     public async getTournamentById(id: number): Promise<TournamentNoMatchesResponse> {
         const tournament = await this.tournamentRepository.findOneBy({ id: id });
         if (!tournament) {
@@ -36,6 +50,11 @@ export class TournamentService {
         return TournamentNoMatchesResponse.MapFromEntity(tournament);
     }
 
+    /**
+     * fetch a tournament with its matches by a given ID
+     * @param {number} id id of the tournament
+     * @returns {TournamentResponse} data of the tournament with matches included
+     */
     public async getTournamentWithMatchesById(id: number): Promise<TournamentResponse> {
         //player in matches are eager !
         const tournament = await this.tournamentRepository
@@ -54,10 +73,25 @@ export class TournamentService {
         return TournamentResponse.MapFromEntity(tournament);
     }
 
+    /**
+     * delete a tournament from the database
+     * @async
+     * @param id id of the tournament to delete
+     */
     public async deleteTournamentById(id: number): Promise<void> {
         await this.tournamentRepository.delete(id);
     }
 
+    /**
+     * add a team to the tournament
+     * @async
+     * @param {number} tournamentId id of the tournament
+     * @param {number} teamId id of the team to add
+     * @throws {TournamentNotFoundError}
+     * @throws {TeamNotFoundError}
+     * @throws {TeamAlreadyInTournament}
+     * @returns 
+     */
     public async addTeamToTournament(tournamentId: number, teamId: number) {
         const tournament = await this.tournamentRepository
             .findOne({ where: { id: tournamentId }, relations: ['teams'] });
@@ -82,6 +116,13 @@ export class TournamentService {
         return TeamResponse.MapFromEntity(team);
     }
 
+    /**
+     * generate a matches for a tournament
+     * @async
+     * @param {number} tournamentId id of the tournament to generate
+     * @throws {TournamentNotFoundError}
+     * @throws {TournamentAlreadyGenerated}
+     */
     public async generateTournament(tournamentId: number) {
         const tournament = await this.tournamentRepository
             .findOne({
@@ -103,7 +144,11 @@ export class TournamentService {
 
         AppDataSource.manager.save(matchesToSave);
     }
-
+    /**
+     * fetch all the tournament without their relations
+     * @async
+     * @returns {TournamentNoMatchesResponse[]} list of all the tournaments
+     */
     public async getAllTournaments(): Promise<TournamentNoMatchesResponse[]> {
         const tournaments = await this.tournamentRepository.find({
             select: {
@@ -122,6 +167,11 @@ export class TournamentService {
         return tournaments.map(t => TournamentNoMatchesResponse.MapFromEntity(t));
     }
 
+    /**
+     * generate the tree of matches for the tournament
+     * @param tournament tournament for generate
+     * @returns {Match[]} a list of matches generated for the tournament
+     */
     private createMatchTree(tournament: Tournament): Match[] {
         let matches: Match[] = [];
         // generate tournament as a binary tree
@@ -156,6 +206,11 @@ export class TournamentService {
         return matches;
     }
 
+    /**
+     * give a match to the the tournament players
+     * @param {Match[]} matches list of the tournament matches
+     * @param {Team[]} unassignedTeams remaining players signed int the tournament without a match
+     */
     private populatedFirstRound(matches: Match[], unassignedTeams: Team[]) {
         // populate first round with players
         // this could be improve by populating them while creating the matches
@@ -173,7 +228,11 @@ export class TournamentService {
         }
         this.handleUnevenParticipants(matches, unassignedTeams);
     }
-
+    /**
+     * give a match to the last player
+     * @param {Match[]} matches list of the tournament matches
+     * @param {Team[]} unassignedTeams remaining players signed int the tournament without a match
+     */
     private handleUnevenParticipants(matches: Match[], unassignedTeams: Team[]) {
         //for uneven number of teams
         //there should be a team unassigned

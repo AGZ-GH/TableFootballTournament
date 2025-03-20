@@ -13,6 +13,10 @@ import NoTeamForClosingMatchError from "../error/match/NoTeamForClosingMatch.err
 export class MatchService {
     private readonly matchRepository = AppDataSource.getRepository(Match);
 
+    /**
+     * persiste a Match on the database
+     * @param {CreateMatchRequest} match Match data to be saved
+     */
     public async createMatch(match: CreateMatchRequest) {
         const newMatch = new Match();
         newMatch.date = match.date;
@@ -36,6 +40,14 @@ export class MatchService {
         await this.matchRepository.save(newMatch);
     }
 
+    /**
+     * perform an update on the database
+     * @async
+     * @param {number} id id of the match to update
+     * @param {UpdateMatchRequest} updateMatchData data to update the match
+     * @throws {MatchNotFoundError}
+     * @throws {MatchClosedError}
+     */
     public async updateMatch(id: number, updateMatchData: UpdateMatchRequest) {
         const currentMatch = await this.matchRepository.findOne({
             where: { id: id },
@@ -60,6 +72,15 @@ export class MatchService {
         await this.matchRepository.save(updatedMatch);
     }
 
+    /**
+     * close a match
+     * @async
+     * @param {Match} currentMatch match to be closed
+     * @param {number} scoreTeam1 score of the 1st team
+     * @param {number} scoreTeam2 score of the 2nd team
+     * @throws {MatchEqualityError}
+     * @throws {NoTeamForClosingMatchError}
+     */
     private async closeMatch(currentMatch: Match, scoreTeam1: number, scoreTeam2: number) {
         const nextMatch = await this.matchRepository.findOneBy({ id: currentMatch.nextMatch.id });
         if (!nextMatch) {
@@ -85,6 +106,11 @@ export class MatchService {
         await this.matchRepository.save(nextMatch);
     }
 
+    /**
+     * Add a team to a match
+     * @param {Match} match match to which you want to add the team
+     * @param {Team} team team to be added
+     */
     private addTeamToMatch(match: Match, team: Team) {
         if (!match.team1) {
             match.team1 = team;
@@ -94,6 +120,12 @@ export class MatchService {
         }
     }
 
+    /**
+     * prepare a Match entity updated from a current Match updated with the given data
+     * @param {UpdateMatchRequest} updateMatchData data to be updated in the match
+     * @param {Match} currentMatch match before the update
+     * @returns the updated match
+     */
     private updateMatchData(updateMatchData: UpdateMatchRequest, currentMatch: Match): Match {
         const updatedMatch = new Match();
 
@@ -127,6 +159,13 @@ export class MatchService {
         return updatedMatch;
     }
 
+    /**
+     * find a match by its ID
+     * @async
+     * @param {number} id id of the match
+     * @throws {MatchNotFoundError}
+     * @returns {MatchResponse} the match for the given ID
+     */
     public async getMatchById(id: number): Promise<MatchResponse> {
         const match = await this.matchRepository.findOneBy({ id: id });
         if (!match) {
@@ -139,6 +178,11 @@ export class MatchService {
         return await this.matchRepository.delete(id);
     }
 
+    /**
+     * find all the matches
+     * @async
+     * @returns {MatchResponse[]}
+     */
     public async findAll(): Promise<MatchResponse[]> {
         const matches = await this.matchRepository.find({
             select: {
@@ -155,6 +199,12 @@ export class MatchService {
         return matches.map(m => MatchResponse.MapFromEntity(m));
     }
 
+    /**
+     * find the matches of a tournament
+     * @async
+     * @param {number} id id of the tournament
+     * @returns {MatchResponse[]}
+     */
     public async findTournamentMatches(id: number): Promise<MatchResponse[]> {
         const matches = await this.matchRepository
             .createQueryBuilder("match")

@@ -16,7 +16,12 @@ const playerService = new PlayerService();
 export class TeamService {
     private readonly teamRepository = AppDataSource.getRepository(Team);
     private readonly playerRepository = AppDataSource.getRepository(Player);
-
+    
+    /**
+     * persiste a team on the database
+     * @async
+     * @param {CreateTeamRequest} team team to be created
+     */
     public async createTeam(team: CreateTeamRequest) {
         const newTeam = new Team();
 
@@ -34,7 +39,13 @@ export class TeamService {
 
         await this.teamRepository.save(newTeam);
     }
-
+    /**
+     * update a team on the database
+     * @async
+     * @param {number} id id of the team to update
+     * @param {UpdateTeamRequest} team data to update the team
+     * @returns the updated team
+     */
     public async updateTeamById(id: number, team: UpdateTeamRequest) {
         const updatedTeam = new Team();
         updatedTeam.id = id
@@ -52,6 +63,13 @@ export class TeamService {
         return await this.playerRepository.update(updatedTeam.id, updatedTeam);
     }
 
+    /**
+     * fetch a team of the given ID 
+     * @async
+     * @param {number} teamId id of the wanted team
+     * @returns 
+     * @throws {TeamNotFoundError}
+     */
     public async getTeamById(teamId: number): Promise<TeamResponse> {
         const teamEntity = await this.teamRepository
             .findOne({
@@ -70,6 +88,12 @@ export class TeamService {
         return TeamResponse.MapFromEntity(teamEntity);
     }
 
+    /**
+     * get the team of the given player
+     * @async
+     * @param playerId ID of the player
+     * @returns {TeamResponse} the team of the player
+     */
     public async getTeamByPlayerId(playerId: number): Promise<TeamResponse> {
         const teamEntity = await this.teamRepository
             .createQueryBuilder('team')
@@ -84,6 +108,12 @@ export class TeamService {
         return TeamResponse.MapFromEntity(teamEntity);
     }
 
+    /**
+     * get teams that don't have their ID in the given array of IDs
+     * @async
+     * @param {FilterTeamByIdRequest} req 
+     * @returns {TeamListResponse[]} list of teams with just their IDs and names
+     */
     public async filterTeamsByIds(req: FilterTeamByIdRequest): Promise<TeamListResponse[]> {
         const ids = req.teamIds ?? [];
         const teamEntities = await this.teamRepository
@@ -99,6 +129,11 @@ export class TeamService {
         return teamEntities.map(t => TeamListResponse.MapFromEntity(t));
     }
 
+    /**
+     * retrieve all the teams from the database
+     * @async
+     * @returns list of all the teams in the database
+     */
     public async getAllTeams(): Promise<TeamResponse[]> {
         const tournaments = await this.teamRepository.find({
             select: {
@@ -114,6 +149,11 @@ export class TeamService {
         return teamResponse;
     }
 
+    /**
+     * retrieve all the teams with only name and ids
+     * @async
+     * @returns {TeamListResponse[]}
+     */
     public async getAllTeamsIdAndName(): Promise<TeamListResponse[]> {
         const team = await this.teamRepository.find({
             select: {
@@ -125,6 +165,12 @@ export class TeamService {
         return teamResponse;
     }
 
+    /**
+     * delete a team by a given ID
+     * @async
+     * @param {number} id id of the team to delete 
+     * @returns delete results
+     */
     public async deleteTeamById(id: number) {
         return await this.teamRepository.delete(id);
     }
