@@ -40,7 +40,7 @@ export const findTournamentMatches = async (req: Request, res: Response, next: N
 
 export const createMatch = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        matchService.createMatch(req.body as CreateMatchRequest);
+        await matchService.createMatch(req.body as CreateMatchRequest);
         return res.status(StatusCodes.CREATED).send("Match created");
     }
     catch (error) {
@@ -51,8 +51,7 @@ export const createMatch = async (req: Request, res: Response, next: NextFunctio
 export const updateMatch = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = Number(req.params.matchId);
-        console.log(req.body)
-        matchService.updateMatch(id, req.body as UpdateMatchRequest)
+        await matchService.updateMatch(id, req.body as UpdateMatchRequest)
         return res.status(StatusCodes.OK).send("Match updated");
     }
     catch (error) {
@@ -63,7 +62,7 @@ export const updateMatch = async (req: Request, res: Response, next: NextFunctio
 export const deleteMatch = async (req: Request, res: Response, next: NextFunction) => {
     const id = Number(req.params.teamId);
     try {
-        matchService.deleteMatch(id);
+        await matchService.deleteMatch(id);
         return res.status(StatusCodes.OK).send("Match deleted");
     }
     catch (error) {

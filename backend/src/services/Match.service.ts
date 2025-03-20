@@ -37,27 +37,31 @@ export class MatchService {
     }
 
     public async updateMatch(id: number, updateMatchData: UpdateMatchRequest) {
-        if (updateMatchData.closed) {
-            throw new MatchClosedError(id);
-        }
-
-        const currentMatch = await this.matchRepository.findOneBy({ id: id });
+        const currentMatch = await this.matchRepository.findOne({
+            where: { id: id },
+            relations: { nextMatch: true }
+        });
         if (!currentMatch) {
             throw new MatchNotFoundError(id);
         }
-
+        if (currentMatch.closed) {
+            throw new MatchClosedError(id);
+        }
         const updatedMatch = this.updateMatchData(updateMatchData, currentMatch);
 
-        updateMatchData.closed ?? this.closeMatch(currentMatch,
-            currentMatch.nextMatch.id,
-            updateMatchData.scoreTeam1,
-            updateMatchData.scoreTeam2);
+        if (updateMatchData.closed) {
+            await this.closeMatch(
+                currentMatch,
+                updateMatchData.scoreTeam1,
+                updateMatchData.scoreTeam2
+            );
+        }
 
         await this.matchRepository.save(updatedMatch);
     }
 
-    private async closeMatch(currentMatch: Match, nextMatchId: number, scoreTeam1: number, scoreTeam2: number) {
-        const nextMatch = await this.matchRepository.findOneBy({ id: nextMatchId });
+    private async closeMatch(currentMatch: Match, scoreTeam1: number, scoreTeam2: number) {
+        const nextMatch = await this.matchRepository.findOneBy({ id: currentMatch.nextMatch.id });
         if (!nextMatch) {
             return;
         }
@@ -67,15 +71,15 @@ export class MatchService {
         }
         // can't close a match that doesn't have 2 team
         // qualified for it
-        if(!currentMatch.team1 || !currentMatch.team2){
+        if (!currentMatch.team1 || !currentMatch.team2) {
             throw new NoTeamForClosingMatchError(currentMatch.id);
         }
 
         if (scoreTeam1 > scoreTeam2) {
-            this.addTeamToMatch(nextMatch,currentMatch.team1);
+            this.addTeamToMatch(nextMatch, currentMatch.team1);
         }
         else {
-            this.addTeamToMatch(nextMatch,currentMatch.team2);
+            this.addTeamToMatch(nextMatch, currentMatch.team2);
         }
 
         await this.matchRepository.save(nextMatch);

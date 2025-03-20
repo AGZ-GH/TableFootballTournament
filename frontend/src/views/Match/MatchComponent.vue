@@ -1,12 +1,10 @@
 <template>
     <div><span class="green">date:</span>{{ match.date }}</div>
-    <div class="grid grid-cols-2">
-        <button @click="updateMatch" v-if="isAdmin & !matchClosed"
-            class="bg-stone-800 p-2 m-1 mb-6 rounded-2xl hover:bg-stone-600">
+    <div class="grid grid-cols-2" v-if="isAdmin & !matchClosed && match.team1 && match.team2">
+        <button @click="updateMatch" class="bg-stone-800 p-2 m-1 mb-6 rounded-2xl hover:bg-stone-600">
             Mettre à jour
         </button>
-        <button @click="endMatch" v-if="isAdmin & !matchClosed"
-            class="bg-stone-800 p-2 m-1 mb-6 rounded-2xl hover:bg-stone-600">
+        <button @click="endMatch" class="bg-stone-800 p-2 m-1 mb-6 rounded-2xl hover:bg-stone-600">
             Terminer
         </button>
     </div>
@@ -41,6 +39,7 @@
 </template>
 
 <script>
+import { MatchError } from '@/errors/match/Match.error';
 import { matchService } from '@/services';
 import moment from 'moment';
 
@@ -58,11 +57,6 @@ export default {
             matchClosed: this.match.closed,
         }
     },
-    /* computed: {
-        matchClosed() {
-            return t;
-        }
-    }, */
     methods: {
         updateMatch() {
             const updatedMatch = { ...this.match };
@@ -73,23 +67,41 @@ export default {
         endMatch() {
             const updatedMatch = { ...this.match };
             updatedMatch.closed = true;
-            this.matchClosed = true;
             this.sendMatchUpdate(updatedMatch);
         },
         sendMatchUpdate(updatedMatch) {
             updatedMatch.date = moment(updatedMatch.date, "DD / MM / YYYY").toDate();
+            console.log(updatedMatch);
             matchService.updateMatch(updatedMatch).then((res) => {
                 this.updateMessageVisible = false;
                 this.errorMessageVisible = false;
                 this.errorMessage = "";
                 if (res.status == 200) {
+                    this.matchClosed = true;
                     this.updateMessageVisible = true;
                     setTimeout(() => {
                         this.updateMessageVisible = false
                     }, 2500)
                 }
+                if (res.status == 400) {
+                    updatedMatch.closed = true;
+                    if (res.response.data.errorName == MatchError.MATCH_EQUALITY) {
+                        this.errorMessage = "Impossible de clore un match sur une égalité";
+                        this.errorMessageVisible = true;
+                    }
+                    if (res.response.data.errorName == MatchError.MATCH_CLOSED) {
+                        this.errorMessage = "Match déjà clos";
+                        this.errorMessageVisible = true;
+                    }
+                    if (res.response.data.errorName == MatchError.NO_TEAM_FOR_CLOSING_MATCH) {
+                        this.errorMessage = "Impossible de clore un match sans ses 2 équipes";
+                        this.errorMessageVisible = true;
+                    }
+                }
                 else {
+                    updatedMatch.closed = true;
                     this.errorMessageVisible = true;
+                    this.errorMessage = "Erreure serveur";
                 }
             });
         }

@@ -18,6 +18,7 @@ const options = {
   apis: ['./src/routes/*.ts'],
 };
 
+require('express-async-errors');
 const swaggerUi = require('swagger-ui-express');
 
 const app: Express = express();

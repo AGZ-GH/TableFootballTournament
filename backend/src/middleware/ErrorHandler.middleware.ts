@@ -4,7 +4,7 @@ import { HttpError } from "../error/HttpError";
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction)    => {  
     console.error(err);
     if (err instanceof HttpError) {
-        res.status(err.statusCode).json({error: err.message});
+        res.status(err.statusCode).json({errorName: err.name, error: err.message});
     }
     else{
         res.status(500).send('Unhandeled Internal Server Error' );

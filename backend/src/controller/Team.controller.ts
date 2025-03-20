@@ -53,7 +53,7 @@ export const createTeam = async (req: Request, res: Response, next: NextFunction
 export const updateTeamById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = Number(req.params.teamId);
-        teamService.updateTeamById(id, req.body as UpdateTeamRequest);
+        await teamService.updateTeamById(id, req.body as UpdateTeamRequest);
         return res.status(StatusCodes.OK).send("Team updated");
     }
     catch (error) {

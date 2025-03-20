@@ -127,7 +127,7 @@ export class TournamentService {
         // generate tournament as a binary tree
         // given n nb of team
         const unassignedTeams = [...tournament.teams];
-        const nbMatches = tournament.teams.length
+        const nbMatches = tournament.teams.length / 2
 
         for (let i = 0; i <= nbMatches; i++) {
             // first node
