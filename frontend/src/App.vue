@@ -59,9 +59,6 @@ export default {
           <RouterLink to="/tournaments">Tournois</RouterLink>
         </div>
         <div>
-          <RouterLink to="/leaderboard">Classement</RouterLink>
-        </div>
-        <div>
           <RouterLink to="/team/new">Créer son équipe</RouterLink>
         </div>
 
