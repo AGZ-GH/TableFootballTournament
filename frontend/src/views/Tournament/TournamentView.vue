@@ -80,7 +80,7 @@ export default {
         tournamentService.getTournamentWithMatchesById(this.tournamentId)
             .then(res => {
                 this.tournament = res.data;
-                this.tournament.startingDate = moment(this.tournament.startingDate).format("DD/ MM / YYYY");
+                this.tournament.startingDate = moment(this.tournament.startingDate).format("DD / MM / YYYY");
                 this.tournament.endDate = moment(this.tournament.endDate).format("DD / MM / YYYY");
                 this.tournament.matches.forEach((m) => m.date = moment(m.date).format("DD / MM / YYYY"));
                 this.generateVisible = this.tournament.matches.length == 0;

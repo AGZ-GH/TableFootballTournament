@@ -71,7 +71,6 @@ export default {
         },
         sendMatchUpdate(updatedMatch) {
             updatedMatch.date = moment(updatedMatch.date, "DD / MM / YYYY").toDate();
-            console.log(updatedMatch);
             matchService.updateMatch(updatedMatch).then((res) => {
                 this.updateMessageVisible = false;
                 this.errorMessageVisible = false;
@@ -82,6 +81,7 @@ export default {
                     setTimeout(() => {
                         this.updateMessageVisible = false
                     }, 2500)
+                    this.$router.go(0);
                 }
                 if (res.status == 400) {
                     updatedMatch.closed = true;
