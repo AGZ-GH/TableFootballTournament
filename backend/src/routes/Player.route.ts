@@ -7,260 +7,78 @@ import { createPlayerSchema } from "../request/player/CreatePlayer.schema";
 const express = require("express");
 const router = express.Router();
 
-/**
- * @swagger
- * /player/{id}:
- *   get:
- *     summary: Get player by ID.
- *     description: Get player by ID.
- *     tags: [Player]
- *     parameters:
- *       - in: path 
- *         name: playerId
- *         schema:
- *           type: number
- *         required: true
- *         description: player ID
- *     responses:
- *       '200':
- *         content:
- *              application/json:
- *                  schema:
- *                      $ref: "#/components/schemas/PlayerResponse"  
- *       '404':
- *         description: player not found
- *       '500':
- *         description: Internal server error
- */
-router.get("/:playerId(\\d+)", getPlayer);
+router.get("/:playerId(\\d+)", getPlayer
+    /*
+        #swagger.summary = "Get player by ID."
+        #swagger.description = "Get player by ID."
+        #swagger.responses[200] = { description: 'A successful response' }
+        #swagger.responses[404] = { description: 'Player not found' }
+        #swagger.responses[500] = { description: 'Internal server error' }
+    */
+);
 
-/**
- * @swagger
- *  /player/create:
- *      post:
- *          summary: Create a player.
- *          description: Create a new player.
- *          tags: [Player]
- *          requestBody:
- *              required: true
- *              content:
- *                  application/json:
- *                      schema:
- *                              $ref: "#/components/schemas/CreatePlayerRequest"
- *          responses:
- *              '201':
- *                  description: player created
- *              '400':
- *                  description: player name already exist'
- *              '500':
- *                  description: Internal server error
- */
-router.post("/create", validateData(createPlayerSchema), createNewPlayer);
+router.post("/create", validateData(createPlayerSchema), createNewPlayer
+    /*
+        #swagger.summary = "Create a player"
+        #swagger.description = "Create a playe          r"
 
-/**
- * @swagger
- * /player/update/{id}:
- *   post:
- *     summary: Update player by ID.
- *     description: Update player by ID.
- *     tags: [Player]
- *     requestBody:
- *       required: true
- *       content:
- *          application/json:
- *              schema:
- *                  $ref: "#/components/schemas/UpdatePlayerRequest" 
- *     parameters:
- *       - in: path
- *         name: playerId
- *         schema:
- *           type: string
- *         required: true
- *         description: player ID
- *     responses:
- *       '200':
- *         description: A successful response
- *       '404':
- *         description: player   not found
- *       '500':
- *         description: Internal server error
- */
-router.post("/update/:playerId(\\d+)", validateData(updatePlayerSchema), updatePlayer);
+        #swagger.responses[201] = { description: 'Player created' }
+        #swagger.responses[400] = { description: 'Player name already exist' }
+        #swagger.responses[500] = { description: 'Internal server error' }
+    */
+);
 
-/**
- * @swagger
- * /player/{id}:
- *   delete:
- *     summary: Delete player by ID
- *     description: Delete player by ID
- *     tags: [Player]
- *     parameters:
- *       - in: path
- *         name: playerId
- *         schema:
- *           type: string
- *         required: true
- *         description: player ID
- *     responses:
- *       '200':
- *         description: A successful response
- *       '404':
- *         description: player   not found
- *       '500':
- *         description: Internal server error
- */
-router.delete("/:playerId(\\d+)", deletePlayer);
+router.post("/update/:playerId(\\d+)", validateData(updatePlayerSchema), updatePlayer
+    /*
+        #swagger.summary = "Update a player"
+        #swagger.description = "update the player of the given ID"
+        #swagger.responses[200] = {description: "A successful response"}   
 
-/**
- * @swagger
- * /player/login:
- *   post:
- *     summary: Login for users
- *     description: Login users and return them their ID and token
- *     tags: [Player]
- *     requestBody:
- *       required: true
- *       content:
- *          application/json:
- *              schema:
- *                  $ref: "#/components/schemas/LoginPlayerRequest"     
- *     parameters:
- *     responses:
- *       '200':
- *         content:
- *              application/json:
- *                  schema:
- *                      $ref: "#/components/schemas/LoggedPlayerResponse"  
- *         description: A successful response
- *       '404':
- *         description: player   not found
- *       '500':
- *         description: Internal server error
- */
-router.post("/login", validateData(loginPlayerSchema), loginPlayer);
+        #swagger.responses[200] = { description: 'A successful response' }
+        #swagger.responses[404] = { description: 'Player not found' }
+        #swagger.responses[500] = { description: 'Internal server error' }
+        
+    */
+);
 
-/**
- * @swagger
- * /player/checkAdmin:
- *   post:
- *     summary: Check if the usage is an admin
- *     description: Check if the usage is an admin
- *     tags: [Player]
- *     parameters:
- *     responses:
- *       '200':
- *         description: A successful response
- *       '500':
- *         description: Internal server error
- */
-router.post("/checkAdmin", checkAdmin);
+router.delete("/:playerId(\\d+)", deletePlayer
+    /*
+        #swagger.summary = "Delete player by ID"
+        #swagger.description = "Delete player by ID"
 
-/**
- * @swagger
- * /player/find/teamless/list:
- *   get:
- *     summary: return the list of all the players without a team.
- *     description: Get the list of all the players without a team with only they ID and name.
- *     tags: [Player]
- *     responses:
- *       '200':
- *         description: Success
- *         schema:
- *          player:
- *              type: object
- *              properties:
- *                  id:
- *                     description: ID of the player
- *                     type: number
- *                     example: 1 
- *                  lastname:
- *                     description: the player lastname
- *                     type: string
- *                     minLenght: 1
- *                     example: Doe
- *       '500': 
- *         description: Internal server error
- */
-router.get("/find/teamless/list", findTeamlessPlayers);
+        #swagger.responses[200] = { description: 'A successful response' }
+        #swagger.responses[404] = { description: 'Player not found' }
+        #swagger.responses[500] = { description: 'Internal server error' }
+    */
+);
+
+router.post("/login", validateData(loginPlayerSchema), loginPlayer
+    /*
+        #swagger.summary = "Log in a user"
+        #swagger.description = "Log in users and return them their ID and token"
+        #swagger.responses[200] = { description: 'A successful response' }
+        #swagger.responses[404] = { description: 'Player not found' }
+        #swagger.responses[500] = { description: 'Internal server error' }
+        
+    */
+);
+
+router.post("/checkAdmin", checkAdmin
+    /*
+        #swagger.summary = "Check if the usage is an admin"
+        #swagger.description = "Check if the usage is an admin"
+        #swagger.responses[201] = { description: 'A successful response' }
+        #swagger.responses[500] = { description: 'Internal server error' }
+    */
+);
+
+router.get("/find/teamless/list", findTeamlessPlayers
+    /*
+        #swagger.summary = "return the list of all the players without a team."
+        #swagger.description = "Get the list of all the players without a team with only they ID and name.  "
+        #swagger.responses[201] = { description: 'A successful response' }
+        #swagger.responses[500] = { description: 'Internal server error' }
+    */
+);
 
 module.exports = router;
-
-
-/**
-* @swagger
-* components:
-*    schemas:
-*        PlayerResponse:
-*            type: object
-*            properties:
-*                id:
-*                    type: number
-*                    description: ID of the player
-*                firstname:
-*                    type: string
-*                    description: player firstname
-*                lastname:
-*                    type: string
-*                    description: player lastname
-*            example:
-*                id: 1
-*                firstname: "Jane"
-*                lastname: "Doe"
-*       
-*        LoggedPlayerResponse:
-*            type: object
-*            properties:
-*                id:
-*                    type: number
-*                token:
-*                    type: string
-*                isAdmin:
-*                    type: boolean
-*                example:
-*                    id: 1
-*                    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30"
-*                    isAdmin: false
-*        CreatePlayerRequest:
-*            type: object
-*            properties:
-*                password:
-*                    type: string
-*                    description: ID of the player
-*                    minLength: 12
-*                firstname:
-*                    type: string
-*                    description: player firstname
-*                lastname:
-*                    type: string
-*                    description: player lastname
-*            example:
-*                password: "myveryownpassword"
-*                firstname: "Jane"
-*                lastname: "Doe"
-*        LoginPlayerRequest:
-*            type: object
-*            properties:
-*                password:
-*                    type: string
-*                    description: ID of the player
-*                    minLength: 12
-*                lastname:
-*                    type: string
-*                    description: player lastname
-*                example:
-*                    password: "myveryownpassword"
-*                    lastname: "Doe"
-*   
-*        UpdatePlayerRequest:
-*            type: object
-*            properties:
-*                firstname:
-*                    type: string
-*                    description: player firstname
-*                lastname:
-*                    type: string
-*                    description: player lastname
-*                example:
-*                    firstname: "Jane"
-*                    lastname: "Doe"
-*/

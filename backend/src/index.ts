@@ -6,20 +6,9 @@ import { errorHandler } from "./middleware/ErrorHandler.middleware"
 
 dotenv.config();
 
-const swaggerJsdoc = require('swagger-jsdoc');
-const options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'TFT API',
-      version: '1.0.0',
-    },
-  },
-  apis: ['./src/routes/*.ts'],
-};
-
 require('express-async-errors');
 const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('../src/swagger-output.json')
 
 const app: Express = express();
 
@@ -27,21 +16,38 @@ const port = process.env.BACKEND_DOCKER_PORT ?? 3000;
 
 app.use(express.json());
 
+//cors
 const cors = require('cors');
 app.use(cors());
 
-
+// routes imports
 const playerRoute = require("./routes/Player.route");
 const teamRoute = require("./routes/Team.route");
 const tournamentRoute = require("./routes/Tournament.route");
 const matchRoute = require("./routes/Match.route");
 
 //routes
-app.use("/player", playerRoute);
-app.use("/team", teamRoute);
-app.use("/tournament", tournamentRoute);
-app.use("/match", matchRoute);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(options)));
+app.use("/player", playerRoute
+  /* 
+  #swagger.tags = ['Player']
+  */
+);
+app.use("/team", teamRoute
+  /* 
+    #swagger.tags = ['Team']
+    */
+);
+app.use("/tournament", tournamentRoute
+  /* 
+  #swagger.tags = ['Tournament']
+  */
+);
+app.use("/match", matchRoute
+  /* 
+  #swagger.tags = ['match']
+  */
+);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 //error handler 
 app.use(errorHandler);

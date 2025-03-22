@@ -8,14 +8,14 @@ This project aim at making a web applications allowing to handle tournament for 
 
 This project feature various dependencies such as:
 
-###     Backend:
+### Backend:
 
 * express : to build a Rest API
 * Mysql : Database
 * typeorm : ORM
 * Json Web Token: for JWT token generation
 * Bcryptjs : Password Encryption
-* Swagger Jsdoc : Auto generate swagger documentation
+* Swagger aut : Auto generate swagger documentation
 * Swagger Ui Express : generate the HTML for swagger
 * Zod : Data v  alidations
 

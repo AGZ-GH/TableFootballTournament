@@ -1,0 +1,573 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "TFT API",
+    "description": "API for table tournament manager"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {},
+  "paths": {
+    "/player/{playerId(\\\\d+)}": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Get player by ID.",
+        "description": "Get player by ID.",
+        "parameters": [
+          {
+            "name": "playerId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "404": {
+            "description": "Player not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Delete player by ID",
+        "description": "Delete player by ID",
+        "parameters": [
+          {
+            "name": "playerId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "404": {
+            "description": "Player not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/player/create": {
+      "post": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Create a player",
+        "description": "Create a playe r",
+        "responses": {
+          "201": {
+            "description": "Player created"
+          },
+          "400": {
+            "description": "Player name already exist"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/player/update/{playerId(\\\\d+)}": {
+      "post": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Update a player",
+        "description": "update the player of the given ID",
+        "parameters": [
+          {
+            "name": "playerId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "404": {
+            "description": "Player not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/player/login": {
+      "post": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Log in a user",
+        "description": "Log in users and return them their ID and token",
+        "responses": {
+          "200": {
+            "description": "A successful response"
+          },
+          "404": {
+            "description": "Player not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/player/checkAdmin": {
+      "post": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Check if the usage is an admin",
+        "description": "Check if the usage is an admin",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "A successful response"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/player/find/teamless/list": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "return the list of all the players without a team.",
+        "description": "Get the list of all the players without a team with only they ID and name. ",
+        "responses": {
+          "201": {
+            "description": "A successful response"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/team/find/{teamId(\\\\d+)}": {
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "teamId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/team/find/byPlayer/{playerId(\\\\d+)}": {
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "playerId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/team/filter/byIds/list": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/team/": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/team/{teamId(\\\\d+)}": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "teamId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Team"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "teamId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/team/all": {
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "description": "",
+        "responses": {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/team/list/all": {
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "description": "",
+        "responses": {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/tournament/create": {
+      "post": {
+        "tags": [
+          "Tournament"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/tournament/generate/{tournamentId}": {
+      "post": {
+        "tags": [
+          "Tournament"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "tournamentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/tournament/addTeam": {
+      "post": {
+        "tags": [
+          "Tournament"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tournamentId": {
+                  "example": "any"
+                },
+                "teamId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/tournament/find/{tournamentId(\\\\d+)}": {
+      "get": {
+        "tags": [
+          "Tournament"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "tournamentId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/tournament/all": {
+      "get": {
+        "tags": [
+          "Tournament"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/tournament/find/withMatches/{tournamentId(\\\\d+)}": {
+      "get": {
+        "tags": [
+          "Tournament"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "tournamentId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/tournament/{tournamentId(\\\\d+)}": {
+      "delete": {
+        "tags": [
+          "Tournament"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "tournamentId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/match/find/{matchId(\\\\d+)}": {
+      "get": {
+        "tags": [
+          "match"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "matchId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/match/list/all": {
+      "get": {
+        "tags": [
+          "match"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/match/find/byTournament/{tournamentId(\\\\d+)}": {
+      "get": {
+        "tags": [
+          "match"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "tournamentId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/match/create": {
+      "post": {
+        "tags": [
+          "match"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/match/update/{matchId(\\\\d+)}": {
+      "post": {
+        "tags": [
+          "match"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "matchId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/match/delete/{matchId(\\\\d+)}": {
+      "delete": {
+        "tags": [
+          "match"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "matchId(\\\\d+)",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    }
+  }
+}
